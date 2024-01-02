@@ -84,7 +84,7 @@
 	.citizen-card-hide( bottom @position );
 	.citizen-card-transition();
 
-	@media ( min-width: @width-breakpoint-tablet ) {
+	@media ( min-width: @min-width-breakpoint-tablet ) {
 		& when ( @position = left ) {
 			right: unset;
 		}
@@ -94,7 +94,7 @@
 		}
 	}
 
-	@media ( min-width: @width-breakpoint-desktop ) {
+	@media ( min-width: @min-width-breakpoint-desktop ) {
 		right: unset;
 		left: 100%;
 		& when ( @position = left ) {

@@ -2,6 +2,51 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.9.0](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/compare/v2.8.5...v2.9.0) (2023-12-14)
+
+
+### Features
+
+* **core:** ✨ clean up skin variables load order ([f1ddf32](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/commit/f1ddf3206b0a5e77cb2ff5538039b5986f63ce97))
+* **core:** ✨ make changelist item more readable ([e0f9ac1](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/commit/e0f9ac1be31ecf2862f63cd00a5a4c0173d853da))
+* **core:** ✨ prefer Roboto over language fonts ([b134fbf](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/commit/b134fbfec53a30b306c5bf708a8bd85b6c9663ad))
+* **core:** ✨ replace breakpoint LESS variables with Codex tokens ([60999eb](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/commit/60999eb1d97abfb933ea5332fcb612746d6b30cb)), closes [#735](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/issues/735)
+* **core:** ✨ use CSS variable for language-specific fonts ([eee044d](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/commit/eee044d1451a2268d876e884353a1a3612ec4666))
+
+
+### Bug Fixes
+
+* **core:** 🐛 check for read access before attaching manifest ([0da7d8f](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/commit/0da7d8fe33b8433447fe768758bf56449636b46e)), closes [#747](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/issues/747)
+* **mediawiki:** 🐛 add missing preferences styles from 1.41 ([40fffd6](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/commit/40fffd610787c6cccf3d2dc4e451590d55732807))
+* **toc:** 🐛 incorrect breakpoints for ToC ([21f7cc4](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/commit/21f7cc40015d56e53dc5ce976bc8b4052cd6aca4))
+* **VE:** 🐛 do not invert image in link preview ([109779c](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/commit/109779c84ca31285f8455c331ee573e35b41363e))
+
+### [2.8.5](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/compare/v2.8.4...v2.8.5) (2023-11-16)
+
+
+### Features
+
+* **core:** ✨ remove top margin from siteSub ([47d06bc](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/commit/47d06bc13939615fb9d27803738ce15c933aa816))
+* **core:** ✨ remove unnessecary style from siteSub ([92f0692](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/commit/92f069208e3a41af2d921346bf963005ca9eeda1))
+* **search:** ✨ turn search actions into chips ([b0f89ba](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/commit/b0f89ba311f87f96d3ccc36b24452e372a35f463))
+
+
+### Bug Fixes
+
+* **core:** let makeSections xpath query cope with multiple classes ([#733](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/issues/733)) ([6f5b761](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/commit/6f5b761fe7880a6fe48a1c4e0ebc92efd54bd050))
+* **ooui:** rounded button corners in save changes modal ([#736](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/issues/736)) ([906c1fd](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/commit/906c1fd6ac584c4bad732382e3a68429ed35cdbc))
+* **search:** 🐛 chip text should not wrap ([071a58a](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/commit/071a58ab7473fa3a156efb7db63a92d7e2a3ffab))
+
+### [2.8.4](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/compare/v2.8.3...v2.8.4) (2023-11-03)
+
+
+### Bug Fixes
+
+* **core:** 🐛 check for mw-heading wrapper first before mw-parser-output ([672740a](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/commit/672740a23ad0c86589893a56f77f69792613782e))
+* **core:** 🐛 hide loading indicator when user clicks back button on browser ([201a38f](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/commit/201a38f93f7e57b605fd2de297f4bdc2d48fdc54)), closes [#718](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/issues/718)
+* **core:** RTL flipping of the progressbar animation keyframe ([#723](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/issues/723)) ([456b75c](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/commit/456b75c1b19b71f1008591f07d9fef065176a626))
+* **toc:** 🐛 incorrect layout when ToC title has multiple elements ([2c10335](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/commit/2c10335ae3080364d83a807fe4dd72b8a6493d50))
+
 ### [2.8.3](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/compare/v2.8.2...v2.8.3) (2023-09-11)
 
 

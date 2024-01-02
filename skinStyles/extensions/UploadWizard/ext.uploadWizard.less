@@ -21,7 +21,7 @@
 	border-top-color: var( --border-color-base );
 	border-bottom-color: var( --border-color-base );
 
-	@media ( max-width: @width-breakpoint-tablet ) {
+	@media ( max-width: @max-width-breakpoint-tablet ) {
 		padding-left: 0;
 	}
 }
@@ -75,7 +75,7 @@ h3.mwe-upwiz-metadata-title {
 
 	&::before,
 	&::after {
-		content: none; // Pseudo elements do not play well with flex
+		display: none; // Pseudo elements do not play well with flex
 	}
 
 	li {
@@ -97,7 +97,7 @@ h3.mwe-upwiz-metadata-title {
 		&.arrow {
 			&::before,
 			&::after {
-				content: none;
+				display: none;
 			}
 		}
 	}
@@ -311,7 +311,7 @@ h3.mwe-upwiz-metadata-title {
 	font-weight: var( --font-weight-semibold );
 }
 
-@media ( max-width: @width-breakpoint-tablet ) {
+@media ( max-width: @max-width-breakpoint-tablet ) {
 	#mwe-upwiz-stepdiv-details {
 		/* Single column in limited width */
 		.mwe-upwiz-data,
