@@ -101,8 +101,8 @@ function main( window ) {
 		config = require( './config.json' ),
 		search = require( './search.js' ),
 		checkbox = require( './checkbox.js' );
-
-	// Sometimes the loading indicator isn't removed
+		
+// Sometimes the loading indicator isn't removed
 	document.documentElement.classList.remove( 'citizen-loading' );
 
 	enableCssAnimations( window.document );
@@ -132,7 +132,7 @@ function main( window ) {
 		// Set up loading indicator
 		document.documentElement.classList.add( 'citizen-loading' );
 	}, false );
-}
+	}
 
 if ( document.readyState === 'interactive' || document.readyState === 'complete' ) {
 	main( window );

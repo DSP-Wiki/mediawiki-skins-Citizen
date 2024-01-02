@@ -240,7 +240,7 @@ final class BodyContent extends Partial {
 				// (T13555), the querySelectorAll() above can use the class and this can be removed.
 				if ( $parentClasses->contains( 'mw-heading' ) ) {
 					$el = $parent;
-				}
+								}
 
 				// This check can be removed too when we require the wrappers.
 				if ( $parent->getAttribute( 'class' ) !== 'toctitle' ) {
