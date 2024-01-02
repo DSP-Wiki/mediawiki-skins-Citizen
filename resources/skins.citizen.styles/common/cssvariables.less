@@ -73,6 +73,12 @@
 	--font-family-base: @font-family-base;
 	--font-family-serif: @font-family-serif;
 	--font-family-monospace: @font-family-monospace;
+	--font-family-citizen-base: 'Roboto';
+	--font-family-citizen-serif: 'Roboto Serif';
+	--font-family-citizen-monospace: 'Roboto Mono';
+	--font-family-language-base: '';
+	--font-family-language-serif: '';
+	--font-family-language-monospace: '';
 
 	--font-size-h1: 1.75rem;
 	--font-size-h2: 1.375rem;
@@ -159,7 +165,7 @@ html {
 	--border-color-input--hover: @dark-border-color-input--hover;
 }
 
-@media ( min-width: @width-breakpoint-tablet ) {
+@media ( min-width: @min-width-breakpoint-tablet ) {
 	:root {
 		--font-size-h1: 2rem;
 		--font-size-h2: 1.5rem;
@@ -172,7 +178,7 @@ html {
 	}
 }
 
-@media ( min-width: @width-breakpoint-desktop ) {
+@media ( min-width: @min-width-breakpoint-desktop ) {
 	html {
 		--padding-page: @padding-page * 2;
 		--header-card-maxheight: ~'calc( 100vh - var( --space-sm ) * 2 )';

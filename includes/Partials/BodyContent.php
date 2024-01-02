@@ -132,7 +132,10 @@ final class BodyContent extends Partial {
 	 */
 	private function makeSections( DOMDocument $doc, array $headingWrappers ) {
 		$xpath = new DOMXpath( $doc );
-		$containers = $xpath->query( '//div[@class="mw-parser-output"][1]' );
+		$containers = $xpath->query(
+			// Equivalent of CSS attribute `~=` to support multiple classes
+			'//div[contains(concat(" ",normalize-space(@class)," ")," mw-parser-output ")][1]'
+		);
 
 		// Return if no parser output is found
 		if ( !$containers->length || $containers->item( 0 ) === null ) {
@@ -154,10 +157,7 @@ final class BodyContent extends Partial {
 			// If we've found a top level heading, insert the previous section if
 			// necessary and clear the container div.
 			if ( $firstHeadingName && $this->getHeadingName( $node ) === $firstHeadingName ) {
-				// The heading we are transforming is always 1 section ahead of the
-				// section we are currently processing
-				/** @phan-suppress-next-line PhanTypeMismatchArgument DOMNode vs. DOMElement */
-				$this->prepareHeading( $doc, $node, $sectionNumber + 1 );
+				$this->prepareHeading( $doc, $node );
 				// Insert the previous section body and reset it for the new section
 				$container->insertBefore( $sectionBody, $node );
 
@@ -182,9 +182,8 @@ final class BodyContent extends Partial {
 	 *
 	 * @param DOMDocument $doc
 	 * @param DOMElement $heading
-	 * @param int $sectionNumber
 	 */
-	private function prepareHeading( DOMDocument $doc, DOMElement $heading, $sectionNumber ) {
+	private function prepareHeading( DOMDocument $doc, DOMElement $heading ) {
 		$className = $heading->hasAttribute( 'class' ) ? $heading->getAttribute( 'class' ) . ' ' : '';
 		$heading->setAttribute( 'class', $className . 'citizen-section-heading' );
 
@@ -230,17 +229,15 @@ final class BodyContent extends Partial {
 
 				$parentClasses = DOMCompat::getClassList( $parent );
 
-				// Only target page headings, but not other heading tags
-				// TODO: Drop this when T13555 is deployed on LTS
-				if ( !$parentClasses->contains( 'mw-parser-output' ) ) {
-					continue;
-				}
-
 				// Use the `<div class="mw-heading">` wrapper if it is present. When they are required
 				// (T13555), the querySelectorAll() above can use the class and this can be removed.
 				if ( $parentClasses->contains( 'mw-heading' ) ) {
 					$el = $parent;
-								}
+				} elseif ( !$parentClasses->contains( 'mw-parser-output' ) ) {
+					// Only target page headings, but not other heading tags
+					// TODO: Drop this when T13555 is deployed on LTS
+					continue;
+				}
 
 				// This check can be removed too when we require the wrappers.
 				if ( $parent->getAttribute( 'class' ) !== 'toctitle' ) {
