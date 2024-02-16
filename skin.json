@@ -1,6 +1,6 @@
 {
 	"name": "Citizen",
-	"version": "2.9.0",
+	"version": "2.9.1",
 	"author": [
 		"[https://www.mediawiki.org/wiki/User:Alistair3149 Alistair3149]",
 		"[https://www.mediawiki.org/wiki/User:Octfx Octfx]",
@@ -13,6 +13,13 @@
 	"type": "skin",
 	"requires": {
 		"MediaWiki": ">= 1.39.4"
+	},
+	"attributes": {
+		"DarkMode": {
+			"Disabled": [
+				"citizen"
+			]
+		}
 	},
 	"ValidSkinNames": {
 		"citizen": {
@@ -85,7 +92,7 @@
 	},
 	"ResourceModules": {
 		"skins.citizen.styles": {
-			"class": "ResourceLoaderSkinModule",
+			"class": "MediaWiki\\ResourceLoader\\SkinModule",
 			"targets": [
 				"desktop",
 				"mobile"
@@ -103,7 +110,7 @@
 			]
 		},
 		"skins.citizen.styles.fonts.cjk": {
-			"class": "ResourceLoaderSkinModule",
+			"class": "MediaWiki\\ResourceLoader\\SkinModule",
 			"targets": [
 				"desktop",
 				"mobile"
@@ -119,7 +126,7 @@
 			]
 		},
 		"skins.citizen.styles.fonts.ar": {
-			"class": "ResourceLoaderSkinModule",
+			"class": "MediaWiki\\ResourceLoader\\SkinModule",
 			"targets": [
 				"desktop",
 				"mobile"
@@ -175,10 +182,11 @@
 				"resources/skins.citizen.search/typeahead.js",
 				"resources/skins.citizen.search/htmlHelper.js",
 				"resources/skins.citizen.search/fetch.js",
-				"resources/skins.citizen.search/presult.js",
 				"resources/skins.citizen.search/searchAction.js",
 				"resources/skins.citizen.search/searchClient.js",
 				"resources/skins.citizen.search/searchHistory.js",
+				"resources/skins.citizen.search/searchPresults.js",
+				"resources/skins.citizen.search/searchResults.js",
 				"resources/skins.citizen.search/searchQuery.js",
 				"resources/skins.citizen.search/urlGenerator.js",
 				"resources/skins.citizen.search/searchClients/searchClients.json",
@@ -246,7 +254,7 @@
 			]
 		},
 		"skins.citizen.icons": {
-			"class": "ResourceLoaderImageModule",
+			"class": "MediaWiki\\ResourceLoader\\ImageModule",
 			"selector": "{name}",
 			"defaultColor": "#000",
 			"images": {
@@ -258,7 +266,7 @@
 			"selectorWithoutVariant": ".mw-ui-icon-wikimedia-{name}:before",
 			"useDataURI": false,
 			"defaultColor": "#000",
-			"class": "ResourceLoaderOOUIIconPackModule",
+			"class": "MediaWiki\\ResourceLoader\\OOUIIconPackModule",
 			"icons": [
 				"article",
 				"articleNotFound",
@@ -346,7 +354,7 @@
 			"+jquery.codeEditor": "skinStyles/extensions/CodeEditor/jquery.codeEditor.less",
 			"+ext.CodeMirror.lib": "skinStyles/extensions/CodeMirror/ext.CodeMirror.lib.less",
 			"+ext.CodeMirror.mode.mediawiki": "skinStyles/extensions/CodeMirror/ext.CodeMirror.mode.mediawiki.less",
-			"+ext.CodeMirror.visualEditor.init": "skinStyles/extensions/CodeMirror/ext.CodeMirror.visualEditor.init.less",
+			"+ext.CodeMirror.visualEditor": "skinStyles/extensions/CodeMirror/ext.CodeMirror.visualEditor.less",
 			"+ext.CommentStreams": "skinStyles/extensions/CommentStreams/ext.CommentStreams.less",
 			"+ext.discussionTools.init.styles": "skinStyles/extensions/DiscussionTools/ext.discussionTools.init.styles.less",
 			"+ext.discussionTools.ReplyWidget": "skinStyles/extensions/DiscussionTools/ext.discussionTools.ReplyWidget.less",
