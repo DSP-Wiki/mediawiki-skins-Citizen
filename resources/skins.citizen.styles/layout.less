@@ -1,107 +1,92 @@
+:root {
+    --fixed-menu-width: 240px;
+}
+
 .citizen-page-container {
-	display: flex; // Should fix weird margin issues
-	flex-direction: column;
-	min-height: 100vh; // Ensure footer goes to the bottom of the page
-	min-height: stretch; // for iOS, excludes safe areas
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 .mw-body,
 .parsoid-body {
-	min-height: 80vh; // avoid footer being in the middle of the page
+    min-height: 80vh;
 }
 
 .citizen-body-container {
-	display: grid;
-	grid-template-areas:
- 'header'
-		'content'
-		'footer';
-	// Using auto as min value will cause overflow
-	grid-template-columns: minmax( 0, var( --width-layout ) );
-	gap: var( --space-md ) var( --space-xl );
-	justify-content: center;
-	padding: 0 var( --padding-page );
-	margin: var( --space-xl ) 0; // don't collide with other components (e.g. notice)
+    display: grid;
+    grid-template-areas:
+        'header'
+        'content'
+        'footer';
+    grid-template-columns: minmax( 0, var( --width-layout ) );
+    gap: var( --space-md ) var( --space-xl );
+    justify-content: center;
+    padding: 0 var( --padding-page );
+    margin: var( --space-xl ) 0;
 }
 
 .mw-body-header {
-	position: -webkit-sticky;
-	position: sticky;
-	// So that the modal are above custom sticky headers
-	z-index: @z-index-page-header + 1;
-	display: flex;
-	flex-wrap: wrap;
-	grid-area: header;
-	gap: var( --space-md );
-	align-items: center;
-	padding-top: var( --space-md );
+    position: -webkit-sticky;
+    position: sticky;
+    z-index: @z-index-page-header + 1;
+    display: flex;
+    flex-wrap: wrap;
+    grid-area: header;
+    gap: var( --space-md );
+    align-items: center;
+    padding-top: var( --space-md );
 }
 
 .page-heading {
-	flex-grow: 1;
+    flex-grow: 1;
 }
 
 .firstHeading-container {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
 }
 
 .citizen-body {
-	grid-area: content;
+    grid-area: content;
 }
 
 @media ( min-width: @min-width-breakpoint-desktop ) {
-	.citizen-page-container {
-		// Reserve space for header
-		margin-left: var( --header-size );
-	}
+    .citizen-page-container {
+        margin-left: var( --header-size );
+    }
 
-	.citizen-toc-enabled {
-		.citizen-body-container {
-			display: grid;
-			grid-template-areas:
- 'header header'
-				'content toc'
-				'footer footer';
-			grid-template-columns: minmax( 0, var( --width-layout ) ) var( --width-toc );
-		}
-	}
+    .citizen-toc-enabled .citizen-body-container {
+        display: grid;
+        grid-template-areas:
+            'header header'
+            'content toc'
+            'footer footer';
+        grid-template-columns: minmax( 0, var( --width-layout ) ) var( --width-toc );
+    }
 }
 
-/* Wider page width for certain namespaces */
 @media ( min-width: @min-width-breakpoint-desktop-wide ) {
-	// 1 - Special, 6 - File, 14 - Category
-	.ns {
-		&--1,
-		&-6,
-		&-14 {
-			--width-layout: var( --width-layout--extended );
-		}
-	}
+    .ns--1,
+    .ns-6,
+    .ns-14 {
+        --width-layout: var( --width-layout--extended );
+    }
 }
-
 
 @media screen and ( min-width: 1300px ) {
-    :root {
-        --fixed-menu-width: 240px;
-    }
     .citizen-page-container {
-        /* Reserve space for drawer */
         margin-left: calc( var( --header-size ) + var( --fixed-menu-width ) );
     }
     
     .citizen-drawer__button {
-        /* Hide drawer button */
         display: none;
     }
     
     .citizen-drawer__card {
         bottom: 0;
-        /* Put drawer behind other header cards */
         z-index: -1;
-        margin: 0;
-        /* Compensate header border */
         margin-left: 1px;
         padding: 0;
         min-width: auto;
@@ -111,17 +96,15 @@
         border-radius: 0;
         background-color: #1D1D1D;
         box-shadow: none;
-        /* Force drawer to show */
-        opacity: 1 !important;
-        pointer-events: auto !important;
-        transform: none !important;
-        visibility: visible !important;
+        opacity: 1;
+        pointer-events: auto;
+        transform: none;
+        visibility: visible;
         left:60px;
     }
     
     .citizen-drawer__card > * {
-        /* Force drawer content to show */
-        opacity: 1 !important;
+        opacity: 1;
         background-color: #1D1D1D;
     }
 
@@ -131,7 +114,6 @@
     }
 
     .citizen-drawer__logo {
-        /* Hide drawer header logo */
         display: none;
     }
 
@@ -141,7 +123,6 @@
 
     #citizen-siteStats__item--images,
     #citizen-siteStats__item--users {
-        /* Hide image and user stats to make space */
         display: none;
     }
     
@@ -150,7 +131,6 @@
         padding-right: var( --space-xs );
         grid-template-columns: 1fr;
     }
-    
 }
 
 .citizen-header ul {
@@ -159,19 +139,23 @@
     letter-spacing: 0.08rem;
     font-size: large;
 }
+
 .firstHeading {
     font-family: 'Agency Gothic CT';
     letter-spacing: 0.3rem;
     font-size: 3em;
     font-weight: bolder;
 }
+
 .citizen-drawer__menu {
     font-family: 'Agency Gothic CT';
     font-size: larger;
 }
+
 .citizen-menu .mw-list-item a {
-	padding: var(--space-xxs) var(--space-md);
+    padding: var(--space-xxs) var(--space-md);
 }
+
 .page-actions > .mw-portlet li > a {
     padding: var(--space-xs) var(--space-md);
     font-family: 'Agency Gothic CT';
@@ -179,10 +163,12 @@
     font-weight: normal;
     font-size: 0.975rem;
 }
+
 .citizen-drawer__siteinfo {
-	flex-direction: row;
-	gap: var(--space-xs);
+    flex-direction: row;
+    gap: var(--space-xs);
 }
+
 .citizen-drawer__siteinfo  .mw-logo-wordmark {
     font-size: 1.5rem;
     font-family: "Agency Gothic CT";
