@@ -39,7 +39,7 @@ select,
 textarea {
 	color: var( --color-base--emphasized );
 	background-color: transparent;
-	border: 1px solid var( --border-color-base--darker );
+	border: 1px solid var( --border-color-interactive );
 }
 
 select option {
@@ -149,6 +149,7 @@ video {
 	button,
 	label {
 		// Remove the 300ms delay in click event (T118509)
+		/* stylelint-disable-next-line plugin/no-unsupported-browser-features */
 		touch-action: manipulation;
 	}
 }
