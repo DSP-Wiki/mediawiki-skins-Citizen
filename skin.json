@@ -1,6 +1,6 @@
 {
 	"name": "Citizen",
-	"version": "2.11.0",
+	"version": "2.12.0",
 	"author": [
 		"[https://www.mediawiki.org/wiki/User:Alistair3149 Alistair3149]",
 		"[https://www.mediawiki.org/wiki/User:Octfx Octfx]",
@@ -673,6 +673,7 @@
 				"infobox",
 				"cargoDynamicTable",
 				"dataTable",
+				"srf-datatable",
 				"smw-datatable",
 				"mw-capiunto-infobox"
 			],
