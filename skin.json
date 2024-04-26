@@ -87,8 +87,7 @@
 		"SidebarBeforeOutput": "SkinHooks",
 		"SkinBuildSidebar": "SkinHooks",
 		"SkinEditSectionLinks": "SkinHooks",
-		"SkinPageReadyConfig": "SkinHooks",
-		"SkinTemplateNavigation::Universal": "SkinHooks"
+		"SkinPageReadyConfig": "SkinHooks"
 	},
 	"ResourceModules": {
 		"skins.citizen.styles": {
@@ -215,9 +214,6 @@
 			]
 		},
 		"skins.citizen.preferences": {
-			"templates": [
-				"resources/skins.citizen.preferences/templates/preferences.mustache"
-			],
 			"styles": [
 				"resources/skins.citizen.preferences/skins.citizen.preferences.less"
 			],
@@ -226,18 +222,35 @@
 				{
 					"name": "resources/skins.citizen.preferences/config.json",
 					"callback": "MediaWiki\\Skins\\Citizen\\Hooks\\ResourceLoaderHooks::getCitizenPreferencesResourceLoaderConfig"
-				}
+				},
+				"resources/skins.citizen.preferences/addPortlet.polyfill.js",
+				"resources/skins.citizen.preferences/clientPreferences.js",
+				"resources/skins.citizen.preferences/clientPreferences.json",
+				"resources/skins.citizen.preferences/clientPrefs.polyfill.js"
 			],
 			"messages": [
 				"preferences",
-				"prefs-citizen-theme-label",
-				"prefs-citizen-theme-option-auto",
-				"prefs-citizen-theme-option-light",
-				"prefs-citizen-theme-option-dark",
-				"prefs-citizen-fontsize-label",
-				"prefs-citizen-pagewidth-label",
-				"prefs-citizen-lineheight-label",
-				"prefs-citizen-resetbutton-label"
+				"citizen-theme-name",
+				"citizen-theme-description",
+				"citizen-theme-day-label",
+				"citizen-theme-night-label",
+				"citizen-theme-os-label",
+				"citizen-theme-exclusion-notice",
+				"citizen-feature-pure-black-name",
+				"citizen-feature-pure-black-0-label",
+				"citizen-feature-pure-black-1-label",
+				"citizen-feature-custom-font-size-name",
+				"citizen-feature-custom-font-size-small-label",
+				"citizen-feature-custom-font-size-standard-label",
+				"citizen-feature-custom-font-size-large-label",
+				"citizen-feature-custom-width-name",
+				"citizen-feature-custom-width-standard-label",
+				"citizen-feature-custom-width-wide-label",
+				"citizen-feature-custom-width-full-label"
+			],
+			"dependencies": [
+				"mediawiki.storage",
+				"mediawiki.util"
 			],
 			"targets": [
 				"desktop",
@@ -554,6 +567,7 @@
 			"+oojs-ui-core.styles": "skinStyles/ooui/oojs-ui-core.less",
 			"+oojs-ui-toolbars": "skinStyles/ooui/oojs-ui-toolbars.less",
 			"+oojs-ui-widgets": "skinStyles/ooui/oojs-ui-widgets.less",
+			"+oojs-ui-widgets.styles": "skinStyles/ooui/oojs-ui-widgets.less",
 			"+oojs-ui-windows": "skinStyles/ooui/oojs-ui-windows.less",
 			"+jquery.spinner.styles": "skinStyles/jquery.spinner/jquery.spinner.styles.less",
 			"+jquery.ui": "skinStyles/jquery/ui.less",
