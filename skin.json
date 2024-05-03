@@ -1,6 +1,6 @@
 {
 	"name": "Citizen",
-	"version": "2.12.0",
+	"version": "2.13.1",
 	"author": [
 		"[https://www.mediawiki.org/wiki/User:Alistair3149 Alistair3149]",
 		"[https://www.mediawiki.org/wiki/User:Octfx Octfx]",
@@ -19,6 +19,11 @@
 			"Disabled": [
 				"citizen"
 			]
+		},
+		"VisualEditor": {
+			"IconSkins": [
+				"citizen"
+			]
 		}
 	},
 	"ValidSkinNames": {
@@ -28,7 +33,13 @@
 				{
 					"name": "citizen",
 					"responsive": true,
+					"link": {
+						"text-wrapper": {
+							"tag": "span"
+						}
+					},
 					"menus": [
+						"user-interface-preferences",
 						"user-menu",
 						"notifications",
 						"views",
@@ -308,9 +319,11 @@
 				"lock",
 				"logIn",
 				"logOut",
+				"logoWikidata",
 				"message",
 				"move",
 				"printer",
+				"qrCode",
 				"recentChanges",
 				"reference",
 				"reload",
