@@ -1,3 +1,15 @@
+#footer-icons {
+	display: flex;
+	margin-left: auto;
+	margin-right: 30px;
+}
+#footer-sitetitle {
+	margin-left: 20px;
+}
+.citizen-footer {
+	padding: inherit !important;
+	margin-top: 0 !important;
+}
 .citizen-footer {
 	padding: var( --space-xxl ) var( --padding-page );
 	margin-top: var( --space-xxl );
@@ -6,7 +18,8 @@
 	clear: both;
 	font-size: var( --font-size-small );
 	color: var( --color-base--subtle );
-	background-color: var( --color-surface-2 );
+	background-color: #1D1D1D;
+	border-top: 1px solid var(--border-color-base);
 	direction: ltr;
 
 	&__container {
@@ -65,8 +78,8 @@
 		color: var( --color-base--emphasized );
 
 		img.mw-logo-wordmark {
-			max-height: 54px;
-			filter: invert( 1 ) hue-rotate( 180deg );
+			filter: none !important;
+			max-height: 130px;
 		}
 	}
 
