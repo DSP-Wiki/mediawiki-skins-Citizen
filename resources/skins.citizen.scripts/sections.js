@@ -9,40 +9,69 @@ function init( bodyContent ) {
 		return;
 	}
 
-	const
-		headings = bodyContent.querySelectorAll( '.citizen-section-heading' ),
-		sections = bodyContent.querySelectorAll( '.citizen-section-collapsible' ),
-		editSections = bodyContent.querySelectorAll( '.mw-editsection, .mw-editsection-like' );
+	const headings = bodyContent.querySelectorAll( '.citizen-section-heading' );
+	const sections = bodyContent.querySelectorAll( '.citizen-section' );
 
-	for ( let i = 0; i < headings.length; i++ ) {
-		const j = i + 1,
-			collapsibleID = `citizen-section-collapsible-${ j }`,
-			/* T13555 */
-			headline = headings[ i ].querySelector( '.mw-headline' ) || headings[ i ].querySelector( '.mw-heading' );
+	const setHeadlineAttributes = ( heading, collapsibleID, i ) => {
+		const headline = heading.querySelector( '.mw-headline' ) ||
+				heading.querySelector( '.mw-heading' );
 
-		// Set up ARIA
+		if ( !headline ) {
+			return;
+		}
+
 		headline.setAttribute( 'tabindex', 0 );
 		headline.setAttribute( 'role', 'button' );
 		headline.setAttribute( 'aria-controls', collapsibleID );
 		headline.setAttribute( 'aria-expanded', true );
+		headline.setAttribute( 'data-mw-citizen-section-heading-index', i );
+	};
 
-		// TODO: Need a keyboard handler
-		headings[ i ].addEventListener( 'click', function () {
-			// .section-heading--collapsed
+	const toggleClasses = ( i ) => {
+		if ( sections[ i + 1 ] ) {
+			headings[ i ].classList.toggle( 'citizen-section-heading--collapsed' );
+			sections[ i + 1 ].classList.toggle( 'citizen-section--collapsed' );
+		}
+	};
 
-			this.classList.toggle( 'citizen-section-heading--collapsed' );
-			// .section-collapsible--collapsed
+	const toggleAriaExpanded = ( el ) => {
+		const isExpanded = el.getAttribute( 'aria-expanded' ) === 'true';
+		el.setAttribute( 'aria-expanded', isExpanded ? 'false' : 'true' );
+	};
 
-			sections[ j ].classList.toggle( 'citizen-section-collapsible--collapsed' );
-			headline.setAttribute( 'aria-expanded', headline.getAttribute( 'aria-expanded' ) === 'true' ? 'false' : 'true' );
-		} );
+	const onEditSectionClick = ( e ) => {
+		e.stopPropagation();
+	};
+
+	const handleClick = ( e ) => {
+		const target = e.target;
+		const isEditSection = target.closest( '.mw-editsection, .mw-editsection-like' );
+
+		if ( isEditSection ) {
+			onEditSectionClick( e );
+			return;
+		}
+
+		const heading = target.closest( '.citizen-section-heading' );
+
+		if ( heading ) {
+			const headline = heading.querySelector( '.mw-headline' ) ||
+				heading.querySelector( '.mw-heading' );
+
+			if ( headline ) {
+				const i = +headline.getAttribute( 'data-mw-citizen-section-heading-index' );
+				toggleClasses( i );
+				toggleAriaExpanded( headline );
+			}
+		}
+	};
+
+	const headingsLength = headings.length;
+	for ( let i = 0; i < headingsLength; i++ ) {
+		setHeadlineAttributes( headings[ i ], `citizen-section-${ i + 1 }`, i );
 	}
 
-	for ( let i = 0; i < editSections.length; i++ ) {
-		editSections[ i ].addEventListener( 'click', function ( e ) {
-			e.stopPropagation();
-		} );
-	}
+	bodyContent.addEventListener( 'click', handleClick, false );
 }
 
 module.exports = {
