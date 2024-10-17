@@ -55,12 +55,14 @@ function togglePanel() {
 	if ( !panel.classList.contains( CLASS_PANEL_ACTIVE ) ) {
 		panel.classList.add( CLASS_PANEL_ACTIVE );
 		toggle.setAttribute( 'aria-expanded', true );
-		window.addEventListener( 'click', dismissOnClickOutside );
+		window.addEventListener( 'mousedown', dismissOnClickOutside );
+		window.addEventListener( 'touchstart', dismissOnClickOutside, { passive: true } );
 		window.addEventListener( 'keydown', dismissOnEscape );
 	} else {
 		panel.classList.remove( CLASS_PANEL_ACTIVE );
 		toggle.setAttribute( 'aria-expanded', false );
-		window.removeEventListener( 'click', dismissOnClickOutside );
+		window.removeEventListener( 'mousedown', dismissOnClickOutside );
+		window.removeEventListener( 'touchstart', dismissOnClickOutside );
 		window.removeEventListener( 'keydown', dismissOnEscape );
 	}
 }
@@ -76,6 +78,7 @@ function createPanel() {
 	const panel = document.createElement( 'aside' );
 	panel.id = 'citizen-pref-panel';
 	panel.classList.add( 'citizen-pref-panel' );
+	panel.classList.add( 'citizen-menu__card' );
 
 	const header = document.createElement( 'header' );
 	header.id = 'citizen-pref-header';
@@ -131,9 +134,7 @@ function handleClientPreferences() {
 				'skin-citizen-light',
 				'skin-citizen-dark'
 			];
-			const legacyThemeKey = Object.keys( CLIENTPREFS_THEME_MAP ).find( ( key ) => {
-				return CLIENTPREFS_THEME_MAP[ key ] === clientPrefs.get( 'skin-theme' );
-			} );
+			const legacyThemeKey = Object.keys( CLIENTPREFS_THEME_MAP ).find( ( key ) => CLIENTPREFS_THEME_MAP[ key ] === clientPrefs.get( 'skin-theme' ) );
 			document.documentElement.classList.remove( ...LEGACY_THEME_CLASSES );
 			document.documentElement.classList.add( `skin-citizen-${ legacyThemeKey }` );
 		};

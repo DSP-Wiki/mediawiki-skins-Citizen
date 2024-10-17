@@ -47,7 +47,7 @@ img {
 hr {
 	margin: var( --space-md ) 0;
 	border: 0;
-	border-top: 1px solid var( --border-color-base );
+	border-top: var( --border-width-base ) solid var( --border-color-base );
 }
 
 /* Structural Elements */
@@ -62,7 +62,7 @@ h6 {
 	margin-bottom: 0.25em;
 	font-weight: var( --font-weight-semibold );
 	line-height: var( --line-height-xs );
-	color: var( --color-base--emphasized );
+	color: var( --color-emphasized );
 }
 
 h1,
@@ -113,20 +113,29 @@ p img {
 	margin: 0;
 }
 
+ol {
+	padding: 0;
+	margin: var( --space-md ) 0 var( --space-md ) var( --space-xxl );
+}
+
 ul {
 	// Will break a lot of styles if we use padding for horizontal spacing
 	padding: 0;
-	margin: var( --space-md ) 0 var( --space-md ) var( --space-lg );
+	margin: var( --space-md ) 0 var( --space-md ) var( --space-xxl );
 }
 
-ol {
-	padding: 0;
-	margin: var( --space-md ) 0 var( --space-md ) var( --space-lg );
+ol,
+ul {
+	ol,
+	ul {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
 }
 
 dt {
 	font-weight: var( --font-weight-semibold );
-	color: var( --color-base--emphasized );
+	color: var( --color-emphasized );
 }
 
 dl {
@@ -150,33 +159,33 @@ samp,
 pre,
 code,
 .mw-code {
-	color: var( --color-base--emphasized );
+	color: var( --color-emphasized );
 	background-color: var( --color-surface-2 );
-	border: 1px solid var( --border-color-base );
+	border: var( --border-width-base ) solid var( --border-color-base );
 }
 
 code {
 	padding: 2px 4px;
-	border-radius: var( --border-radius--small );
+	border-radius: var( --border-radius-base );
 }
 
 pre,
 .mw-code {
 	padding: 1rem;
 	overflow: auto;
-	border-radius: var( --border-radius--large );
+	border-radius: var( --border-radius-large );
 }
 
 /* Forms */
 fieldset {
 	padding: var( --space-xs ) var( --space-md );
 	margin: var( --space-md ) 0;
-	border: 1px solid var( --border-color-base );
+	border: var( --border-width-base ) solid var( --border-color-base );
 }
 
 legend {
 	padding: var( --space-xxs );
-	color: var( --color-base--subtle );
+	color: var( --color-subtle );
 	letter-spacing: 0.05em;
 }
 

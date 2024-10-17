@@ -3,7 +3,7 @@
 .citizen-pref {
 	&__button {
 		&[ aria-expanded='true' ] {
-			background-color: var( --background-color-primary--active );
+			background-color: var( --background-color-button-quiet--active );
 		}
 	}
 }
@@ -13,15 +13,30 @@
 		padding: var( --space-lg ) var( --space-md ) 0;
 		font-size: 1rem;
 		font-weight: var( --font-weight-semibold );
-		color: var( --color-base--emphasized );
+		color: var( --color-emphasized );
 	}
 
 	// TODO: unify the dropdown menu style somewhere
 	&-panel {
-		.citizen-header-card( right );
+		.citizen-header-card( end );
+		transform-origin: var( --transform-origin-offset-end ) var( --transform-origin-offset-end );
 
+		@media ( min-width: @min-width-breakpoint-desktop ) {
+			transform-origin: var( --transform-origin-offset-start ) var( --transform-origin-offset-end );
+		}
+
+		// TODO: Somehow refactor this module to use citizen-menu__Card
 		&.citizen-pref-panel--active {
-			.citizen-card-show;
+			z-index: @z-index-dropdown;
+			transition: var( --transition-menu );
+			transition-property: transform;
+			transform: none;
+
+			> * {
+				opacity: 1;
+				transition: var( --transition-menu );
+				transition-property: opacity;
+			}
 		}
 
 		fieldset {
@@ -30,10 +45,6 @@
 			font-size: var( --font-size-small );
 			appearance: none;
 			border: 0;
-		}
-
-		> * {
-			opacity: 0;
 		}
 	}
 }
@@ -50,6 +61,7 @@
 		// This is not the best because it does not adapt to the text length but will revisit later
 		grid-template-columns: repeat( 3, 1fr );
 		gap: var( --space-xxs );
+		margin: 0;
 		text-align: center;
 	}
 
@@ -60,7 +72,7 @@
 
 			&:checked {
 				~ .citizen-client-prefs-radio__label {
-					border-color: var( --color-primary );
+					border-color: var( --color-progressive );
 				}
 			}
 		}
@@ -73,15 +85,15 @@
 			padding: var( --space-xs ) var( --space-md );
 			font-weight: var( --font-weight-medium );
 			cursor: pointer;
-			border: 2px solid var( --border-color-base );
-			border-radius: var( --border-radius--medium );
+			border: var( --border-width-thick ) solid var( --border-color-base );
+			border-radius: var( --border-radius-medium );
 
 			&:hover {
-				border-color: var( --color-primary--hover );
+				border-color: var( --color-progressive--hover );
 			}
 
 			&:active {
-				border-color: var( --color-primary--active );
+				border-color: var( --color-progressive--active );
 			}
 		}
 	}
@@ -115,6 +127,20 @@
 	}
 }
 
+#skin-client-prefs-citizen-feature-custom-font-size {
+	.citizen-client-prefs-radio__label {
+		font-size: var( --font-size-medium );
+
+		&[ for='skin-client-pref-citizen-feature-custom-font-size-value-small' ] {
+			font-size: var( --font-size-small );
+		}
+
+		&[ for='skin-client-pref-citizen-feature-custom-font-size-value-large' ] {
+			font-size: var( --font-size-large );
+		}
+	}
+}
+
 #skin-client-prefs-citizen-feature-pure-black {
 	display: none;
 
@@ -138,17 +164,15 @@
 	}
 }
 
-#skin-client-prefs-citizen-feature-custom-font-size {
-	.citizen-client-prefs-radio__label {
-		font-size: var( --font-size-medium );
+#skin-client-prefs-citizen-feature-autohide-navigation {
+	display: none;
 
-		&[ for='skin-client-pref-citizen-feature-custom-font-size-value-small' ] {
-			font-size: var( --font-size-small );
-		}
+	@media ( max-width: @max-width-breakpoint-tablet ) {
+		display: block;
+	}
 
-		&[ for='skin-client-pref-citizen-feature-custom-font-size-value-large' ] {
-			font-size: var( --font-size-large );
-		}
+	form {
+		grid-template-columns: repeat( 2, 1fr );
 	}
 }
 

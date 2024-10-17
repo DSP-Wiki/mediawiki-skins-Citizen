@@ -61,7 +61,11 @@ class SkinCitizen extends SkinMustache {
 	}
 
 	/**
-	 * @inheritDoc
+	 * Ensure onSkinTemplateNavigation runs after all SkinTemplateNavigation hooks
+	 * @see T287622
+	 *
+	 * @param SkinTemplate $skin The skin template object.
+	 * @param array &$content_navigation The content navigation array.
 	 */
 	protected function runOnSkinTemplateNavigationHooks( SkinTemplate $skin, &$content_navigation ) {
 		parent::runOnSkinTemplateNavigationHooks( $skin, $content_navigation );
@@ -112,6 +116,7 @@ class SkinCitizen extends SkinMustache {
 				$user
 			),
 			'data-search-box' => new CitizenComponentSearchBox(
+				$localizer,
 				$parentData['data-search-box'],
 				$this
 			),
@@ -195,6 +200,7 @@ class SkinCitizen extends SkinMustache {
 		$options['toc'] = false;
 
 		// Clientprefs feature handling
+		$this->addClientPrefFeature( 'citizen-feature-autohide-navigation', '1' );
 		$this->addClientPrefFeature( 'citizen-feature-pure-black', '0' );
 		$this->addClientPrefFeature( 'citizen-feature-custom-font-size' );
 		$this->addClientPrefFeature( 'citizen-feature-custom-width' );

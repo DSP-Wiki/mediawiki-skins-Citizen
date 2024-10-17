@@ -68,9 +68,15 @@ final class BodyContent extends Partial {
 			// MobileFrontend not installed. Don't do anything
 		}
 
-		return $this->getConfigValue( 'CitizenEnableCollapsibleSections' ) === true &&
+		$enableSections = (
+			$this->getConfigValue( 'CitizenEnableCollapsibleSections' ) === true &&
+			$title->canExist() &&
+			$title->getContentModel() == CONTENT_MODEL_WIKITEXT &&
 			!$title->isMainPage() &&
-			$title->isContentPage();
+			$title->isContentPage()
+		);
+
+		return $enableSections;
 	}
 
 	/**
@@ -204,7 +210,7 @@ final class BodyContent extends Partial {
 	private function createSectionBodyElement( DOMDocument $doc, $sectionNumber ) {
 		$sectionBody = $doc->createElement( 'section' );
 		$sectionBody->setAttribute( 'class', self::SECTION_CLASS );
-		$sectionBody->setAttribute( 'id', 'citizen-section-collapsible-' . $sectionNumber );
+		$sectionBody->setAttribute( 'id', 'citizen-section-' . $sectionNumber );
 
 		return $sectionBody;
 	}

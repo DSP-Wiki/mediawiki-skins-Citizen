@@ -3,8 +3,6 @@
 */
 html {
 	box-sizing: border-box;
-	// Not ideal but it works
-	scroll-padding-top: 6rem;
 }
 
 html,
@@ -13,8 +11,8 @@ body {
 	padding: 0;
 	margin: 0;
 	color: var( --color-base );
-	accent-color: var( --color-primary );
 	background: #1D1D1D;
+	accent-color: var( --color-primary );
 }
 
 // Apply border-box universally unless overwritten
@@ -22,24 +20,36 @@ body {
 *::before,
 *::after {
 	box-sizing: inherit;
+	border-color: var( --border-color-base );
+	border-style: solid;
+	border-width: 0;
 }
 
 :focus {
-	outline-color: var( --color-primary );
+	outline-color: var( --color-progressive );
 }
 
 // For some reason just overriding the outline-color is not enough
 :focus-visible {
-	outline: 2px solid var( --color-primary );
+	outline: var( --border-width-thick ) solid var( --color-progressive );
 	outline-offset: 1px;
+}
+
+::placeholder {
+	color: var( --color-subtle );
+}
+
+::selection {
+	color: var( --color-inverted-primary );
+	background-color: var( --color-progressive );
 }
 
 input,
 select,
 textarea {
-	color: var( --color-base--emphasized );
+	color: var( --color-emphasized );
 	background-color: transparent;
-	border: 1px solid var( --border-color-interactive );
+	border: var( --border-width-base ) solid var( --border-color-interactive );
 }
 
 select option {
@@ -52,7 +62,7 @@ textarea {
 
 blockquote {
 	margin: var( --space-md );
-	color: var( --color-base--subtle );
+	color: var( --color-subtle );
 
 	cite {
 		display: block;
@@ -75,20 +85,28 @@ sub {
 
 th {
 	font-weight: var( --font-weight-semibold );
+	color: var( --color-emphasized );
 }
 
+/* Remove outer margin in table cell */
+th,
 td {
 	> p,
 	> ul,
 	> ol {
 		&:first-child {
-			margin-top: 0; // Remove margin for the first element in td
+			margin-top: 0;
+		}
+
+		&:last-child {
+			margin-bottom: 0;
 		}
 	}
 }
 
-.hidden {
-	.hidden();
+.hidden,
+.sr-only {
+	.sr-only;
 }
 
 .nowrap {
@@ -118,11 +136,15 @@ td {
 	padding-left: 10px;
 	margin-left: 10px;
 	font-size: var( --font-size-small );
-	border-left: 1px solid var( --border-color-base );
+	border-left: var( --border-width-base ) solid var( --border-color-base );
 }
 
 .mw-indicator {
 	filter: var( --filter-invert );
+}
+
+#mw-indicator-mw-helplink a {
+	font-size: 0; /* Hide the text because the color is weird */
 }
 
 video {
@@ -151,7 +173,6 @@ video {
 	button,
 	label {
 		// Remove the 300ms delay in click event (T118509)
-		/* stylelint-disable-next-line plugin/no-unsupported-browser-features */
 		touch-action: manipulation;
 	}
 }
@@ -161,14 +182,5 @@ video {
 	.parsoid-body {
 		overflow-x: hidden; // fallback if clip is not supported
 		overflow-x: clip; // avoid breaking layout in smaller screen sizes
-	}
-}
-
-@media ( min-width: @min-width-breakpoint-tablet ) {
-	// Delay scroll animation won't happen on load
-	// Use it only for larger viewport as it is very costly
-	// on mobile devices
-	html.citizen-animations-ready {
-		scroll-behavior: smooth;
 	}
 }

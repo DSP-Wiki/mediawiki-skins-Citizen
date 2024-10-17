@@ -10,7 +10,7 @@
 .thumbinner {
 	> a {
 		display: block;
-		border-radius: var( --border-radius--small );
+		border-radius: var( --border-radius-base );
 
 		&.image {
 			max-width: inherit;
@@ -32,16 +32,16 @@
 		// Broken file styles
 		&:not( .image ) {
 			padding: var( --space-sm );
-			border: 1px solid var( --border-color-interactive );
+			border: var( --border-width-base ) solid var( --border-color-interactive );
 
 			&:hover {
-				color: #fff;
-				background-color: var( --color-primary--hover );
+				color: var( --color-inverted-primary );
+				background-color: var( --color-progressive--hover );
 			}
 
 			&:active {
-				color: #fff;
-				background-color: var( --color-primary--active );
+				color: var( --color-inverted-primary );
+				background-color: var( --color-progressive--active );
 			}
 
 			&.new {

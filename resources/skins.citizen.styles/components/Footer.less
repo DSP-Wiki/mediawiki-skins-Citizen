@@ -17,8 +17,8 @@
 	margin-bottom: var( --header-size );
 	clear: both;
 	font-size: var( --font-size-small );
-	color: var( --color-base--subtle );
 	background-color: #1D1D1D;
+	color: var( --color-subtle );
 	border-top: 1px solid var(--border-color-base);
 	direction: ltr;
 
@@ -41,7 +41,7 @@
 		align-items: center;
 		margin-right: auto;
 		margin-left: auto;
-		border-top: 1px solid var( --border-color-base );
+		border-top: var( --border-width-base ) solid var( --border-color-base );
 	}
 
 	&__siteinfo {
@@ -58,7 +58,7 @@
 
 	a {
 		font-weight: var( --font-weight-medium );
-		color: var( --color-base--emphasized );
+		color: var( --color-emphasized );
 	}
 
 	ul {
@@ -91,14 +91,14 @@
 		a {
 			display: block;
 			padding: var( --space-xs ) var( --space-md );
-			border-radius: var( --border-radius--small );
+			border-radius: var( --border-radius-base );
 
 			&:hover {
-				background-color: var( --background-color-quiet--hover );
+				background-color: var( --background-color-button-quiet--hover );
 			}
 
 			&:active {
-				background-color: var( --background-color-quiet--active );
+				background-color: var( --background-color-button-quiet--active );
 			}
 
 			&:hover,
