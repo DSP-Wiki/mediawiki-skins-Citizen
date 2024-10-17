@@ -12,8 +12,9 @@
 
 /**
  * @callback generateUrl
- * @param {SearchResult|string} page
+ * @param {SearchResult|string} searchResult
  * @param {UrlParams} [params]
+ * @param {string} [articlePath]
  * @return {string}
  */
 
@@ -23,34 +24,41 @@
  */
 
 /**
- * Generates URLs for suggestions.
+ * Generates URLs for suggestions like those in MediaWiki's mediawiki.searchSuggest implementation.
  *
+ * @param {MwMap} config
  * @return {UrlGenerator}
  */
-function urlGenerator() {
+function urlGenerator( config ) {
 	return {
 		/**
-		 * @param {SearchResult|string} page
+		 * @param {SearchResult|string} suggestion
 		 * @param {UrlParams} params
+		 * @param {string} articlePath
 		 * @return {string}
 		 */
 		generateUrl(
-			page,
-			params = {}
+			suggestion,
+			params = {
+				title: 'Special:Search'
+			},
+			articlePath = config.wgScript
 		) {
-			let title;
-			if ( !page ) {
-				title = 'Special:Search';
-			} else if ( typeof page !== 'string' ) {
-				const fragment = page.fragment;
-				title = page.title;
-				if ( fragment ) {
-					title += `#${ fragment }`;
-				}
+			if ( typeof suggestion !== 'string' ) {
+				suggestion = suggestion.title;
 			} else {
-				title = page;
+				// Add `fulltext` query param to search within pages and for navigation
+				// to the search results page (prevents being redirected to a certain
+				// article).
+				params = Object.assign( {}, params, {
+					fulltext: '1'
+				} );
 			}
-			return mw.util.getUrl( title, params );
+
+			const searchParams = new URLSearchParams(
+				Object.assign( {}, params, { search: suggestion } )
+			);
+			return `${ articlePath }?${ searchParams.toString() }`;
 		}
 	};
 }

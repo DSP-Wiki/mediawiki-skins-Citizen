@@ -19,6 +19,11 @@
 	.citizen-toc__buttonCheckbox {
 		display: none;
 	}
+
+	// Body header should have a lower z-index than VE elements
+	.mw-body-header {
+		z-index: 1;
+	}
 }
 
 .ve-init-mw-desktopArticleTarget-toolbarPlaceholder {
@@ -29,6 +34,7 @@
 
 	&-floating {
 		.ve-init-mw-desktopArticleTarget-toolbarPlaceholder-bar {
+			// z-index: 1;
 			background: var( --color-surface-0 );
 		}
 	}

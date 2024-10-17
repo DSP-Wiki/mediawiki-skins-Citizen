@@ -9,7 +9,7 @@
  */
 
 // Disable sticky header since it collides with Echo sticky header
-#citizen-page-header-sticky-sentinel {
+#citizen-body-header-sticky-sentinel {
 	display: none;
 }
 
@@ -35,12 +35,12 @@
 		&-primary {
 			font-size: var( --font-size-small );
 			// Align with Citizen label styles
-			color: var( --color-subtle );
+			color: var( --color-base--subtle );
 			letter-spacing: 0.05em;
 		}
 
 		&-secondary {
-			color: var( --color-subtle );
+			color: var( --color-base--subtle );
 		}
 	}
 }
@@ -66,7 +66,7 @@
 		}
 
 		.mw-echo-ui-notificationItemWidget {
-			border-radius: var( --border-radius-base );
+			border-radius: var( --border-radius--small );
 		}
 	}
 
@@ -79,10 +79,9 @@
 		margin-bottom: var( --space-md );
 		overflow-x: auto;
 		background-color: var( --color-surface-0 );
-		filter: opacity( 0.9 );
-		-webkit-backdrop-filter: saturate( 50% ) blur( 16px );
+		filter: opacity( 0.95 );
 		backdrop-filter: saturate( 50% ) blur( 16px );
-		border-bottom: var( --border-width-base ) solid var( --border-color-base );
+		border-bottom: 1px solid var( --border-color-base );
 		box-shadow: none;
 	}
 }
@@ -97,31 +96,31 @@
 .mw-echo-ui-pageNotificationsOptionWidget {
 	&.oo-ui-optionWidget {
 		padding: var( --space-xs ) var( --space-sm );
-		border-radius: var( --border-radius-base );
+		border-radius: var( --border-radius--small );
 
 		&-highlighted {
-			color: var( --color-emphasized );
+			color: var( --color-base--emphasized );
 			background-color: var( --color-surface-3 );
 		}
 
 		&-selected {
-			color: var( --color-progressive );
-			background-color: var( --background-color-progressive-subtle );
+			color: var( --color-primary );
+			background-color: var( --background-color-primary--hover );
 		}
 
 		&-selected&-highlighted,
 		&-pressed&-highlighted {
-			color: var( --color-progressive--hover );
-			background-color: var( --background-color-progressive-subtle );
+			color: var( --color-primary--hover );
+			background-color: var( --background-color-primary--hover );
 		}
 	}
 
 	&-label-count {
-		color: var( --color-subtle );
+		color: var( --color-base--subtle );
 		background-color: var( --color-surface-3 );
 
 		.oo-ui-optionWidget-selected & {
-			color: var( --color-progressive );
+			color: var( --color-primary );
 		}
 	}
 }
@@ -134,15 +133,15 @@
 	top: var( --space-sm );
 	padding: var( --space-md );
 	border-color: var( --border-color-base );
-	border-radius: var( --border-radius-medium );
+	border-radius: var( --border-radius--medium );
 
 	&-title {
 		font-size: var( --font-size-x-large );
 		font-weight: var( --font-weight-semibold );
-		color: var( --color-emphasized );
+		color: var( --color-base--emphasized );
 	}
 
 	&-subtitle {
-		color: var( --color-subtle );
+		color: var( --color-base--subtle );
 	}
 }

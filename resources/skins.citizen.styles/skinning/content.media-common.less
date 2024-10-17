@@ -22,7 +22,6 @@ figure[ typeof~='mw:File/Frame' ] {
 	&.mw-halign-center {
 		margin-right: auto;
 		margin-left: auto;
-		text-align: center;
 	}
 }
 
@@ -57,16 +56,13 @@ figure[ typeof~='mw:File/Frame' ] {
 	> figcaption {
 		display: table-caption;
 		// Sync with rounded corner
-		padding-right: var( --border-radius-base );
+		padding-right: var( --border-radius--small );
 		// Sync with rounded corner
-		padding-left: var( --border-radius-base );
-		color: var( --color-subtle );
+		padding-left: var( --border-radius--small );
+		margin-top: var( --space-xs );
+		color: var( --color-base--subtle );
 		letter-spacing: 0.025em;
 		caption-side: bottom;
-
-		&:not( :empty ) {
-			margin-top: var( --space-xs );
-		}
 	}
 }
 
@@ -142,8 +138,6 @@ figure[ typeof~='mw:File/Frame' ] {
 			/* @noflip */
 			float: right;
 			/* @noflip */
-			margin-right: 0;
-			/* @noflip */
 			margin-left: var( --space-lg );
 			/* @noflip */
 			clear: right;
@@ -154,8 +148,6 @@ figure[ typeof~='mw:File/Frame' ] {
 			float: left;
 			/* @noflip */
 			margin-right: var( --space-lg );
-			/* @noflip */
-			margin-left: 0;
 			/* @noflip */
 			clear: left;
 		}

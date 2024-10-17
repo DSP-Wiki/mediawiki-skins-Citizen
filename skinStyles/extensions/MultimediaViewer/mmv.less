@@ -20,8 +20,8 @@
 	right: @mmv-width-toolbar;
 	margin: var( --space-xs );
 	background-color: var( --color-surface-1 );
-	border-radius: var( --border-radius-medium );
-	box-shadow: var( --box-shadow-drop-xx-large );
+	border-radius: var( --border-radius--medium );
+	box-shadow: var( --box-shadow-dialog );
 
 	// The dialog will always show above the metadata in mobile view
 	@media ( max-width: @max-width-breakpoint-tablet ) {
@@ -56,7 +56,7 @@
 
 	.mw-mmv-reuse-tabs {
 		border-bottom-color: var( --border-color-base );
-		border-radius: var( --border-radius-medium ) var( --border-radius-medium ) 0 0; // Sync with dialog
+		border-radius: var( --border-radius--medium ) var( --border-radius--medium ) 0 0; // Sync with dialog
 
 		.oo-ui-optionWidget {
 			padding: var( --space-xs ) var( --space-sm );
@@ -65,17 +65,17 @@
 
 			&.oo-ui-optionWidget-highlighted {
 				border-bottom: 0; // border will cause reflow
-				box-shadow: inset 0 -2px 0 0 var( --color-progressive--hover );
+				box-shadow: inset 0 -2px 0 0 var( --color-primary--hover );
 			}
 
 			&.oo-ui-optionWidget-selected,
 			&.oo-ui-optionWidget-highlighted.oo-ui-optionWidget-selected {
 				border-bottom: 0; // border will cause reflow
-				box-shadow: inset 0 -2px 0 0 var( --color-progressive );
+				box-shadow: inset 0 -2px 0 0 var( --color-primary );
 			}
 
 			&:first-child {
-				border-radius: var( --border-radius-medium ) 0 0 0;
+				border-radius: var( --border-radius--medium ) 0 0 0;
 			}
 		}
 	}
@@ -118,8 +118,8 @@
 	padding: var( --space-md );
 
 	&.mw-mmv-enable-confirmation-shown {
-		background-color: var( --background-color-success-subtle );
-		box-shadow: var( --box-shadow-drop-xx-large );
+		background-color: var( --background-color-success );
+		box-shadow: var( --box-shadow-dialog );
 
 		// Hide arrow since those are notifications
 		.mw-mmv-dialog-down-arrow {
@@ -142,21 +142,21 @@
 
 	.mw-mmv-disable-confirmation {
 		.mw-mmv-options-dialog-header {
-			color: var( --color-emphasized );
+			color: var( --color-base--emphasized );
 		}
 
 		.mw-mmv-options-text-header {
-			color: var( --color-subtle );
+			color: var( --color-base--subtle );
 		}
 	}
 
 	.mw-mmv-enable-confirmation {
 		.mw-mmv-options-dialog-header {
-			color: var( --color-emphasized );
+			color: var( --color-base--emphasized );
 		}
 
 		.mw-mmv-options-text-header {
-			color: var( --color-subtle );
+			color: var( --color-base--subtle );
 		}
 	}
 }
@@ -180,7 +180,7 @@
 	margin: 0 0 var( --space-xs ) 0;
 	font-size: 1rem;
 	font-weight: var( --font-weight-semibold );
-	color: var( --color-emphasized );
+	color: var( --color-base--emphasized );
 }
 
 .mw-mmv-options-text-header {
@@ -191,7 +191,7 @@
 .mw-mmv-options-text-body {
 	margin-top: var( --space-xs );
 	font-size: var( --font-size-x-small );
-	color: var( --color-subtle );
+	color: var( --color-base--subtle );
 }
 
 .mw-mmv-options-enable-alert {
@@ -201,8 +201,8 @@
 	margin-bottom: var( --space-md );
 	font-weight: var( --font-weight-semibold );
 	background-color: var( --color-warning );
-	border-top-left-radius: var( --border-radius-medium );
-	border-top-right-radius: var( --border-radius-medium );
+	border-top-left-radius: var( --border-radius--medium );
+	border-top-right-radius: var( --border-radius--medium );
 }
 
 /* mmv.ui.canvas.less */
@@ -226,28 +226,19 @@
 .mw-mmv-prev-image {
 	padding: 0;
 	background-size: var( --size-icon );
-	border-radius: var( --border-radius-base );
+	border-radius: var( --border-radius--small );
 	opacity: var( --opacity-icon-base );
 
 	&.mw-mmv-dialog-open,
 	&:hover {
-		background-color: rgba( 255, 255, 255, 0.04 );
+		background-color: var( --background-color-quiet--hover );
 		opacity: var( --opacity-icon-base--hover );
 	}
 
 	&:active {
-		background-color: rgba( 255, 255, 255, 0.08 );
-		opacity: var( --opacity-icon-base--selected );
+		background-color: var( --background-color-quiet--active );
+		opacity: var( --opacity-icon-base--active );
 	}
-}
-
-// These icons have improper sizing in the source file
-// Let's try to fix it
-.mw-mmv-close,
-.mw-mmv-fullscreen,
-.mw-mmv-next-image,
-.mw-mmv-prev-image {
-	--size-icon: 1rem;
 }
 
 .mw-mmv-download-button,
@@ -325,7 +316,7 @@
 		margin: 0;
 		font-size: var( --font-size-x-small );
 		font-weight: var( --font-weight-normal );
-		color: var( --color-subtle );
+		color: var( --color-base--subtle );
 		letter-spacing: 0.05em;
 	}
 
@@ -341,15 +332,15 @@
 		background-position: center;
 		background-size: 14px;
 		border: 0;
-		border-radius: var( --border-radius-base );
+		border-radius: var( --border-radius--small );
 
 		// Add hover state
 		&:hover {
-			background-color: var( --background-color-button-quiet--hover );
+			background-color: var( --background-color-quiet--hover );
 		}
 
 		&:active {
-			background-color: var( --background-color-button-quiet--active );
+			background-color: var( --background-color-quiet--active );
 		}
 	}
 
@@ -394,45 +385,21 @@
 
 .mw-mmv-progress-percent {
 	height: 2px;
-	background: linear-gradient( -45deg, transparent 33%, rgba( 0, 0, 0, 0.1 ) 33%, rgba( 0, 0, 0, 0.1 ) 66%, transparent 66% ), var( --color-progressive );
-	filter: drop-shadow( 0 0 16px var( --color-progressive ) );
-	border-top-right-radius: var( --border-radius-large );
-	border-bottom-right-radius: var( --border-radius-large );
+	background: linear-gradient( -45deg, transparent 33%, rgba( 0, 0, 0, 0.1 ) 33%, rgba( 0, 0, 0, 0.1 ) 66%, transparent 66% ), var( --color-primary );
+	filter: drop-shadow( 0 0 16px var( --color-primary ) );
+	border-top-right-radius: var( --border-radius--large );
+	border-bottom-right-radius: var( --border-radius--large );
 }
 
 /* mmv.ui.stripeButtons.less */
 .mw-mmv-stripe-button {
-	min-height: 32px !important;
-	max-height: 32px !important;
 	font-size: var( --font-size-small );
-
-	.mw-mmv-post-image:not( .mw-mmv-untruncated ) & {
-		background-color: transparent !important;
-		border-color: rgba( 255, 255, 255, 0.1 ) !important;
-
-		&:hover {
-			background-color: rgba( 255, 255, 255, 0.04 ) !important;
-		}
-
-		&:active {
-			background-color: rgba( 255, 255, 255, 0.08 ) !important;
-		}
-	}
-
-	/* Icon alignment fixes */
-	&::before {
-		inset: unset !important;
-		width: 1rem !important;
-		height: 1rem !important;
-		margin: 0 var( --space-xs ) 0 0 !important;
-	}
 
 	// Icon only button for smaller screen size
 	@media ( max-width: @max-width-breakpoint-tablet ) {
 		text-indent: -9999px;
 
-		&::before,
-		> .cdx-button__icon {
+		&::before {
 			margin-right: 0 !important;
 		}
 	}
@@ -450,7 +417,6 @@
 		margin: var( --space-md );
 		font-size: var( --font-size-small );
 		white-space: nowrap;
-		border-radius: var( --border-radius-base );
 	}
 }
 
@@ -462,7 +428,7 @@
 	padding: var( --space-md );
 	background-color: var( --color-surface-2 );
 	border: 0;
-	border-radius: var( --border-radius-medium );
+	border-radius: var( --border-radius--medium );
 }
 
 .mw-mmv-title-para {
@@ -505,15 +471,11 @@
 }
 
 .mw-mmv-credit {
-	height: ~'calc( 1em * var( --line-height-xs ) )';
+	height: auto !important;
 	padding: 0;
 	margin: 0;
 	font-size: var( --font-size-small );
-	color: #999;
-
-	.mw-mmv-untruncated & {
-		color: var( --color-subtle );
-	}
+	color: var( --color-base--subtle );
 
 	@media ( max-width: @max-width-breakpoint-tablet ) {
 		font-size: var( --font-size-x-small );
@@ -531,7 +493,7 @@
 
 .mw-mmv-title {
 	.mw-mmv-untruncated & {
-		color: var( --color-emphasized );
+		color: var( --color-base--emphasized );
 	}
 }
 
@@ -542,15 +504,16 @@
  'desc links'
 		'about about';
 	grid-template-columns: 2fr 1fr;
-	gap: var( --space-md ) var( --space-xl );
+	gap: var( --space-xs );
 	width: auto;
-	padding: 0 var( --space-md );
+	padding: 0 var( --space-md ) var( --space-md ) var( --space-md );
 	margin-top: -4px;
 	// Sync with title
 	background-color: #000;
 	border-top: 0;
 
 	.mw-mmv-untruncated & {
+		gap: var( --space-lg );
 		background-color: transparent;
 
 		@media ( max-width: @max-width-breakpoint-tablet ) {
@@ -605,23 +568,14 @@
 	}
 }
 
-.mw-mmv-image-desc-div,
-.mw-mmv-image-links-div {
-	display: block; /* Take full width */
-}
-
 .mw-mmv-image-desc-div {
-	margin-top: var( --space-md );
 	margin-bottom: 0;
-	border-top: var( --border-width-base ) solid var( --border-color-base );
 }
 
 .mw-mmv-about-links {
 	grid-area: about;
-	width: auto;
-	padding: var( --space-md ) 0;
+	padding: 0;
 	font-size: var( --font-size-small );
-	border-top: var( --border-width-base ) solid var( --border-color-base );
 }
 
 .mw-mmv-label {
@@ -648,10 +602,10 @@
 // Only apply background color when scroll up
 .mw-mmv-post-image {
 	min-height: @mmv-height-abovethefold;
-	color: var( --color-inverted-fixed );
+	color: #fff;
 	background-color: transparent;
-	border-top-left-radius: var( --border-radius-large );
-	border-top-right-radius: var( --border-radius-large );
+	border-top-left-radius: var( --border-radius--large );
+	border-top-right-radius: var( --border-radius--large );
 
 	&.mw-mmv-untruncated {
 		color: var( --color-base );
@@ -673,7 +627,7 @@
 			margin: 0 auto;
 			content: '';
 			background-color: ~'rgba( 255, 255, 255, var( --opacity-icon-base ) )';
-			border-radius: var( --border-radius-pill );
+			border-radius: var( --border-radius--pill );
 		}
 
 		&.mw-mmv-untruncated {

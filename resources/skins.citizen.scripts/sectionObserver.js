@@ -1,4 +1,9 @@
-// Adopted from Vector 2022
+/**
+ * Based on Vector
+ * NOTE: It is kept as an ES6 module because we are dropping ES5 soon.
+ * But some parts are in ES5 because ResourceLoader is messing up ES6 in 1.35
+ */
+
 /** @module SectionObserver */
 
 /**
@@ -16,12 +21,6 @@
  * for sticky elements (e.g. sticky headers). Defaults to 0 pixels.
  * @property {number} [throttleMs] The number of milliseconds that the scroll
  * handler should be throttled.
- */
-
-/**
- * @callback initSectionObserver
- * @param {SectionObserverProps} props
- * @return {SectionObserver}
  */
 
 /**
@@ -44,16 +43,16 @@
  * @param {SectionObserverProps} props
  * @return {SectionObserver}
  */
-module.exports = function sectionObserver( props ) {
+function sectionObserver( props ) {
+
 	props = Object.assign( {
 		topMargin: 0,
 		throttleMs: 200,
 		onIntersection: () => {}
 	}, props );
 
-	let /** @type {number | undefined} */ timeoutId;
+	let /** @type {boolean} */ inThrottle = false;
 	let /** @type {HTMLElement | undefined} */ current;
-
 	// eslint-disable-next-line compat/compat
 	const observer = new IntersectionObserver( ( entries ) => {
 		let /** @type {IntersectionObserverEntry | undefined} */ closestNegativeEntry;
@@ -107,27 +106,22 @@ module.exports = function sectionObserver( props ) {
 		observer.disconnect();
 	} );
 
-	/**
-	 * Calculate the intersection of each observed element.
-	 */
 	function calcIntersection() {
 		// IntersectionObserver will asynchronously calculate the boundingClientRect
 		// of each observed element off the main thread after `observe` is called.
 		props.elements.forEach( ( element ) => {
-			if ( !element.parentNode ) {
-				mw.log.warn( 'Element being observed is not in DOM', element );
-				return;
-			}
 			observer.observe( /** @type {HTMLElement} */ ( element ) );
 		} );
 	}
 
 	function handleScroll() {
 		// Throttle the scroll event handler to fire at a rate limited by `props.throttleMs`.
-		if ( !timeoutId ) {
-			timeoutId = window.setTimeout( () => {
+		if ( !inThrottle ) {
+			inThrottle = true;
+
+			setTimeout( () => {
 				calcIntersection();
-				timeoutId = undefined;
+				inThrottle = false;
 			}, props.throttleMs );
 		}
 	}
@@ -145,8 +139,6 @@ module.exports = function sectionObserver( props ) {
 	 */
 	function pause() {
 		unbindScrollListener();
-		clearTimeout( timeoutId );
-		timeoutId = undefined;
 		// Assume current is no longer valid while paused.
 		current = undefined;
 	}
@@ -177,20 +169,24 @@ module.exports = function sectionObserver( props ) {
 	}
 
 	bindScrollListener();
+	// Calculate intersection on page load.
+	calcIntersection();
 
 	/**
 	 * @typedef {Object} SectionObserver
-	 * @property {calcIntersection} calcIntersection
 	 * @property {pause} pause
 	 * @property {resume} resume
 	 * @property {unmount} unmount
 	 * @property {setElements} setElements
 	 */
 	return {
-		calcIntersection,
 		pause,
 		resume,
 		unmount,
 		setElements
 	};
+}
+
+module.exports = {
+	init: sectionObserver
 };

@@ -12,10 +12,10 @@ ul.gallery.gallery.gallery {
 // Sync with caption styles
 div.gallerytext {
 	padding: 0;
-	padding-right: var( --border-radius-base );
-	padding-left: var( --border-radius-base );
+	padding-right: var( --border-radius--small );
+	padding-left: var( --border-radius--small );
 	font-size: var( --font-size-x-small );
-	color: var( --color-subtle );
+	color: var( --color-base--subtle );
 	letter-spacing: 0.025em;
 
 	p {
@@ -32,7 +32,7 @@ ul.mw-gallery-packed-hover li.gallerybox.mw-gallery-focused div.gallerytextwrapp
 	margin: var( --space-xs );
 	margin-right: 0; // MAGIC
 	font-weight: var( --font-weight-normal ); // should use the same weight as caption
-	background: var( --background-color-backdrop-light );
+	background: var( --background-color-overlay );
 }
 
 /* Slideshow */
@@ -50,7 +50,7 @@ ul.gallery.mw-gallery-slideshow {
 		}
 
 		&-img-container {
-			border-radius: var( --border-radius-large );
+			border-radius: var( --border-radius--large );
 		}
 
 		&-caption {
@@ -65,6 +65,6 @@ ul.gallery.mw-gallery-slideshow {
 		overflow: hidden; // quick hack for rounded corner
 		background-color: var( --color-surface-2 );
 		border-color: transparent;
-		border-radius: var( --border-radius-base );
+		border-radius: var( --border-radius--small );
 	}
 }

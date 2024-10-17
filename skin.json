@@ -1,6 +1,6 @@
 {
 	"name": "Citizen",
-	"version": "2.33.0",
+	"version": "2.12.0",
 	"author": [
 		"[https://www.mediawiki.org/wiki/User:Alistair3149 Alistair3149]",
 		"[https://www.mediawiki.org/wiki/User:Octfx Octfx]",
@@ -19,11 +19,6 @@
 			"Disabled": [
 				"citizen"
 			]
-		},
-		"VisualEditor": {
-			"IconSkins": [
-				"citizen"
-			]
 		}
 	},
 	"ValidSkinNames": {
@@ -32,15 +27,8 @@
 			"args": [
 				{
 					"name": "citizen",
-					"supportsMwHeading": true,
 					"responsive": true,
-					"link": {
-						"text-wrapper": {
-							"tag": "span"
-						}
-					},
 					"menus": [
-						"user-interface-preferences",
 						"user-menu",
 						"notifications",
 						"views",
@@ -53,15 +41,16 @@
 					],
 					"styles": [
 						"skins.citizen.styles",
-						"skins.citizen.icons"
+						"skins.citizen.icons",
+						"skins.citizen.icons.wmui"
 					],
 					"messages": [
 						"citizen-actions-more-toggle",
 						"citizen-drawer-toggle",
 						"citizen-jumptotop",
 						"citizen-languages-toggle",
-						"citizen-search-toggle",
 						"citizen-usermenu-toggle",
+						"citizen-search-toggle",
 						"randompage",
 						"search",
 						"sitetitle",
@@ -98,7 +87,8 @@
 		"SidebarBeforeOutput": "SkinHooks",
 		"SkinBuildSidebar": "SkinHooks",
 		"SkinEditSectionLinks": "SkinHooks",
-		"SkinPageReadyConfig": "SkinHooks"
+		"SkinPageReadyConfig": "SkinHooks",
+		"SkinTemplateNavigation::Universal": "SkinHooks"
 	},
 	"ResourceModules": {
 		"skins.citizen.styles": {
@@ -158,38 +148,13 @@
 					"name": "resources/skins.citizen.scripts/config.json",
 					"callback": "MediaWiki\\Skins\\Citizen\\Hooks\\ResourceLoaderHooks::getCitizenResourceLoaderConfig"
 				},
-				"resources/skins.citizen.scripts/deferUntilFrame.js",
-				"resources/skins.citizen.scripts/dropdown.js",
-				"resources/skins.citizen.scripts/echo.js",
-				"resources/skins.citizen.scripts/lastModified.js",
-				"resources/skins.citizen.scripts/overflowElements.js",
+				"resources/skins.citizen.scripts/checkbox.js",
 				"resources/skins.citizen.scripts/scrollObserver.js",
 				"resources/skins.citizen.scripts/sectionObserver.js",
 				"resources/skins.citizen.scripts/search.js",
 				"resources/skins.citizen.scripts/sections.js",
-				"resources/skins.citizen.scripts/setupIntersectionObservers.js",
-				"resources/skins.citizen.scripts/share.js",
-				"resources/skins.citizen.scripts/stickyHeader.js",
 				"resources/skins.citizen.scripts/tableOfContents.js",
-				{
-					"name": "resources/skins.citizen.scripts/tableOfContentsConfig.json",
-					"config": [
-						"CitizenTableOfContentsCollapseAtCount"
-					]
-				},
-				{
-					"name": "resources/skins.citizen.scripts/templates/TableOfContents__list.mustache",
-					"file": "templates/TableOfContents__list.mustache",
-					"type": "text"
-				},
-				{
-					"name": "resources/skins.citizen.scripts/templates/TableOfContents__line.mustache",
-					"file": "templates/TableOfContents__line.mustache",
-					"type": "text"
-				}
-			],
-			"messages": [
-				"citizen-share"
+				"resources/skins.citizen.scripts/tables.js"
 			],
 			"dependencies": [
 				"mediawiki.util",
@@ -202,11 +167,11 @@
 		},
 		"skins.citizen.search": {
 			"es6": true,
+			"templates": [
+				"resources/skins.citizen.search/templates/typeahead.mustache"
+			],
 			"styles": [
-				"resources/skins.citizen.search/skins.citizen.search.less",
-				"resources/skins.citizen.search/components/TypeaheadPlaceholder.less",
-				"resources/skins.citizen.search/components/TypeaheadList.less",
-				"resources/skins.citizen.search/components/TypeaheadListItem.less"
+				"resources/skins.citizen.search/skins.citizen.search.less"
 			],
 			"packageFiles": [
 				"resources/skins.citizen.search/main.js",
@@ -215,26 +180,7 @@
 					"callback": "MediaWiki\\Skins\\Citizen\\Hooks\\ResourceLoaderHooks::getCitizenSearchResourceLoaderConfig"
 				},
 				"resources/skins.citizen.search/typeahead.js",
-				{
-					"name": "resources/skins.citizen.search/templates/TypeaheadElement.mustache",
-					"file": "resources/skins.citizen.search/templates/TypeaheadElement.mustache",
-					"type": "text"
-				},
-				{
-					"name": "resources/skins.citizen.search/templates/TypeaheadPlaceholder.mustache",
-					"file": "resources/skins.citizen.search/templates/TypeaheadPlaceholder.mustache",
-					"type": "text"
-				},
-				{
-					"name": "resources/skins.citizen.search/templates/TypeaheadList.mustache",
-					"file": "resources/skins.citizen.search/templates/TypeaheadList.mustache",
-					"type": "text"
-				},
-				{
-					"name": "resources/skins.citizen.search/templates/TypeaheadListItem.mustache",
-					"file": "resources/skins.citizen.search/templates/TypeaheadListItem.mustache",
-					"type": "text"
-				},
+				"resources/skins.citizen.search/htmlHelper.js",
 				"resources/skins.citizen.search/fetch.js",
 				"resources/skins.citizen.search/searchAction.js",
 				"resources/skins.citizen.search/searchClient.js",
@@ -249,7 +195,6 @@
 				"resources/skins.citizen.search/searchClients/smwAskApi.js"
 			],
 			"messages": [
-				"citizen-search-advancedsearch",
 				"citizen-search-fulltext",
 				"citizen-search-editpage",
 				"citizen-search-mediasearch",
@@ -261,7 +206,6 @@
 			],
 			"dependencies": [
 				"mediawiki.storage",
-				"mediawiki.template.mustache",
 				"mediawiki.user",
 				"mediawiki.util"
 			],
@@ -271,6 +215,9 @@
 			]
 		},
 		"skins.citizen.preferences": {
+			"templates": [
+				"resources/skins.citizen.preferences/templates/preferences.mustache"
+			],
 			"styles": [
 				"resources/skins.citizen.preferences/skins.citizen.preferences.less"
 			],
@@ -279,38 +226,18 @@
 				{
 					"name": "resources/skins.citizen.preferences/config.json",
 					"callback": "MediaWiki\\Skins\\Citizen\\Hooks\\ResourceLoaderHooks::getCitizenPreferencesResourceLoaderConfig"
-				},
-				"resources/skins.citizen.preferences/addPortlet.polyfill.js",
-				"resources/skins.citizen.preferences/clientPreferences.js",
-				"resources/skins.citizen.preferences/clientPreferences.json",
-				"resources/skins.citizen.preferences/clientPrefs.polyfill.js"
+				}
 			],
 			"messages": [
 				"preferences",
-				"citizen-theme-name",
-				"citizen-theme-description",
-				"citizen-theme-day-label",
-				"citizen-theme-night-label",
-				"citizen-theme-os-label",
-				"citizen-theme-exclusion-notice",
-				"citizen-feature-autohide-navigation-name",
-				"citizen-feature-autohide-navigation-0-label",
-				"citizen-feature-autohide-navigation-1-label",
-				"citizen-feature-pure-black-name",
-				"citizen-feature-pure-black-0-label",
-				"citizen-feature-pure-black-1-label",
-				"citizen-feature-custom-font-size-name",
-				"citizen-feature-custom-font-size-small-label",
-				"citizen-feature-custom-font-size-standard-label",
-				"citizen-feature-custom-font-size-large-label",
-				"citizen-feature-custom-width-name",
-				"citizen-feature-custom-width-standard-label",
-				"citizen-feature-custom-width-wide-label",
-				"citizen-feature-custom-width-full-label"
-			],
-			"dependencies": [
-				"mediawiki.storage",
-				"mediawiki.util"
+				"prefs-citizen-theme-label",
+				"prefs-citizen-theme-option-auto",
+				"prefs-citizen-theme-option-light",
+				"prefs-citizen-theme-option-dark",
+				"prefs-citizen-fontsize-label",
+				"prefs-citizen-pagewidth-label",
+				"prefs-citizen-lineheight-label",
+				"prefs-citizen-resetbutton-label"
 			],
 			"targets": [
 				"desktop",
@@ -327,18 +254,25 @@
 			]
 		},
 		"skins.citizen.icons": {
+			"class": "MediaWiki\\ResourceLoader\\ImageModule",
+			"selector": "{name}",
+			"defaultColor": "#000",
+			"images": {
+				".citizen-toc__top:before": "resources/skins.citizen.icons/backToTop.svg",
+				"#ca-ve-edit > a:before": "resources/skins.citizen.icons/wmui/edit.svg"
+			}
+		},
+		"skins.citizen.icons.wmui": {
 			"selectorWithoutVariant": ".mw-ui-icon-wikimedia-{name}:before",
 			"useDataURI": false,
 			"defaultColor": "#000",
 			"class": "MediaWiki\\ResourceLoader\\OOUIIconPackModule",
 			"icons": [
-				"arrowPrevious",
 				"article",
 				"articleNotFound",
 				"articleRedirect",
 				"articleSearch",
 				"articlesSearch",
-				"bell",
 				"block",
 				"clear",
 				"collapse",
@@ -347,7 +281,6 @@
 				"edit",
 				"editLock",
 				"ellipsis",
-				"first",
 				"help",
 				"history",
 				"home",
@@ -362,19 +295,15 @@
 				"lock",
 				"logIn",
 				"logOut",
-				"logoWikidata",
 				"message",
 				"move",
 				"printer",
-				"qrCode",
-				"quotes",
 				"recentChanges",
 				"reference",
 				"reload",
 				"sandbox",
 				"search",
 				"settings",
-				"share",
 				"specialPages",
 				"speechBubbleAdd",
 				"speechBubbles",
@@ -399,8 +328,6 @@
 	},
 	"ResourceModuleSkinStyles": {
 		"citizen": {
-			"+codex-styles": "skinStyles/codex/codex.styles.less",
-			"+ext.AccountInfo.special": "skinStyles/extensions/AccountInfo/ext.AccountInfo.special.less",
 			"+ext.advancedSearch.initialstyles": "skinStyles/extensions/AdvancedSearch/ext.advancedSearch.initialstyles.less",
 			"+ext.advancedSearch.styles": "skinStyles/extensions/AdvancedSearch/ext.advancedSearch.styles.less",
 			"+ext.ajaxpoll": "skinStyles/extensions/AJAXPoll/ext.ajaxpoll.less",
@@ -422,7 +349,6 @@
 			"+ext.categoryTree.css": "skinStyles/extensions/CategoryTree/ext.categoryTree.css.less",
 			"+ext.centralNotice.display": "skinStyles/extensions/CentralNotice/ext.centralNotice.display.less",
 			"+ext.cite.styles": "skinStyles/extensions/Cite/ext.cite.styles.less",
-			"+ext.citeThisPage": "skinStyles/extensions/CiteThisPage/ext.citeThisPage.less",
 			"+ext.cleanchanges.uls": "skinStyles/extensions/CleanChanges/ext.cleanchanges.uls.less",
 			"+ext.codeEditor.ace": "skinStyles/extensions/CodeEditor/ext.codeEditor.ace.less",
 			"+jquery.codeEditor": "skinStyles/extensions/CodeEditor/jquery.codeEditor.less",
@@ -430,22 +356,17 @@
 			"+ext.CodeMirror.mode.mediawiki": "skinStyles/extensions/CodeMirror/ext.CodeMirror.mode.mediawiki.less",
 			"+ext.CodeMirror.visualEditor": "skinStyles/extensions/CodeMirror/ext.CodeMirror.visualEditor.less",
 			"+ext.CommentStreams": "skinStyles/extensions/CommentStreams/ext.CommentStreams.less",
-			"+ext.datamaps.core": "skinStyles/extensions/DataMaps/ext.datamaps.core.less",
-			"+ext.datamaps.core.styles": "skinStyles/extensions/DataMaps/ext.datamaps.core.styles.less",
-			"+ext.datamaps.search": "skinStyles/extensions/DataMaps/ext.datamaps.search.less",
-			"+ext.datamaps.leaflet": "skinStyles/lib/leaflet/leaflet.less",
 			"+ext.discussionTools.init.styles": "skinStyles/extensions/DiscussionTools/ext.discussionTools.init.styles.less",
 			"+ext.discussionTools.ReplyWidget": "skinStyles/extensions/DiscussionTools/ext.discussionTools.ReplyWidget.less",
 			"+ext.discussionTools.ReplyWidgetVisual": "skinStyles/extensions/DiscussionTools/ext.discussionTools.ReplyWidgetVisual.less",
 			"+ext.dismissableSiteNotice.styles": "skinStyles/extensions/DismissableSiteNotice/ext.dismissableSiteNotice.less",
 			"+ext.echo.ui.desktop": "skinStyles/extensions/Echo/ext.echo.ui.desktop.less",
 			"+ext.echo.ui": "skinStyles/extensions/Echo/ext.echo.ui.less",
-			"ext.echo.styles.badge": "skinStyles/extensions/Echo/ext.echo.styles.badge.less",
+			"+ext.echo.styles.badge": "skinStyles/extensions/Echo/ext.echo.styles.badge.less",
 			"+ext.echo.styles.notifications": "skinStyles/extensions/Echo/ext.echo.styles.notifications.less",
 			"+ext.echo.styles.alert": "skinStyles/extensions/Echo/ext.echo.styles.alert.less",
 			"+ext.echo.special": "skinStyles/extensions/Echo/ext.echo.special.less",
 			"+ext.echo.styles.special": "skinStyles/extensions/Echo/ext.echo.styles.special.less",
-			"+ext.floatingUI": "skinStyles/extensions/FloatingUI/ext.floatingUI.less",
 			"+ext.flow.mediawiki.ui.form": "skinStyles/extensions/Flow/ext.flow.mediawiki.ui.form.less",
 			"+ext.flow.styles.base": "skinStyles/extensions/Flow/ext.flow.styles.base.less",
 			"+ext.flow.ui": "skinStyles/extensions/Flow/ext.flow.ui.less",
@@ -454,10 +375,8 @@
 			"+ext.flaggedRevs.basic": "skinStyles/extensions/FlaggedRevs/ext.flaggedRevs.basic.less",
 			"+ext.graph.styles": "skinStyles/extensions/Graph/ext.graph.styles.less",
 			"+ext.interwiki.specialpage": "skinStyles/extensions/Interwiki/ext.interwiki.specialpage.less",
-			"+ext.kartographer.style": "skinStyles/lib/leaflet/leaflet.less",
 			"+ext.Lingo": "skinStyles/extensions/Lingo/ext.Lingo.less",
 			"+ext.managewiki.oouiform.styles": "skinStyles/extensions/ManageWiki/ext.managewiki.oouiform.styles.less",
-			"+ext.maps.leaflet.library": "skinStyles/lib/leaflet/leaflet.less",
 			"+ext.math.styles": "skinStyles/extensions/Math/ext.math.styles.less",
 			"+mediasearch.styles": "skinStyles/extensions/MediaSearch/mediasearch.styles.less",
 			"+mmv": "skinStyles/extensions/MultimediaViewer/mmv.less",
@@ -472,7 +391,7 @@
 			"+ext.score.popup": "skinStyles/extensions/Score/ext.score.popup.less",
 			"+ext.scribunto.edit": "skinStyles/extensions/Scribunto/ext.scribunto.edit.less",
 			"+ext.jquery.atwho": "skinStyles/extensions/SemanticMediaWiki/ext.jquery.atwho.less",
-			"+ext.libs.tippy": "skinStyles/lib/tippy/tippy.less",
+			"+ext.libs.tippy": "skinStyles/extensions/SemanticMediaWiki/ext.libs.tippy.less",
 			"+ext.smw.ask.styles": "skinStyles/extensions/SemanticMediaWiki/ext.smw.ask.styles.less",
 			"+ext.smw.browse.styles": "skinStyles/extensions/SemanticMediaWiki/ext.smw.browse.styles.less",
 			"+ext.smw.modal.styles": "skinStyles/extensions/SemanticMediaWiki/ext.smw.modal.styles.less",
@@ -498,7 +417,7 @@
 			"+ext.srf.filtered.calendar-view": "skinStyles/extensions/SemanticResultFormats/filtered/ext.srf.filtered.calendar-view.less",
 			"+ext.srf.filtered.distance-view": "skinStyles/extensions/SemanticResultFormats/filtered/ext.srf.filtered.distance-view.less",
 			"+ext.srf.filtered": "skinStyles/extensions/SemanticResultFormats/filtered/ext.srf.filtered.less",
-			"+ext.srf.filtered.map-view.leaflet": "skinStyles/lib/leaflet/leaflet.less",
+			"+ext.srf.filtered.map-view.leaflet": "skinStyles/extensions/SemanticResultFormats/filtered/ext.srf.filtered.map-view.leaflet.less",
 			"+ext.srf.filtered.number-filter": "skinStyles/extensions/SemanticResultFormats/filtered/ext.srf.filtered.number-filter.less",
 			"+ext.srf.filtered.slider": "skinStyles/extensions/SemanticResultFormats/filtered/ext.srf.filtered.slider.less",
 			"+ext.srf.filtered.value-filter": "skinStyles/extensions/SemanticResultFormats/filtered/ext.srf.filtered.value-filter.less",
@@ -526,9 +445,7 @@
 			"+onoi.dataTables.styles": "skinStyles/extensions/SemanticResultFormats/jquery/jquery.dataTables.less",
 			"+ext.SimpleTooltip": "skinStyles/extensions/SimpleTooltip/ext.SimpleTooltip.less",
 			"+ext.SmiteSpam.retriever": "skinStyles/extensions/SmiteSpam/ext.SmiteSpam.retriever.less",
-			"+ext.structuredNav.NavigationView.styles": "skinStyles/extensions/StructuredNavigation/ext.structuredNav.NavigationView.less",
 			"+ext.pygments": "skinStyles/extensions/SyntaxHighlight_GeSHi/ext.pygments.less",
-			"+ext.searchdigest.styles": "skinStyles/extensions/SearchDigest/ext.searchdigest.styles.less",
 			"+ext.tabs": "skinStyles/extensions/Tabs/ext.tabs.less",
 			"+ext.tmh.player.styles": "skinStyles/extensions/TimedMediaHandler/ext.tmh.player.styles.less",
 			"+ext.translate": "skinStyles/extensions/Translate/ext.translate.less",
@@ -563,14 +480,10 @@
 			"+ext.popups.main": "skinStyles/extensions/Popups/ext.popups.main.less",
 			"+ext.PortableInfobox.styles": "skinStyles/extensions/PortableInfobox/ext.PortableInfobox.styles.less",
 			"+ext.Tabber": "skinStyles/extensions/Tabber/ext.Tabber.less",
-			"+ext.tabberNeue": "skinStyles/extensions/TabberNeue/ext.tabberNeue.less",
-			"+ext.tabberNeue.init.styles": "skinStyles/extensions/TabberNeue/ext.tabberNeue.init.styles.less",
-			"+ext.templateData": "skinStyles/extensions/TemplateData/ext.templateData.less",
+			"+ext.tabberNeue.legacy": "skinStyles/extensions/TabberNeue/ext.tabberNeue.legacy.less",
 			"+ext.templateDataGenerator.editTemplatePage": "skinStyles/extensions/TemplateData/ext.templateDataGenerator.editTemplatePage.less",
 			"+ext.uploadWizard": "skinStyles/extensions/UploadWizard/ext.uploadWizard.less",
-			"+ext.uploadWizard.uploadCampaign.display": "skinStyles/extensions/UploadWizard/ext.uploadWizard.uploadCampaign.less",
 			"+ext.uploadWizard.page.styles": "skinStyles/extensions/UploadWizard/uploadWizard.noWizard.less",
-			"+ext.userProfileV2.styles": "skinStyles/extensions/UserProfileV2/ext.userProfileV2.less",
 			"+ext.veforall.main": "skinStyles/extensions/VEForAll/ext.veforall.main.less",
 			"+ext.visualEditor.progressBarWidget": "skinStyles/extensions/VisualEditor/ext.visualEditor.progressBarWidget.less",
 			"+ext.visualEditor.desktopArticleTarget.init": "skinStyles/extensions/VisualEditor/ext.visualEditor.desktopArticleTarget.init.less",
@@ -641,9 +554,7 @@
 			"+oojs-ui-core.styles": "skinStyles/ooui/oojs-ui-core.less",
 			"+oojs-ui-toolbars": "skinStyles/ooui/oojs-ui-toolbars.less",
 			"+oojs-ui-widgets": "skinStyles/ooui/oojs-ui-widgets.less",
-			"+oojs-ui-widgets.styles": "skinStyles/ooui/oojs-ui-widgets.less",
 			"+oojs-ui-windows": "skinStyles/ooui/oojs-ui-windows.less",
-			"+jquery.jsonview": "skinStyles/jquery/jsonview.less",
 			"+jquery.spinner.styles": "skinStyles/jquery.spinner/jquery.spinner.styles.less",
 			"+jquery.ui": "skinStyles/jquery/ui.less",
 			"+@wikimedia/codex": "skinStyles/codex/codex.styles.less"
@@ -753,30 +664,22 @@
 			"descriptionmsg": "citizen-config-enablepreferences",
 			"public": true
 		},
-		"OverflowInheritedClasses": {
-			"value": [
-				"floatleft",
-				"floatright"
-			],
-			"description": "Defines css classes inherited by overflow wrapper",
-			"descriptionmsg": "citizen-config-overflowinheritedclasses",
-			"public": true
-		},
-		"OverflowNowrapClasses": {
+		"TableNowrapClasses": {
 			"value": [
 				"citizen-table-nowrap",
+				"diff",
+				"mw-changeslist-line",
+				"mw-recentchanges-table",
+				"infobox",
 				"cargoDynamicTable",
 				"dataTable",
+				"srf-datatable",
 				"smw-datatable",
-				"srf-datatable"
+				"mw-capiunto-infobox"
 			],
-			"description": "Defines css classes ignored by overflow wrapper",
-			"descriptionmsg": "citizen-config-overflownowrapclasses",
+			"description": "Defines table css classes ignored by citizen table wrapper",
+			"descriptionmsg": "citizen-config-tablenowrapclasses",
 			"public": true
-		},
-		"TableOfContentsCollapseAtCount": {
-			"value": 28,
-			"description": "@var The minimum number of headings required to collapse all headings in the sticky table of contents by default."
 		}
 	},
 	"manifest_version": 2

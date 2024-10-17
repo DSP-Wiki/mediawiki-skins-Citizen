@@ -23,7 +23,6 @@
 namespace MediaWiki\Skins\Citizen\Api;
 
 use ApiBase;
-use MediaWiki\MainConfigNames;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use SpecialPage;
@@ -45,14 +44,14 @@ class ApiWebappManifest extends ApiBase {
 		$config = $this->getConfig();
 		$resultObj = $this->getResult();
 		$resultObj->addValue( null, 'dir', $services->getContentLanguage()->getDir() );
-		$resultObj->addValue( null, 'lang', $config->get( MainConfigNames::LanguageCode ) );
-		$resultObj->addValue( null, 'name', $config->get( MainConfigNames::Sitename ) );
+		$resultObj->addValue( null, 'lang', $config->get( 'LanguageCode' ) );
+		$resultObj->addValue( null, 'name', $config->get( 'Sitename' ) );
 		// Need to set it manually because the default from start_url does not include script namespace
 		// E.g. index.php URLs will be thrown out of the PWA
-		$resultObj->addValue( null, 'scope', $config->get( MainConfigNames::Server ) . '/' );
+		$resultObj->addValue( null, 'scope', $config->get( 'Server' ) . '/' );
 		$resultObj->addValue( null, 'icons', $this->getIcons( $config, $services ) );
 		$resultObj->addValue( null, 'display', 'standalone' );
-		$resultObj->addValue( null, 'orientation', 'natural' );
+		$resultObj->addValue( null, 'orientation', 'portrait' );
 		$resultObj->addValue( null, 'start_url', Title::newMainPage()->getLocalURL() );
 		$resultObj->addValue( null, 'theme_color', $config->get( 'CitizenManifestThemeColor' ) );
 		$resultObj->addValue( null, 'background_color', $config->get( 'CitizenManifestBackgroundColor' ) );
@@ -72,7 +71,7 @@ class ApiWebappManifest extends ApiBase {
 	 */
 	private function getIcons( $config, $services ) {
 		$icons = [];
-		$logos = $config->get( MainConfigNames::Logos );
+		$logos = $config->get( 'Logos' );
 
 		// That really shouldn't happen
 		if ( $logos !== false ) {

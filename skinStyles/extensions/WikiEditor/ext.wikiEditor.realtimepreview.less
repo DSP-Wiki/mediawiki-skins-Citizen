@@ -9,23 +9,20 @@
 */
 
 /* RealtimePreview.less */
-/* Fix incorrect hover color */
-.ext-WikiEditor-realtimepreview-button:hover {
-	background-color: transparent;
-}
+.ext-WikiEditor-realtimepreview-button {
+	&.oo-ui-buttonElement-frameless.oo-ui-labelElement > .oo-ui-buttonElement-button {
+		padding-right: 12px;
+	}
 
-.ext-WikiEditor-realtimepreview-button > .oo-ui-buttonElement-button {
-	display: flex;
-	align-items: center;
-
-	> .oo-ui-labelElement-label {
-		margin-right: 8px;
-		margin-left: 6px;
+	&:hover {
+		background-color: var( --background-color-quiet--hover );
 	}
 }
 
 .ext-WikiEditor-realtimepreview-button.oo-ui-toggleWidget-on .oo-ui-labelElement-label {
-	color: var( --color-progressive );
+	margin-left: 6px;
+	line-height: 2em; /* Align with VE */
+	color: var( --color-primary );
 }
 
 .ext-WikiEditor-ResizingDragBar-ns {
@@ -33,7 +30,7 @@
 }
 
 .ext-WikiEditor-realtimepreview-loadingbar div {
-	background-color: var( --color-progressive );
+	background-color: var( --color-primary );
 }
 
 // Cancel out padding added in action.edit to avoid textarea overflow
@@ -52,7 +49,7 @@
 }
 
 .ext-WikiEditor-ResizingDragBar span {
-	background-color: var( --color-subtle );
+	background-color: var( --color-base--subtle );
 }
 
 .ext-WikiEditor-ResizingDragBar:hover span {
@@ -78,11 +75,11 @@
 	border-color: var( --border-color-base );
 
 	.ext-WikiEditor-realtimepreview-manual-reload {
-		color: var( --color-progressive );
+		color: var( --color-primary );
 	}
 
 	&.oo-ui-widget-disabled .ext-WikiEditor-realtimepreview-manual-reload {
-		color: var( --color-subtle );
+		color: var( --color-base--subtle );
 	}
 }
 

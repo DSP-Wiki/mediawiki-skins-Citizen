@@ -1,22 +1,23 @@
 /**
- * Initialize a direction observer based on scroll behavior.
+ * Create an observer based vertical scroll direction
  *
- * @param {Function} onScrollDown - Function to be called when scrolling down.
- * @param {Function} onScrollUp - Function to be called when scrolling up.
- * @param {number} threshold - The threshold for significant scroll position change.
+ * @param {Function} onScrollDown functionality for when viewport is scrolled down
+ * @param {Function} onScrollUp functionality for when viewport is scrolled up
+ * @param {number} threshold minimum scrolled px to trigger the function
+ * @return {void}
  */
 function initDirectionObserver( onScrollDown, onScrollUp, threshold ) {
+	const throttle = require( 'mediawiki.util' ).throttle;
+
 	let lastScrollTop = window.scrollY;
 
 	const onScroll = () => {
-		// Check if the scroll position has changed significantly
 		const scrollTop = window.scrollY;
 
 		if ( Math.abs( scrollTop - lastScrollTop ) < threshold ) {
 			return;
 		}
 
-		// Determine scroll direction and trigger appropriate functions
 		if ( scrollTop > lastScrollTop ) {
 			onScrollDown();
 		} else {
@@ -25,31 +26,31 @@ function initDirectionObserver( onScrollDown, onScrollUp, threshold ) {
 		lastScrollTop = scrollTop;
 	};
 
-	const throttledOnScroll = mw.util.throttle( onScroll, 100 );
-	window.addEventListener( 'scroll', throttledOnScroll );
+	window.addEventListener( 'scroll', throttle( onScroll, 250 ) );
 }
 
 /**
- * Create an observer for showing/hiding feature and for firing scroll event hooks.
+ * Create an observer based on element visiblity.
+ * Based on Vector
  *
- * @param {Function} show functionality for when feature is visible
- * @param {Function} hide functionality for when feature is hidden
+ * @param {Function} onHidden functionality for when the element is visible
+ * @param {Function} onVisible functionality for when the element is hidden
  * @return {IntersectionObserver}
  */
-function initScrollObserver( show, hide ) {
+function initIntersectionObserver( onHidden, onVisible ) {
 	/* eslint-disable-next-line compat/compat */
 	return new IntersectionObserver( ( entries ) => {
 		if ( !entries[ 0 ].isIntersecting && entries[ 0 ].boundingClientRect.top < 0 ) {
 			// Viewport has crossed the bottom edge of the target element.
-			show();
+			onHidden();
 		} else {
 			// Viewport is above the bottom edge of the target element.
-			hide();
+			onVisible();
 		}
 	} );
 }
 
 module.exports = {
 	initDirectionObserver,
-	initScrollObserver
+	initIntersectionObserver
 };

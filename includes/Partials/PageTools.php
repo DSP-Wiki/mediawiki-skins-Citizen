@@ -83,7 +83,7 @@ final class PageTools extends Partial {
 	 *    till Desktop Improvements
 	 *
 	 * @param array sidebarData
-	 * @return array
+	 * @return bool
 	 */
 	private function getArticleToolsData( $sidebarData ) {
 		$data = [

@@ -6,33 +6,50 @@
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    min-height: stretch; // for iOS, excludes safe areas
 }
 
 .mw-body,
 .parsoid-body {
-	min-height: 100vh; // avoid footer being in the middle of the page
-	margin-top: var( --space-xl );
-	margin-bottom: var( --space-xl );
+    min-height: 80vh;
 }
 
 .citizen-body-container {
-	display: grid;
-	grid-template-areas:
- 'header'
-		'afterHeader'
-		'content'
-		'footer';
-	// Using auto as min value will cause overflow
-	grid-template-columns: minmax( 0, var( --width-layout ) );
-	gap: 0 var( --space-xl );
-	justify-content: center;
-	padding: 0 var( --padding-page );
+    display: grid;
+    grid-template-areas:
+        'header'
+        'content'
+        'footer';
+    grid-template-columns: minmax( 0, var( --width-layout ) );
+    gap: var( --space-md ) var( --space-xl );
+    justify-content: center;
+    padding: 0 var( --padding-page );
+    margin: var( --space-xl ) 0;
+}
+
+.mw-body-header {
+    position: -webkit-sticky;
+    position: sticky;
+    z-index: @z-index-page-header + 1;
+    display: flex;
+    flex-wrap: wrap;
+    grid-area: header;
+    gap: var( --space-md );
+    align-items: center;
+    padding-top: var( --space-md );
+}
+
+.page-heading {
+    flex-grow: 1;
+}
+
+.firstHeading-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
 }
 
 .citizen-body {
-	z-index: @z-index-base; // Stop body content going over sticky header
-	grid-area: content;
+    grid-area: content;
 }
 
 @media ( min-width: @min-width-breakpoint-desktop ) {
@@ -40,31 +57,20 @@
         margin-left: var( --header-size );
     }
 
-	.citizen-toc-enabled {
-		.citizen-body-container {
-			grid-template-areas:
- 'header header'
-				'afterHeader afterHeader'
-				'content sidebar'
-				'footer footer';
-			grid-template-columns: minmax( 0, var( --width-layout ) ) var( --width-toc );
-		}
-	}
-    .citizen-animations-ready {
-		.citizen-body-container {
-			transition: var( --transition-menu );
-			transition-property: grid;
-		}
-	}
+    .citizen-toc-enabled .citizen-body-container {
+        display: grid;
+        grid-template-areas:
+            'header header'
+            'content toc'
+            'footer footer';
+        grid-template-columns: minmax( 0, var( --width-layout ) ) var( --width-toc );
+    }
 }
 
 @media ( min-width: @min-width-breakpoint-desktop-wide ) {
-	// 1 - Special, 6 - File, 14 - Category
-	.ns {
-		&--1,
-		&-6,
-		&-14 {
-			--width-layout: var( --width-layout--extended );
-		}
-	}
+    .ns--1,
+    .ns-6,
+    .ns-14 {
+        --width-layout: var( --width-layout--extended );
+    }
 }

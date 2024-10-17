@@ -1,25 +1,4 @@
 .citizen-menu {
-	font-size: var( --font-size-small );
-
-	&__card {
-		--transform-origin-offset-start: var( --space-xs );
-		--transform-origin-offset-end: ~'calc( 100% - var( --space-xs ) )';
-		margin: var( --space-xs );
-		overflow: auto;
-		overscroll-behavior: contain;
-		user-select: none;
-		background-color: var( --color-surface-1 );
-		border: var( --border-width-base ) solid var( --border-color-base );
-		border-radius: var( --border-radius-medium );
-		box-shadow: var( --box-shadow-drop-xx-large );
-		transform: scale( 0 );
-		contain: content;
-
-		> * {
-			opacity: 0;
-		}
-	}
-
 	&__heading {
 		display: block;
 		padding: var( --space-xs ) var( --space-md );
@@ -28,11 +7,6 @@
 		font-weight: var( --font-weight-normal );
 		color: #EDF4F5;
 		letter-spacing: 0.05em;
-	}
-
-	&__content-list {
-		margin: 0;
-		list-style: none;
 	}
 
 	.mw-list-item {
@@ -49,7 +23,8 @@
 			transition-property: opacity;
 
 			&:hover {
-				background-color: var( --background-color-button-quiet--hover );
+				color: var( --color-base--emphasized );
+				background-color: var( --background-color-quiet--hover );
 
 				.citizen-ui-icon::before {
 					opacity: var( --opacity-icon-base--hover );
@@ -57,10 +32,11 @@
 			}
 
 			&:active {
-				background-color: var( --background-color-button-quiet--active );
+				color: var( --color-base--subtle );
+				background-color: var( --background-color-quiet--active );
 
 				.citizen-ui-icon::before {
-					opacity: var( --opacity-icon-base--selected );
+					opacity: var( --opacity-icon-base--active );
 				}
 			}
 
@@ -76,9 +52,7 @@
 .citizen-ui-icon {
 	display: block;
 	width: var( --size-icon );
-	min-width: var( --size-icon );
 	height: var( --size-icon );
-	min-height: var( --size-icon );
 	contain: strict;
 
 	&::before {
@@ -94,30 +68,54 @@
 	}
 }
 
+/**
+ * Invisible checkbox covering the menu button.
+ */
+.citizen-menu-checkbox {
+	// Has to be visible to be focusable
+	&-checkbox {
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 1;
+		width: 0;
+		height: 0;
+		padding: 0;
+		margin: 0;
+		opacity: 0;
+
+		// HACK: Fake focus styles
+		&:focus {
+			& + .citizen-header__button,
+			& + .citizen-menu-checkbox-button {
+				outline: 2px solid var( --color-primary );
+				outline-offset: 1px;
+			}
+		}
+	}
+
+	&-button {
+		cursor: pointer;
+
+		// Icons have to use span inside label elements
+		> span:not( .citizen-ui-icon ) {
+			.mixin-screen-reader-text;
+		}
+	}
+}
+
 .mw-portlet {
 	// Hide selected item
 	.selected {
-		.sr-only;
+		.mixin-screen-reader-text;
 	}
 
 	// Hide empty menu
 	&-empty {
 		display: none !important;
 	}
-}
 
-// HACK: Restore view button on revision page (#845)
-// There are no good way to target revision page
-.action-view {
-	&:has( .diff ),
-	&:has( .mw-revision ) {
-		#ca-view {
-			position: relative;
-			width: auto;
-			height: auto;
-			overflow: initial;
-			clip-path: unset;
-			white-space: unset;
-		}
+	a::after {
+		filter: var( --filter-invert );
 	}
 }

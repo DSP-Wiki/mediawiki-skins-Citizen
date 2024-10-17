@@ -1,62 +1,121 @@
 .citizen-userMenu {
-	.citizen-menu__card {
-		.citizen-header-card( end );
-		min-width: 16rem;
-		transform-origin:
- var( --transform-origin-offset-end )
-			var( --transform-origin-offset-end );
+	&__card {
+		font-size: var( --font-size-small );
+		.citizen-header-card( right );
+	}
 
-		@media ( min-width: @min-width-breakpoint-desktop ) {
-			transform-origin:
- var( --transform-origin-offset-start )
-				var( --transform-origin-offset-end );
-		}
+	&__header {
+		padding: var( --space-md ) 0;
+		border-bottom: 1px solid var( --border-color-base );
+	}
+}
 
-		.citizen-menu__heading {
-			.sr-only;
+.mw-portlet {
+	&-personal-header {
+		padding: 0.75rem 0 0.5rem;
+		border-bottom: 1px solid var( --border-color-base );
+
+		li {
+			margin: 0 0.75rem;
 		}
 	}
 }
 
-#pt-createaccount,
-#pt-login,
-#pt-login-private,
-#pt-logout {
-	a {
-		margin: var( --space-xs );
-		border: var( --border-width-base ) solid var( --border-color-base );
-		border-radius: var( --border-radius-medium );
+#p-user-info {
+	> ul > li {
+		margin-right: var( --space-md );
+		margin-left: var( --space-md );
+	}
+}
+
+#pt {
+	&-anonuserpage span,
+	&-tmpuserpage-2,
+	&-userpage-2 a {
+		padding: var( --space-xxs ) 0;
+		font-size: 1rem;
+		font-weight: var( --font-weight-semibold );
+		color: var( --color-base--emphasized );
+		word-break: break-word;
 	}
 
-	.citizen-keyboard-hint-key {
-		display: none;
+	&-user {
+		&groups {
+			margin-bottom: var( --space-xs );
+
+			ul {
+				display: flex;
+				flex-wrap: wrap;
+				gap: var( --space-xxs );
+			}
+
+			a {
+				color: var( --color-base--subtle );
+			}
+		}
+
+		&page-2,
+		&groups {
+			a {
+				display: block;
+
+				&:hover {
+					color: var( --color-primary--hover );
+				}
+
+				&:active {
+					color: var( --color-primary--active );
+				}
+			}
+		}
+
+		&page {
+			&-username {
+				margin-top: var( --space-xxs );
+				margin-bottom: var( --space-sm );
+				font-size: var( --font-size-x-small );
+				font-weight: var( --font-weight-normal );
+				color: var( --color-base--subtle );
+			}
+		}
+
+		&contris {
+			font-weight: var( --font-weight-medium );
+		}
 	}
 }
 
 #pt-login {
 	a {
-		.button-progressive;
+		.button-blue;
 
 		&:hover {
-			.button-progressive-hover;
+			.button-blue-hover;
 		}
 
 		&:active {
-			.button-progressive-active;
+			.button-blue-active;
 		}
 	}
 }
 
 #pt-logout {
 	a {
-		.button-destructive;
+		.button-red;
 
 		&:hover {
-			.button-destructive-hover;
+			.button-red-hover;
 		}
 
 		&:active {
-			.button-destructive-active;
+			.button-red-active;
 		}
+	}
+}
+
+// Checkbox hack
+#citizen-userMenu__checkbox:checked {
+	~ .citizen-userMenu__card {
+		.citizen-card-show();
 	}
 }

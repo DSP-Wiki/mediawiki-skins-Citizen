@@ -30,14 +30,13 @@
 		> a {
 			display: block;
 			padding: var( --space-xs ) var( --space-md );
-			color: var( --color-subtle );
-			border: var( --border-width-base ) solid var( --border-color-interactive );
-			border-radius: var( --border-radius-pill );
+			color: var( --color-base--subtle );
+			border: 1px solid var( --border-color-interactive );
+			border-radius: var( --border-radius--pill );
 
-			&:hover,
-			&:hover:visited {
-				color: var( --color-inverted-primary );
-				background-color: var( --color-progressive--hover );
+			&:hover {
+				color: #fff;
+				background-color: var( --color-primary--hover );
 			}
 
 			&:hover,
@@ -49,9 +48,7 @@
 			&.new {
 				border-style: dashed;
 
-				&:hover,
-				&:hover:visited {
-					color: var( --color-inverted-fixed );
+				&:hover {
 					background-color: var( --color-destructive--hover );
 				}
 			}
@@ -69,7 +66,7 @@
 .mw-hidden-catlinks {
 	display: block;
 	font-size: var( --font-size-x-small );
-	color: var( --color-subtle );
+	color: var( --color-base--subtle );
 	letter-spacing: 0.05em;
 }
 

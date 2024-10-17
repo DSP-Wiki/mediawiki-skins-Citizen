@@ -13,25 +13,25 @@
 }
 
 .mw-notification {
-	color: var( --color-emphasized );
+	color: var( --color-base--emphasized );
 	background-color: var( --color-surface-1 );
 	border-color: transparent;
-	border-radius: var( --border-radius-medium );
-	box-shadow: var( --box-shadow-drop-xx-large );
+	border-radius: var( --border-radius--medium );
+	box-shadow: var( --box-shadow-dialog );
 
 	&.mw-notification-type {
 		&-warn {
-			background: var( --background-color-warning-subtle ) var( --color-surface-0 );
+			background: var( --background-image-warning ) var( --color-surface-0 );
 			border-color: transparent;
 		}
 
 		&-error {
-			background: var( --background-color-destructive-subtle ) var( --color-surface-0 );
+			background: var( --background-image-destructive ) var( --color-surface-0 );
 			border-color: transparent;
 		}
 
 		&-success {
-			background: var( --background-color-success-subtle ) var( --color-surface-0 );
+			background: var( --background-image-success ) var( --color-surface-0 );
 			border-color: transparent;
 		}
 	}

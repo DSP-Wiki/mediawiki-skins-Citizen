@@ -3,15 +3,6 @@
 const fetchJson = require( '../fetch.js' );
 const urlGenerator = require( '../urlGenerator.js' );
 
-// Based on mediawiki.searchSuggest
-// eslint-disable-next-line array-callback-return
-const searchNS = Object.entries( mw.config.get( 'wgFormattedNamespaces' ) ).map( ( [ nsID ] ) => {
-	if ( nsID >= 0 && mw.user.options.get( 'searchNs' + nsID ) ) {
-		// Cast string key to number
-		return Number( nsID );
-	}
-} ).filter( ( item ) => item !== undefined ).join( '|' );
-
 /**
  * @typedef {Object} ActionResponse
  * @property {ActionQuery[]} query
@@ -91,7 +82,9 @@ function adaptApiResponse( config, query, response, showDescription ) {
 
 		// Sometimes there can be multiple redirect object for the same page, only take the one with lower index
 		if ( response.pages.length !== pageCount ) {
-			response.pages = response.pages.filter( ( obj ) => Object.prototype.hasOwnProperty.call( obj, 'title' ) );
+			response.pages = response.pages.filter( ( obj ) => {
+				return Object.prototype.hasOwnProperty.call( obj, 'title' );
+			} );
 		}
 	}
 
@@ -160,7 +153,6 @@ function mwActionApiSearchClient( config ) {
 			const descriptionSource = config.wgCitizenSearchDescriptionSource;
 
 			const searchApiUrl = config.wgScriptPath + '/api.php';
-
 			const params = {
 				format: 'json',
 				formatversion: '2',
@@ -169,7 +161,6 @@ function mwActionApiSearchClient( config ) {
 				maxage: cacheExpiry,
 				generator: 'prefixsearch',
 				gpssearch: q,
-				gpsnamespace: searchNS,
 				gpslimit: limit.toString(),
 				redirects: '',
 				prop: 'pageprops|pageimages',
@@ -204,7 +195,9 @@ function mwActionApiSearchClient( config ) {
 				}
 			} );
 			const searchResponsePromise = result.fetch
-				.then( ( /** @type {ActionResponse} */ res ) => adaptApiResponse( config, q, res, showDescription ) );
+				.then( ( /** @type {ActionResponse} */ res ) => {
+					return adaptApiResponse( config, q, res, showDescription );
+				} );
 			return {
 				abort: result.abort,
 				fetch: searchResponsePromise

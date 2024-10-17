@@ -10,13 +10,13 @@
 
 /* wikibase.less */
 h1 .wikibase-title-id {
-	color: var( --color-subtle );
+	color: var( --color-base--subtle );
 }
 
 .wb-entitypage .ui-state-disabled input,
 .wb-entitypage input.ui-state-disabled,
 .wb-entitypage .ui-state-disabled textarea {
-	color: var( --color-subtle );
+	color: var( --color-base--subtle );
 	background-color: var( --color-surface-4 );
 }
 
@@ -32,11 +32,11 @@ h1 .wikibase-title-id {
 }
 
 .ui-closeable.wb-edit {
-	background-color: var( --background-color-progressive-subtle );
+	background-color: var( --background-color-primary--hover );
 }
 
 .ui-closeable.wb-error {
-	background-color: var( --background-color-destructive-subtle );
+	background-color: var( --background-color-destructive );
 }
 
 .wikibase-entityview input {
@@ -44,11 +44,11 @@ h1 .wikibase-title-id {
 }
 
 .wb-empty {
-	color: var( --color-subtle );
+	color: var( --color-base--subtle );
 }
 
 .wb-entity-undefinedinfo {
-	color: var( --color-subtle );
+	color: var( --color-base--subtle );
 }
 
 .wikibase-statementgrouplistview .wikibase-statementlistview {
@@ -57,11 +57,11 @@ h1 .wikibase-title-id {
 }
 
 .wikibase-statementgrouplistview :target .wikibase-statementlistview {
-	outline: var( --border-width-thick ) solid var( --color-progressive );
+	outline: 2px solid var( --color-primary );
 }
 
 .wikibase-statementgrouplistview .wikibase-statementlistview .wikibase-statementview:target {
-	outline: var( --border-width-thick ) solid var( --color-progressive );
+	outline: 2px solid var( --color-primary );
 }
 
 .wikibase-statementgrouplistview .wikibase-statementgroupview-property {
@@ -78,16 +78,16 @@ div .wikibase-snakview-value span.error.wb-format-error {
 
 .wikibase-statementgrouplistview .wikibase-statementgroupview-property.wb-edit,
 .wikibase-statementgroupview-property.wb-edit + .wikibase-statementlistview > .wikibase-toolbar-wrapper {
-	background-color: var( --background-color-progressive-subtle );
+	background-color: var( --background-color-primary--hover );
 }
 
 .wikibase-statementgrouplistview .wikibase-statementgroupview-property.wb-error {
-	background-color: var( --background-color-destructive-subtle );
+	background-color: var( --background-color-destructive );
 }
 
 .wikibase-statementgrouplistview .wikibase-statementview.wb-error,
 .wikibase-statementgrouplistview .wikibase-statementview.wb-error .wb-claim {
-	background-color: var( --background-color-destructive-subtle );
+	background-color: var( --background-color-destructive );
 }
 
 .wikibase-statementgrouplistview .wikibase-statementlistview.wb-new .wikibase-statementview {
@@ -100,7 +100,7 @@ div .wikibase-snakview-value span.error.wb-format-error {
 .wikibase-snakview-variation-valuesnak-nonewvaluefordeletedproperty,
 span.wikibase-snakview-variation-somevaluesnak,
 span.wikibase-snakview-variation-novaluesnak {
-	color: var( --color-subtle );
+	color: var( --color-base--subtle );
 }
 
 .wikibase-snakview-variation-valuesnak-datavaluetypemismatch,
@@ -120,7 +120,7 @@ span.wikibase-snakview-variation-novaluesnak {
 }
 
 .wikibase-statementview-references-heading {
-	color: var( --color-subtle );
+	color: var( --color-base--subtle );
 }
 
 .wikibase-referenceview {
@@ -132,19 +132,19 @@ span.wikibase-snakview-variation-novaluesnak {
 }
 
 .wikibase-referenceview.wb-edit {
-	background-color: var( --background-color-progressive-subtle );
+	background-color: var( --background-color-primary--hover );
 }
 
 .wikibase-referenceview.wb-edit > .wikibase-referenceview-heading {
-	background-color: var( --background-color-progressive-subtle );
+	background-color: var( --background-color-primary--hover );
 }
 
 .wikibase-referenceview.wb-error {
-	background-color: var( --background-color-destructive-subtle );
+	background-color: var( --background-color-destructive );
 }
 
 .wikibase-referenceview.wb-error > .wikibase-referenceview-heading {
-	background-color: var( --background-color-destructive-subtle );
+	background-color: var( --background-color-destructive );
 }
 
 .wikibase-referenceview-tabs {
@@ -159,7 +159,7 @@ span.wikibase-snakview-variation-novaluesnak {
 
 		/* Style for active tab */
 		&.ui-tabs-active.ui-state-active {
-			background-color: var( --background-color-progressive-subtle );
+			background-color: var( --background-color-primary--hover );
 		}
 	}
 }
@@ -181,12 +181,12 @@ span.wikibase-snakview-variation-novaluesnak {
 
 /* jquery.wikibase.descriptionview.css */
 .wikibase-descriptionview .wikibase-descriptionview-input:focus {
-	background-color: var( --background-color-progressive-subtle );
+	background-color: var( --background-color-primary--hover );
 }
 
 /* jquery.wikibase.entitytermsview.css */
 .wikibase-entitytermsview .wikibase-entitytermsview-heading .wikibase-entitytermsview-heading-aliases ul {
-	color: var( --color-subtle );
+	color: var( --color-base--subtle );
 }
 
 .wikibase-entitytermsview .wikibase-toolbar-container {
@@ -200,7 +200,7 @@ span.wikibase-snakview-variation-novaluesnak {
 }
 
 .wikibase-entitytermsforlanguagelistview.wb-edit {
-	border-color: var( --color-progressive );
+	border-color: var( --color-primary );
 }
 
 .wikibase-entitytermsforlanguagelistview .wikibase-entitytermsforlanguagelistview-header .wikibase-entitytermsforlanguagelistview-header-row .wikibase-entitytermsforlanguagelistview-cell {
@@ -209,7 +209,7 @@ span.wikibase-snakview-variation-novaluesnak {
 }
 
 .wikibase-entitytermsforlanguagelistview.wb-edit .wikibase-entitytermsforlanguagelistview-header .wikibase-entitytermsforlanguagelistview-header-row .wikibase-entitytermsforlanguagelistview-cell {
-	background: var( --background-color-progressive-subtle );
+	background: var( --background-color-primary--hover );
 }
 
 .wikibase-entitytermsforlanguagelistview .wikibase-entitytermsforlanguagelistview-listview .wikibase-entitytermsforlanguageview .wikibase-entitytermsforlanguageview-label input,
@@ -223,7 +223,7 @@ span.wikibase-snakview-variation-novaluesnak {
 .wikibase-entitytermsforlanguagelistview .wikibase-entitytermsforlanguagelistview-listview .wikibase-entitytermsforlanguageview .wikibase-entitytermsforlanguageview-description input:focus,
 .wikibase-entitytermsforlanguagelistview .wikibase-entitytermsforlanguagelistview-listview .wikibase-entitytermsforlanguageview .wikibase-entitytermsforlanguageview-label textarea:focus,
 .wikibase-entitytermsforlanguagelistview .wikibase-entitytermsforlanguagelistview-listview .wikibase-entitytermsforlanguageview .wikibase-entitytermsforlanguageview-description textarea:focus {
-	border-color: var( --color-progressive );
+	border-color: var( --color-primary );
 }
 
 .wikibase-entitytermsforlanguagelistview .wikibase-entitytermsforlanguagelistview-listview .wikibase-entitytermsforlanguageview .wikibase-entitytermsforlanguageview-aliases .ui-state-default {
@@ -235,17 +235,17 @@ span.wikibase-snakview-variation-novaluesnak {
 }
 
 .wikibase-entitytermsforlanguagelistview .wikibase-entitytermsforlanguagelistview-listview .wikibase-entitytermsforlanguageview .wikibase-entitytermsforlanguageview-aliases input:focus {
-	border-color: var( --color-progressive );
+	border-color: var( --color-primary );
 }
 
 /* jquery.wikibase.entitytermsforlanguageview.css */
 .wikibase-entitytermsforlanguageview .wb-error {
-	background-color: var( --background-color-destructive-subtle );
+	background-color: var( --background-color-destructive );
 }
 
 /* jquery.wikibase.labelview.css */
 .wikibase-labelview .wikibase-labelview-input:focus {
-	background-color: var( --background-color-progressive-subtle );
+	background-color: var( --background-color-primary--hover );
 }
 
 /* jquery.wikibase.sitelinkgroupview.css */
@@ -254,7 +254,7 @@ span.wikibase-snakview-variation-novaluesnak {
 }
 
 .wikibase-sitelinkgroupview.wb-edit {
-	border-color: var( --color-progressive );
+	border-color: var( --color-primary );
 }
 
 .wikibase-sitelinkgroupview .wikibase-sitelinkgroupview-heading-container {
@@ -262,7 +262,7 @@ span.wikibase-snakview-variation-novaluesnak {
 }
 
 .wikibase-sitelinkgroupview.wb-edit .wikibase-sitelinkgroupview-heading-container {
-	background-color: var( --background-color-progressive-subtle );
+	background-color: var( --background-color-primary--hover );
 }
 
 /* jquery.wikibase.sitelinklistview.css */

@@ -14,7 +14,7 @@
 		border-top: 0;
 
 		a {
-			color: var( --color-progressive );
+			color: var( --color-primary );
 		}
 	}
 
@@ -37,19 +37,19 @@
 			border-top-color: var( --border-color-base );
 
 			.file-name {
-				color: var( --color-emphasized );
+				color: var( --color-base--emphasized );
 
 				&:hover {
-					background-color: var( --background-color-button-quiet--hover );
+					background-color: var( --background-color-quiet--hover );
 				}
 
 				&:active {
-					background-color: var( --background-color-button-quiet--active );
+					background-color: var( --background-color-quiet--active );
 				}
 			}
 
 			.file-size {
-				color: var( --color-subtle );
+				color: var( --color-base--subtle );
 			}
 
 			.file-warning,
@@ -59,15 +59,15 @@
 		}
 
 		.green {
-			background-color: var( --background-color-success-subtle );
+			background-color: var( --background-color-success );
 		}
 
 		.yellow {
-			background-color: var( --background-color-warning-subtle );
+			background-color: var( --background-color-warning );
 		}
 
 		.red {
-			background-color: var( --background-color-destructive-subtle );
+			background-color: var( --background-color-destructive );
 		}
 	}
 
@@ -94,11 +94,11 @@
 			font-size: var( --font-size-small );
 
 			&:hover {
-				background-color: var( --background-color-button-quiet--hover );
+				background-color: var( --background-color-quiet--hover );
 			}
 
 			&:active {
-				background-color: var( --background-color-button-quiet--active );
+				background-color: var( --background-color-quiet--active );
 			}
 		}
 
@@ -121,5 +121,5 @@
 }
 
 .drop-over {
-	background-color: var( --background-color-success-subtle );
+	background-color: var( --background-color-success );
 }

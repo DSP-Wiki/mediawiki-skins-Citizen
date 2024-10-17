@@ -11,6 +11,11 @@
 @import '../../../resources/mixins.less';
 @import '../../../resources/variables.less';
 
+// Custom sticky header handling
+#citizen-body-header-sticky-sentinel {
+	display: none;
+}
+
 #filetoc {
 	display: flex;
 	padding: 0;
@@ -34,14 +39,14 @@
 		padding: var( --space-xxs ) var( --space-md );
 		margin-top: var( --space-xs );
 		margin-bottom: var( --space-xs );
-		border-radius: var( --border-radius-base );
+		border-radius: var( --border-radius--small );
 
 		&:hover {
-			background-color: var( --background-color-button-quiet--hover );
+			background-color: var( --background-color-quiet--hover );
 		}
 
 		&:active {
-			background-color: var( --background-color-button-quiet--active );
+			background-color: var( --background-color-quiet--active );
 		}
 	}
 }
@@ -59,26 +64,26 @@
 		padding: var( --space-xxs ) var( --space-md );
 		margin: var( --space-xxs );
 		font-size: var( --font-size-small );
-		color: var( --color-subtle );
+		color: var( --color-base--subtle );
 		background-color: var( --color-surface-0 );
-		border: var( --border-width-base ) solid var( --border-color-base );
-		border-radius: var( --border-radius-pill );
+		border: 1px solid var( --border-color-base );
+		border-radius: var( --border-radius--pill );
 
 		&:hover {
-			color: var( --color-inverted-primary );
-			background-color: var( --color-progressive--hover );
+			color: #fff;
+			background-color: var( --color-primary--hover );
 		}
 
 		&:active {
-			color: var( --color-inverted-primary );
-			background-color: var( --color-progressive--active );
+			color: #fff;
+			background-color: var( --color-primary--active );
 		}
 	}
 
 	// Current preview resolution
 	> .mw-thumbnail-link {
-		color: var( --color-inverted-primary );
-		background-color: var( --color-progressive );
+		color: #fff;
+		background-color: var( --color-primary );
 	}
 }
 
@@ -107,8 +112,8 @@
 #file {
 	> a {
 		overflow: hidden;
-		border-radius: var( --border-radius-medium );
-		box-shadow: var( --box-shadow-drop-medium );
+		border-radius: var( --border-radius--medium );
+		box-shadow: var( --box-shadow-card );
 	}
 }
 
@@ -119,7 +124,7 @@
 }
 
 .fileInfo {
-	color: var( --color-subtle );
+	color: var( --color-base--subtle );
 }
 
 .fullMedia {
@@ -133,16 +138,28 @@
 
 .mw_metadata caption {
 	font-weight: var( --font-weight-semibold );
-	color: var( --color-emphasized );
+	color: var( --color-base--emphasized );
 }
 
 .mw_metadata tr + tr {
-	border-top: var( --border-width-base ) solid var( --border-color-base );
+	border-top: 1px solid var( --border-color-base );
 }
 
 .mw_metadata td,
 .mw_metadata th {
 	padding: var( --space-xs );
-	background-color: transparent;
 	border: 0;
+}
+
+// Citizen label styles
+.mw_metadata th {
+	font-weight: var( --font-weight-normal );
+	color: var( --color-base--subtle );
+	text-align: start;
+	letter-spacing: 0.05em;
+	background-color: transparent;
+}
+
+.mw_metadata td {
+	background-color: transparent;
 }
