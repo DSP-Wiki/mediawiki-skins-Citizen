@@ -1,7 +1,7 @@
 #citizen-page-header-sticky-sentinel {
+	visibility: hidden;
 	height: 1px;
 	margin-top: -1px;
-	visibility: hidden;
 	contain: strict;
 }
 
@@ -16,13 +16,6 @@
 .citizen-page-header {
 	position: -webkit-sticky;
 	position: sticky;
-	.citizen-sticky-header-background;
-
-	&::before {
-		opacity: 0;
-		transition: var( --transition-hover );
-		transition-property: opacity;
-	}
 }
 
 .citizen-sticky-header-visible {
@@ -33,11 +26,13 @@
 		white-space: nowrap;
 		// So that it won't change the height of the header
 		box-shadow: 0 0 0 1px var( --border-color-base );
+		.mixin-citizen-frosted-glass( citizen-page-header-backdrop, 0 );
 
-		&::before {
-			opacity: 1;
+		.citizen-page-header-inner {
+			padding-block: var( --space-sm );
 		}
 
+		#siteSub,
 		.mw-indicators {
 			display: none;
 		}
@@ -50,8 +45,8 @@
 
 	.firstHeading {
 		overflow: hidden;
-		font-size: var( --font-size-large );
 		text-overflow: ellipsis;
+		font-size: var( --font-size-large );
 	}
 
 	.citizen-jumptotop {
@@ -85,16 +80,12 @@ html {
  * to make their templates compatible with the Citizen sticky header.
  */
 .mw-sticky-header-element {
-	.sticky-header-element;
+	.mixin-citizen-sticky-header-element;
 }
 
 // Make sticky header more compact if there are less screen estate
 @media ( max-height: 800px ) {
 	.citizen-sticky-header-visible {
-		.citizen-page-header-inner {
-			padding-block: var( --space-sm );
-		}
-
 		.firstHeading,
 		.mw-page-title-parenthesis {
 			font-size: var( --font-size-medium );

@@ -15,12 +15,15 @@
 			display: grid;
 			gap: var( --space-xs );
 			max-height: 60vh;
-			padding: var( --space-xs ) 0;
 			transform-origin: var( --transform-origin-offset-end ) var( --transform-origin-offset-end );
 
 			@media ( min-width: @min-width-breakpoint-desktop ) {
 				top: 100%;
 				transform-origin: var( --transform-origin-offset-end ) var( --transform-origin-offset-start );
+			}
+
+			&-content {
+				padding-block: var( --space-xs );
 			}
 		}
 	}
@@ -70,7 +73,7 @@
 
 	// Hide menu labels
 	> .citizen-menu > .citizen-menu__heading {
-		.sr-only;
+		.mixin-citizen-screen-reader-only;
 	}
 }
 
@@ -106,13 +109,6 @@
 
 		&:active {
 			background-color: var( --color-progressive--active );
-		}
-	}
-
-	.citizen-ui-icon {
-		&::before {
-			filter: var( --filter-invert-primary );
-			opacity: 1; // white icon
 		}
 	}
 }

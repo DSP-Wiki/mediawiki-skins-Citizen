@@ -27,7 +27,7 @@
 		gap: var( --space-xs );
 		padding: var( --space-xs );
 		font-weight: var( --font-weight-medium );
-		color: var( --color-emphasized );
+		color: var( --color-base );
 		border-radius: var( --border-radius-base );
 
 		.citizen-toc &.citizen-toc-top {
@@ -127,9 +127,9 @@
 
 		.citizen-ui-icon {
 			&::before {
+				transform: rotate3d( 1, 0, 0, 180deg );
 				transition: var( --transition-hover );
 				transition-property: transform;
-				transform: rotate3d( 1, 0, 0, 180deg );
 			}
 		}
 
@@ -233,7 +233,11 @@
 			transform: none;
 			content-visibility: visible;
 
-			> * {
+			.citizen-menu__card-backdrop {
+				display: none;
+			}
+
+			.citizen-menu__card-content {
 				opacity: 1;
 			}
 

@@ -59,21 +59,27 @@ summary ) {
 .citizen-header__logo {
 	.mw-logo-icon,
 	.citizen-ui-icon {
+		transform-origin: center center;
 		transition-timing-function: var( --transition-timing-function-ease );
 		transition-duration: var( --transition-duration-base );
-		transition-property: transform, opacity;
-		transform-origin: center center;
+		transition-property: color, transform, opacity;
 	}
 
-	.citizen-header__button:hover {
-		.mw-logo-icon {
-			opacity: 0;
-		}
+	.citizen-header__button {
+		color: transparent;
 
-		.mw-logo-icon,
-		.citizen-ui-icon {
-			transition-duration: var( --transition-duration-medium );
-			transform: rotate( 360deg );
+		&:hover {
+			color: var( --color-base );
+
+			.mw-logo-icon {
+				opacity: 0;
+			}
+
+			.mw-logo-icon,
+			.citizen-ui-icon {
+				transform: rotate( 360deg );
+				transition-duration: var( --transition-duration-medium );
+			}
 		}
 	}
 }

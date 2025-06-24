@@ -32,7 +32,10 @@
 			width: var( --header-icon-size );
 			height: var( --header-icon-size );
 			overflow: hidden; // Sometimes CSS animation can clip
+			opacity: var( --opacity-icon-base );
 			filter: var( --filter-invert );
+			transition: var( --transition-hover );
+			transition-property: transform, opacity;
 			contain: strict;
 		}
 
@@ -41,17 +44,9 @@
 			margin: auto;
 		}
 
-		&Icon,
-		.citizen-ui-icon::before {
-			opacity: var( --opacity-icon-base );
-			transition: var( --transition-hover );
-			transition-property: transform, opacity;
-		}
-
 		&:hover {
 			background-color: var( --background-color-button-quiet--hover );
 
-			.citizen-ui-icon::before,
 			.citizen-header__buttonIcon {
 				opacity: var( --opacity-icon-base--hover );
 			}
@@ -60,7 +55,6 @@
 		&:active {
 			background-color: var( --background-color-button-quiet--active );
 
-			.citizen-ui-icon::before,
 			.citizen-header__buttonIcon {
 				opacity: var( --opacity-icon-base--selected );
 			}
@@ -84,10 +78,6 @@
 		.citizen-ui-icon {
 			position: absolute;
 			inset: 0;
-
-			&::before {
-				opacity: 0;
-			}
 		}
 	}
 
@@ -110,7 +100,7 @@
 
 		// Hide top-level menu header labels
 		> .citizen-menu > .citizen-menu__heading {
-			.sr-only;
+			.mixin-citizen-screen-reader-only;
 		}
 	}
 
@@ -140,12 +130,14 @@
 		align-items: center;
 	}
 
+	/*
 	// Echo badge styles do not load before init in 1.39
 	.citizen-echo-notification-badge {
 		.citizen-ui-icon + span {
-			.sr-only;
+			.mixin-citizen-screen-reader-only;
 		}
 	}
+	*/
 }
 
 .client-nojs {

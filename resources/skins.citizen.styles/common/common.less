@@ -74,6 +74,7 @@ blockquote {
 
 button {
 	font-family: var( --font-family-base );
+	color: var( --color-base );
 }
 
 sup,
@@ -104,7 +105,7 @@ td {
 
 .hidden,
 .sr-only {
-	.sr-only;
+	.mixin-citizen-screen-reader-only;
 }
 
 .nowrap {
@@ -119,6 +120,10 @@ td {
 	border: 0;
 }
 
+.citizen-sitenotice-container {
+	background-color: var( --color-surface-2 );
+}
+
 /*
  * Content
 */
@@ -127,43 +132,28 @@ td {
 	direction: ltr;
 }
 
+#mw-content-text {
+	margin-block-start: var( --space-md );
+}
+
 // TODO: Think of better places to put indicators;
 .mw-indicators {
 	display: flex;
+	column-gap: var( --space-xs );
 	align-items: center;
-	padding-left: 10px;
-	margin-left: 10px;
+	padding-inline-start: var( --space-xs );
+	margin-inline-start: var( --space-xs );
 	font-size: var( --font-size-small );
-	border-left: var( --border-width-base ) solid var( --border-color-base );
+	border-inline-start: var( --border-width-base ) solid var( --border-color-base );
 }
 
-.mw-indicator {
-	filter: var( --filter-invert );
-}
-
+// Hide the text in the help indicator
 #mw-indicator-mw-helplink a {
-	font-size: 0; /* Hide the text because the color is weird */
+	font-size: 0;
 }
 
 video {
 	max-width: 100%; // Prevent overflow
-}
-
-.skin-theme-clientpref-night {
-	.mw-indicator {
-		// Have to hardcode the color since the filter breaks the color
-		a {
-			color: @color-primary;
-
-			&:hover {
-				color: @color-primary--hover;
-			}
-
-			&:active {
-				color: @color-primary--active;
-			}
-		}
-	}
 }
 
 @media ( hover: none ) {
