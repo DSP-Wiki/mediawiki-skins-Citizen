@@ -29,7 +29,7 @@
 	--color-surface-4-oklch__l: calc( var( --color-surface-0-oklch__l ) + ( var( --delta-lightness-surface-base ) * 4 ) );
 	--color-surface-4-oklch__c: 0.04;
 
-	--color-surface-0: ~'oklch(0.2308 0 0)';
+	--color-surface-0: ~'oklch( var( --color-surface-0-oklch__l ) var( --color-surface-0-oklch__c ) var( --color-progressive-oklch__h ) )';
 	--color-surface-1: ~'oklch( var( --color-surface-1-oklch__l ) var( --color-surface-1-oklch__c ) var( --color-progressive-oklch__h ) )';
 	--color-surface-1--hover: ~'oklch( calc( var( --color-surface-1-oklch__l ) + var( --delta-lightness-hover-state ) ) var( --color-surface-1-oklch__c ) var( --color-progressive-oklch__h ) )';
 	--color-surface-1--active: ~'oklch( calc( var( --color-surface-1-oklch__l ) + var( --delta-lightness-active-state ) ) var( --color-surface-1-oklch__c ) var( --color-progressive-oklch__h ) )';
