@@ -10,7 +10,7 @@
 	display: flex;
 	flex-direction: var( --header-direction );
 	gap: var( --space-xxs );
-	padding: var( --space-xs );
+	padding: ~'var( --space-xs ) max( env( safe-area-inset-right ), var( --space-xs ) ) max( env( safe-area-inset-bottom ), var( --space-xs ) ) max( env( safe-area-inset-left ), var( --space-xs ) )';
 	background-color: var( --color-surface-0 );
 	border-top: var( --border-width-base ) solid var( --border-color-base );
 
@@ -129,15 +129,6 @@
 		gap: var( --space-xxs );
 		align-items: center;
 	}
-
-	/*
-	// Echo badge styles do not load before init in 1.39
-	.citizen-echo-notification-badge {
-		.citizen-ui-icon + span {
-			.mixin-citizen-screen-reader-only;
-		}
-	}
-	*/
 }
 
 .client-nojs {

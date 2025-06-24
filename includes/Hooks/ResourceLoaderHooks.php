@@ -50,6 +50,7 @@ class ResourceLoaderHooks {
 			'wgCitizenOverflowInheritedClasses' => $config->get( 'CitizenOverflowInheritedClasses' ),
 			'wgCitizenOverflowNowrapClasses' => $config->get( 'CitizenOverflowNowrapClasses' ),
 			'wgCitizenSearchModule' => $config->get( 'CitizenSearchModule' ),
+			'wgCitizenEnableCommandPalette' => $config->get( 'CitizenEnableCommandPalette' ),
 		];
 	}
 
@@ -78,15 +79,33 @@ class ResourceLoaderHooks {
 		RL\Context $context,
 		Config $config
 	) {
+		$extensionRegistry = ExtensionRegistry::getInstance();
+
 		return [
-			'isAdvancedSearchExtensionEnabled' => ExtensionRegistry::getInstance()->isLoaded( 'AdvancedSearch' ),
-			'isMediaSearchExtensionEnabled' => ExtensionRegistry::getInstance()->isLoaded( 'MediaSearch' ),
+			'isAdvancedSearchExtensionEnabled' => $extensionRegistry->isLoaded( 'AdvancedSearch' ),
+			'isMediaSearchExtensionEnabled' => $extensionRegistry->isLoaded( 'MediaSearch' ),
 			'wgCitizenSearchGateway' => $config->get( 'CitizenSearchGateway' ),
 			'wgCitizenSearchDescriptionSource' => $config->get( 'CitizenSearchDescriptionSource' ),
 			'wgCitizenMaxSearchResults' => $config->get( 'CitizenMaxSearchResults' ),
-			'wgArticlePath' => $config->get( MainConfigNames::ArticlePath ),
-			'wgScript' => $config->get( MainConfigNames::Script ),
 			'wgScriptPath' => $config->get( MainConfigNames::ScriptPath ),
+			'wgSearchSuggestCacheExpiry' => $config->get( MainConfigNames::SearchSuggestCacheExpiry )
+		];
+	}
+
+	/**
+	 * Passes config variables to skins.citizen.commandPalette ResourceLoader module.
+	 * @param RL\Context $context
+	 * @param Config $config
+	 * @return array
+	 */
+	public static function getCitizenCommandPaletteResourceLoaderConfig(
+		RL\Context $context,
+		Config $config
+	) {
+		$extensionRegistry = ExtensionRegistry::getInstance();
+
+		return [
+			'isMediaSearchExtensionEnabled' => $extensionRegistry->isLoaded( 'MediaSearch' ),
 			'wgSearchSuggestCacheExpiry' => $config->get( MainConfigNames::SearchSuggestCacheExpiry )
 		];
 	}

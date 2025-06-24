@@ -10,7 +10,6 @@
 
 	.citizen-menu {
 		&__card {
-			position: absolute;
 			right: ~'calc( var( --space-xs ) * -1 )'; // counteract margin
 			display: grid;
 			gap: var( --space-xs );
@@ -158,7 +157,7 @@
 	.page-actions {
 		position: fixed;
 		right: 0;
-		bottom: ~'calc( var( --header-size ) + var( --space-xs ) )';
+		bottom: ~'calc( var( --header-size ) + max( env( safe-area-inset-bottom ), var( --space-xs ) ) )';
 		height: var( --toolbar-size );
 		margin: var( --space-xs );
 		background: var( --color-surface-1 );
@@ -196,7 +195,7 @@
 		> .mw-portlet {
 			li > a {
 				gap: var( --space-xs );
-				font-size: var( --font-size-small );
+				font-size: inherit;
 			}
 		}
 

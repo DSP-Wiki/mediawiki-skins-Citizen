@@ -71,7 +71,7 @@ function isFeatureExcluded( featureName ) {
 function getVisibleClientPreferences( config ) {
 	const active = getClientPreferences();
 	// Order should be based on key in config.json
-	return Object.keys( config ).filter( ( key ) => active.indexOf( key ) > -1 );
+	return Object.keys( config ).filter( ( key ) => active.includes( key ) );
 }
 
 /**
@@ -293,7 +293,7 @@ function makeClientPreference( parent, featureName, config ) {
 		return;
 	} else {
 		const id = `skin-client-prefs-${ featureName }`;
-		const portlet = portlets.addDefaultPortlet( portlets.addPortlet( id, labelMsg.text() ) );
+		const portlet = portlets.addDefaultPortlet( mw.util.addPortlet( id, labelMsg.text() ) );
 		const labelElement = portlet.querySelector( 'label' );
 
 		const descriptionMsg = getMessage( `${ featureName }-description` );

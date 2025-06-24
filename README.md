@@ -18,17 +18,17 @@ Live demo: [English](https://starcitizen.tools), [German](https://star-citizen.w
 
 ## Notable features
 - **Responsive layout**: Responsive and able to adapt to different screen sizes. 📱💻🖥️
+- **Command palette**: Quick access to everything. 🔍⚡️
 - **Light/dark mode**: Switch between light and dark mode. ☀️🌙
 - **Improved extension UI**: Adjust supported extensions to be more usable and cohesive. 🤝🔗
 - **Reading preferences**: Adjust page width, font size, and line height. 👀📃
 - **Collapsible sections**: Collapse and expand article sections. 📖📕
 - **Persistent ToC**: Access ToC anywhere in the article. 🔍📖
-- **Rich search suggestions**: More helpful search suggestions with images and descriptions. 🔍👀
 - **Progressive Web App**: Give a more app-like experience when user add your wiki to their home screen. 📱
 
 ## Installation
 1. [Download](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/archive/main.zip) place the file(s) in a directory called `Citizen` in your `skins/` folder.
-2. Add the following code at the bottom of your LocalSettings.php and **after all other extensions**:
+2. Add the following code at the bottom of your LocalSettings.php:
 ```php
 wfLoadSkin( 'Citizen' );
 ```
@@ -55,7 +55,14 @@ Name | Description | Values | Default
 `$wgCitizenOverflowInheritedClasses` | Defines css classes inherited by the overflow wrapper | List of css classes. Extend with `$wgCitizenOverflowInheritedClasses[] = 'my_class';` | `["floatleft", "floatright" ]`
 `$wgCitizenOverflowNowrapClasses` | Defines css classes ignored by the overflow wrapper | List of css classes. Extend with `$wgCitizenOverflowNowrapClasses[] = 'my_class';` | `["citizen-table-nowrap", "diff", "mw-changeslist-line", "mw-recentchanges-table", "infobox", "cargoDynamicTable", "dataTable", "srf-datatable", "smw-datatable", "mw-capiunto-infobox" ]`
 
+### Command palette
+Name | Description | Values | Default
+:--- | :--- | :--- | :---
+`$wgCitizenEnableCommandPalette` | Enables or disable the command palette. Disable to use the old search module | `true` - enable; `false` - disable | `true`
+
 ### Search suggestions
+These options are only for the old search module when the command palette is disabled.
+
 Name | Description | Values | Default
 :--- | :--- | :--- | :---
 `$wgCitizenSearchModule` | Which ResourceLoader module to use for search suggestion | `skins.citizen.search`; `mediawiki.searchSuggest`; string | `skins.citizen.search`
@@ -106,7 +113,6 @@ Name | Version
 [AdvancedSearch](https://www.mediawiki.org/wiki/Extension:AdvancedSearch) | REL1_39 `3a0eed7`
 [AJAXPoll](https://www.mediawiki.org/wiki/Extension:AJAXPoll) | REL1_39 `8429d8d`
 [ApprovedRevs](https://www.mediawiki.org/wiki/Extension:Approved_Revs) | N/A
-[Babel](https://www.mediawiki.org/wiki/Extension:Babel) | MLEB 2021.07
 [Capiunto](https://www.mediawiki.org/wiki/Extension:Capiunto) | REL1_39 `3a6d523`
 [Cargo](https://www.mediawiki.org/wiki/Extension:Cargo) | REL1_39 `b4c6314`
 [CategoryTree](https://www.mediawiki.org/wiki/Extension:CategoryTree) | N/A
@@ -128,7 +134,6 @@ Name | Version
 [Graph](https://www.mediawiki.org/wiki/Extension:Graph) | N/A
 [Interwiki](https://www.mediawiki.org/wiki/Extension:Interwiki) | REL1_35 `a65a18e`
 [Lingo](https://www.mediawiki.org/wiki/Extension:Lingo) | REL1_35 `e948775`
-[Math](https://www.mediawiki.org/wiki/Extension:Math) | REL1_35 `b7a7939`
 [ManageWiki](https://www.mediawiki.org/wiki/Extension:ManageWiki) | master `e626a9f`
 [MediaSearch](https://www.mediawiki.org/wiki/Extension:MediaSearch) | REL1_39 `e0aa7bb`
 [MsUpload](https://www.mediawiki.org/wiki/Extension:MsUpload) | REL1_35 `32eb420`
@@ -163,7 +168,6 @@ Name | Version
 [VisualEditor](https://www.mediawiki.org/wiki/Extension:VisualEditor) | REL1_43
 [Wikibase](https://www.mediawiki.org/wiki/Extension:Wikibase) | REL1_35 `7bb503b`
 [WikiEditor](https://www.mediawiki.org/wiki/Extension:WikiEditor) | REL1_43
-[WikiHiero](https://www.mediawiki.org/wiki/Extension:WikiHiero) | REL1_39 `3a2be51`
 [WSSearchFront](https://www.mediawiki.org/wiki/Extension:WSSearchFront) | 3.5.4 `c27ebcb5`
 
 Some of the field are tagged as N/A because the information was not tracked before.

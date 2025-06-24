@@ -1,7 +1,9 @@
 {
 	"plugins": [
-		"stylelint-order"
+		"stylelint-order",
+		"stylelint-plugin-use-baseline"
 	],
+	"reportNeedlessDisables": true,
 	"extends": [
 		"stylelint-config-wikimedia/support-modern",
 		"stylelint-config-wikimedia/mediawiki",
@@ -15,6 +17,15 @@
 		"declaration-no-important": null,
 		"unit-disallowed-list": null,
 		"declaration-property-unit-disallowed-list": null,
-		"plugin/no-unsupported-browser-features": null
+		"plugin/no-unsupported-browser-features": null,
+		"plugin/use-baseline": [
+			true,
+			{
+				"available": "2024",
+				"ignoreSelectors": [
+					"nesting"
+				]
+			}
+		]
 	}
 }

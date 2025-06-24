@@ -13,7 +13,7 @@
 {{>Header}}
 <div class="citizen-page-container">
 	<div class="citizen-sitenotice-container">{{{html-site-notice}}}</div>
-	<main class="mw-body {{#toc-enabled}}citizen-toc-enabled{{/toc-enabled}}" id="content">
+	<main class="mw-body" id="content">
 		{{>PageHeader}}
 		<div class="citizen-body-container">
 			<div id="bodyContent" class="citizen-body" aria-labelledby="firstHeading">
@@ -29,3 +29,4 @@
 	{{{html-after-content}}}
 	{{#data-footer}}{{>Footer}}{{/data-footer}}
 </div>
+{{#data-sticky-header}}{{>StickyHeader}}{{/data-sticky-header}}

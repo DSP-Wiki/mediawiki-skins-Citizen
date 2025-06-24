@@ -7,6 +7,8 @@
  * Date: 2025-03-28
  */
 
+@import '../../../resources/mixins.less';
+
 .cs {
 	&-comments {
 		margin-top: var( --space-md );
@@ -63,14 +65,13 @@
 		}
 
 		&-title {
-			font-size: var( --font-size-large );
-			font-weight: var( --font-weight-semibold );
 			color: var( --color-emphasized );
+			.mixin-citizen-font-styles( 'heading-4' );
 		}
 
 		&-author,
 		&-details {
-			font-size: var( --font-size-small );
+			.mixin-citizen-font-styles( 'small' );
 		}
 
 		&-author {
@@ -112,18 +113,18 @@
 	}
 
 	&-title-edit-field {
-		font-size: var( --font-size-large );
+		.mixin-citizen-font-styles( 'heading-4' );
 	}
 
 	&-toc {
 		padding: var( --space-xs );
-		font-size: var( --font-size-small );
 		background-color: var( --color-surface-1 );
 		border-color: var( --border-color-base );
+		.mixin-citizen-font-styles( 'small' );
 
 		h2 {
-			font-size: var( --font-size-medium );
-			font-weight: var( --font-weight-semibold );
+			.mixin-citizen-font-styles( 'body' );
+			font-weight: var( --font-weight-semi-bold );
 		}
 	}
 }
@@ -131,7 +132,7 @@
 .commentstreams-history-table {
 	th {
 		padding: var( --space-xs );
-		font-weight: var( --font-weight-semibold );
+		font-weight: var( --font-weight-semi-bold );
 	}
 
 	td {

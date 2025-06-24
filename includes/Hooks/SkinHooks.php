@@ -27,17 +27,15 @@ namespace MediaWiki\Skins\Citizen\Hooks;
 
 use MediaWiki\Hook\SidebarBeforeOutputHook;
 use MediaWiki\Hook\SkinBuildSidebarHook;
-use MediaWiki\Hook\SkinEditSectionLinksHook;
 use MediaWiki\Html\Html;
-use MediaWiki\Language\Language;
 use MediaWiki\Output\Hook\BeforePageDisplayHook;
+use MediaWiki\Output\Hook\OutputPageAfterGetHeadLinksArrayHook;
 use MediaWiki\Output\OutputPage;
 use MediaWiki\Registration\ExtensionRegistry;
 use MediaWiki\ResourceLoader as RL;
 use MediaWiki\Skin\SkinComponentUtils;
 use MediaWiki\Skins\Citizen\GetConfigTrait;
 use MediaWiki\Skins\Hook\SkinPageReadyConfigHook;
-use MediaWiki\Title\Title;
 use Skin;
 use SkinTemplate;
 
@@ -46,9 +44,9 @@ use SkinTemplate;
  */
 class SkinHooks implements
 	BeforePageDisplayHook,
+	OutputPageAfterGetHeadLinksArrayHook,
 	SidebarBeforeOutputHook,
 	SkinBuildSidebarHook,
-	SkinEditSectionLinksHook,
 	SkinPageReadyConfigHook
 {
 	use GetConfigTrait;
@@ -71,6 +69,34 @@ class SkinHooks implements
 			$script = RL\ResourceLoader::filter( 'minify-js', $script );
 			$out->addHeadItem( 'skin.citizen.inline', $script );
 		}
+	}
+
+	/**
+	 * Replace the viewport meta tag with a more sane one
+	 *
+	 * @param array &$tags
+	 * @param OutputPage $out
+	 */
+	public function onOutputPageAfterGetHeadLinksArray( &$tags, $out ): void {
+		if ( $out->getSkin()->getSkinName() !== 'citizen' ) {
+			return;
+		}
+
+		if ( !isset( $tags['meta-viewport'] ) ) {
+			return;
+		}
+
+		/**
+		 * The MW default tag was created from T258290, our changes include:
+		 * Added: viewport-fit=cover - #1036
+		 * Removed: user-scalable=yes - This is the default value
+		 * Removed: minimum-scale=0.25 - Seems like an old workaround for iOS that is no longer needed
+		 * Removed: maximum-scale=5.0 - Seems like an old workaround for iOS that is no longer needed
+		 */
+		$tags['meta-viewport'] = Html::element( 'meta', [
+			'name' => 'viewport',
+			'content' => 'width=device-width,initial-scale=1,viewport-fit=cover',
+		] );
 	}
 
 	/**
@@ -133,42 +159,6 @@ class SkinHooks implements
 
 		foreach ( $bar as $key => $item ) {
 			self::addIconsToMenuItems( $bar, $key );
-		}
-	}
-
-	/**
-	 * Modify editsection links
-	 *
-	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SkinEditSectionLinks
-	 * @param Skin $skin
-	 * @param Title $title
-	 * @param string $section
-	 * @param string $sectionTitle
-	 * @param array &$result
-	 * @param Language $lang
-	 */
-	public function onSkinEditSectionLinks( $skin, $title, $section, $sectionTitle, &$result, $lang ) {
-		// Be extra safe because it might be active on other skins with caching
-		if ( $skin->getSkinName() !== 'citizen' || !$result ) {
-			return;
-		}
-
-		// Add icon to edit section link
-		// If VE button is present, use wikiText icon
-		if ( isset( $result['veeditsection'] ) ) {
-			self::appendClassToItem(
-				$result['veeditsection']['attribs']['class'],
-				'citizen-ui-icon mw-ui-icon-wikimedia-edit'
-			);
-			self::appendClassToItem(
-				$result['editsection']['attribs']['class'],
-				'citizen-ui-icon mw-ui-icon-wikimedia-wikiText'
-			);
-		} elseif ( isset( $result['editsection'] ) ) {
-			self::appendClassToItem(
-				$result['editsection']['attribs']['class'],
-				'citizen-ui-icon mw-ui-icon-wikimedia-edit'
-			);
 		}
 	}
 

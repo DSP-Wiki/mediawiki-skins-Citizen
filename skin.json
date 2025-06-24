@@ -1,6 +1,6 @@
 {
 	"name": "Citizen",
-	"version": "3.0.0",
+	"version": "3.3.2",
 	"author": [
 		"[https://www.mediawiki.org/wiki/User:Alistair3149 Alistair3149]",
 		"[https://www.mediawiki.org/wiki/User:Octfx Octfx]",
@@ -34,6 +34,7 @@
 					"name": "citizen",
 					"responsive": true,
 					"supportsMwHeading": true,
+					"templateSectionLinks": "SectionLinks",
 					"toc": false,
 					"wrapSiteNotice": true,
 					"link": {
@@ -55,6 +56,7 @@
 					],
 					"styles": [
 						"skins.citizen.styles",
+						"skins.citizen.codex.styles",
 						"skins.citizen.icons"
 					],
 					"messages": [
@@ -102,9 +104,9 @@
 	},
 	"Hooks": {
 		"BeforePageDisplay": "SkinHooks",
+		"OutputPageAfterGetHeadLinksArray": "SkinHooks",
 		"SidebarBeforeOutput": "SkinHooks",
 		"SkinBuildSidebar": "SkinHooks",
-		"SkinEditSectionLinks": "SkinHooks",
 		"SkinPageReadyConfig": "SkinHooks"
 	},
 	"ResourceModules": {
@@ -112,7 +114,7 @@
 			"class": "MediaWiki\\ResourceLoader\\SkinModule",
 			"features": {
 				"normalize": true,
-				"content-links": true,
+				"content-links": false,
 				"content-links-external": false,
 				"i18n-ordered-lists": true,
 				"i18n-headings": true,
@@ -120,6 +122,16 @@
 			},
 			"styles": [
 				"resources/skins.citizen.styles/skin.less"
+			]
+		},
+		"skins.citizen.codex.styles": {
+			"class": "MediaWiki\\ResourceLoader\\CodexModule",
+			"codexStyleOnly": true,
+			"codexComponents": [
+				"CdxButton"
+			],
+			"styles": [
+				"resources/skins.citizen.codex.styles/CdxButton.less"
 			]
 		},
 		"skins.citizen.styles.fonts.cjk": {
@@ -139,6 +151,7 @@
 					"name": "resources/skins.citizen.scripts/config.json",
 					"callback": "MediaWiki\\Skins\\Citizen\\Hooks\\ResourceLoaderHooks::getCitizenResourceLoaderConfig"
 				},
+				"resources/skins.citizen.scripts/contentEnhancements.js",
 				"resources/skins.citizen.scripts/deferUntilFrame.js",
 				"resources/skins.citizen.scripts/dropdown.js",
 				"resources/skins.citizen.scripts/echo.js",
@@ -230,12 +243,12 @@
 			],
 			"messages": [
 				"citizen-search-advancedsearch",
-				"citizen-search-fulltext",
-				"citizen-search-editpage",
-				"citizen-search-mediasearch",
 				"citizen-search-empty-desc",
-				"citizen-search-noresults-title",
+				"citizen-search-editpage",
+				"citizen-search-fulltext",
+				"citizen-search-mediasearch",
 				"citizen-search-noresults-desc",
+				"citizen-search-noresults-title",
 				"search-redirect",
 				"searchsuggest-search"
 			],
@@ -262,27 +275,28 @@
 				"resources/skins.citizen.preferences/clientPrefs.polyfill.js"
 			],
 			"messages": [
-				"preferences",
-				"citizen-theme-name",
-				"citizen-theme-description",
-				"citizen-theme-day-label",
-				"citizen-theme-night-label",
-				"citizen-theme-os-label",
-				"citizen-theme-exclusion-notice",
-				"citizen-feature-autohide-navigation-name",
 				"citizen-feature-autohide-navigation-0-label",
 				"citizen-feature-autohide-navigation-1-label",
-				"citizen-feature-pure-black-name",
-				"citizen-feature-pure-black-0-label",
-				"citizen-feature-pure-black-1-label",
+				"citizen-feature-autohide-navigation-name",
 				"citizen-feature-custom-font-size-name",
 				"citizen-feature-custom-font-size-small-label",
 				"citizen-feature-custom-font-size-standard-label",
 				"citizen-feature-custom-font-size-large-label",
+				"citizen-feature-custom-font-size-xlarge-label",
+				"citizen-feature-custom-width-full-label",
 				"citizen-feature-custom-width-name",
 				"citizen-feature-custom-width-standard-label",
 				"citizen-feature-custom-width-wide-label",
-				"citizen-feature-custom-width-full-label"
+				"citizen-feature-pure-black-0-label",
+				"citizen-feature-pure-black-1-label",
+				"citizen-feature-pure-black-name",
+				"citizen-theme-description",
+				"citizen-theme-day-label",
+				"citizen-theme-exclusion-notice",
+				"citizen-theme-name",
+				"citizen-theme-night-label",
+				"citizen-theme-os-label",
+				"preferences"
 			],
 			"dependencies": [
 				"mediawiki.storage",
@@ -292,6 +306,126 @@
 		"skins.citizen.serviceWorker": {
 			"scripts": [
 				"resources/skins.citizen.serviceWorker/sw.js"
+			]
+		},
+		"skins.citizen.commandPalette": {
+			"class": "MediaWiki\\ResourceLoader\\CodexModule",
+			"dependencies": [
+				"mediawiki.api",
+				"mediawiki.jqueryMsg",
+				"mediawiki.language",
+				"mediawiki.page.ready",
+				"mediawiki.storage",
+				"mediawiki.util",
+				"skins.citizen.commandPalette.codex",
+				"vue",
+				"pinia"
+			],
+			"packageFiles": [
+				"resources/skins.citizen.commandPalette/init.js",
+				"resources/skins.citizen.commandPalette/types.js",
+				"resources/skins.citizen.commandPalette/composables/useListNavigation.js",
+				"resources/skins.citizen.commandPalette/composables/useActionNavigation.js",
+				"resources/skins.citizen.commandPalette/utils/fetch.js",
+				"resources/skins.citizen.commandPalette/utils/providerActions.js",
+				"resources/skins.citizen.commandPalette/stores/searchStore.js",
+				"resources/skins.citizen.commandPalette/services/recentItems.js",
+				"resources/skins.citizen.commandPalette/searchClients/SearchClientFactory.js",
+				"resources/skins.citizen.commandPalette/searchClients/MwRestSearchClient.js",
+				"resources/skins.citizen.commandPalette/providers/CommandProvider.js",
+				"resources/skins.citizen.commandPalette/providers/RecentItemsProvider.js",
+				"resources/skins.citizen.commandPalette/providers/RelatedArticlesProvider.js",
+				"resources/skins.citizen.commandPalette/providers/SearchProvider.js",
+				"resources/skins.citizen.commandPalette/providers/QueryActionProvider.js",
+				"resources/skins.citizen.commandPalette/commands/namespace.js",
+				"resources/skins.citizen.commandPalette/commands/action.js",
+				"resources/skins.citizen.commandPalette/commands/user.js",
+				"resources/skins.citizen.commandPalette/components/App.vue",
+				"resources/skins.citizen.commandPalette/components/CommandPaletteEmptyState.vue",
+				"resources/skins.citizen.commandPalette/components/CommandPaletteFooter.vue",
+				"resources/skins.citizen.commandPalette/components/CommandPaletteHeader.vue",
+				"resources/skins.citizen.commandPalette/components/CommandPaletteKeyboardHints.vue",
+				"resources/skins.citizen.commandPalette/components/CommandPaletteList.vue",
+				"resources/skins.citizen.commandPalette/components/CommandPaletteListItem.vue",
+				"resources/skins.citizen.commandPalette/components/CommandPaletteListItemActions.vue",
+				"resources/skins.citizen.commandPalette/components/CommandPaletteListItemContent.vue",
+				"resources/skins.citizen.commandPalette/components/CommandPalettePresults.vue",
+				{
+					"name": "resources/skins.citizen.commandPalette/icons.json",
+					"callback": "MediaWiki\\ResourceLoader\\CodexModule::getIcons",
+					"callbackParam": [
+						"cdxIconArticle",
+						"cdxIconArticles",
+						"cdxIconArticleNotFound",
+						"cdxIconArticleRedirect",
+						"cdxIconArticleSearch",
+						"cdxIconArticlesSearch",
+						"cdxIconCode",
+						"cdxIconEdit",
+						"cdxIconImageGallery",
+						"cdxIconSearch",
+						"cdxIconTrash",
+						"cdxIconSpecialPages",
+						"cdxIconPlay",
+						"cdxIconUserAvatar",
+						"cdxIconUserContributions",
+						"cdxIconUserTalk"
+					]
+				},
+				{
+					"name": "resources/skins.citizen.commandPalette/config.json",
+					"callback": "MediaWiki\\Skins\\Citizen\\Hooks\\ResourceLoaderHooks::getCitizenCommandPaletteResourceLoaderConfig"
+				}
+			],
+			"messages": [
+				"action-edit",
+				"citizen-command-palette-command-action-description",
+				"citizen-command-palette-command-action-label",
+				"citizen-command-palette-command-ns-description",
+				"citizen-command-palette-command-ns-label",
+				"citizen-command-palette-command-user-description",
+				"citizen-command-palette-command-user-label",
+				"citizen-command-palette-heading-recent",
+				"citizen-command-palette-heading-related",
+				"citizen-command-palette-keyhint-actions",
+				"citizen-command-palette-keyhint-enter-open",
+				"citizen-command-palette-keyhint-enter-search",
+				"citizen-command-palette-keyhint-enter-select",
+				"citizen-command-palette-keyhint-exit",
+				"citizen-command-palette-keyhint-navigate",
+				"citizen-command-palette-keyhint-return",
+				"citizen-command-palette-queryaction-fulltext-search-description",
+				"citizen-command-palette-queryaction-media-search-description",
+				"citizen-command-palette-queryaction-page-edit-description",
+				"citizen-command-palette-tip-commands",
+				"citizen-command-palette-tip-users",
+				"citizen-command-palette-tip-namespace",
+				"citizen-command-palette-tip-templates",
+				"citizen-command-palette-tip-actions",
+				"citizen-command-palette-type-action",
+				"citizen-command-palette-type-command",
+				"citizen-command-palette-type-menu-item",
+				"citizen-command-palette-type-namespace",
+				"citizen-command-palette-type-page",
+				"citizen-command-palette-type-special-page",
+				"citizen-command-palette-type-user",
+				"citizen-search-empty-desc",
+				"citizen-search-noresults-desc",
+				"citizen-search-noresults-title",
+				"contributions",
+				"search-nonefound",
+				"searchsuggest-search",
+				"talk"
+			]
+		},
+		"skins.citizen.commandPalette.codex": {
+			"class": "MediaWiki\\ResourceLoader\\CodexModule",
+			"codexComponents": [
+				"CdxButton",
+				"CdxIcon",
+				"CdxSearchResultTitle",
+				"CdxTextInput",
+				"CdxThumbnail"
 			]
 		},
 		"skins.citizen.icons": {
@@ -375,7 +509,6 @@
 			"+ext.advancedSearch.styles": "skinStyles/extensions/AdvancedSearch/ext.advancedSearch.styles.less",
 			"+ext.ajaxpoll": "skinStyles/extensions/AJAXPoll/ext.ajaxpoll.less",
 			"+ext.ApprovedRevs": "skinStyles/extensions/ApprovedRevs/ext.ApprovedRevs.less",
-			"+ext.babel": "skinStyles/extensions/Babel/ext.babel.less",
 			"+capiunto.infobox.main": "skinStyles/extensions/Capiunto/capiunto.infobox.main.less",
 			"+ext.cargo.main": "skinStyles/extensions/Cargo/ext.cargo.main.less",
 			"+ext.cargo.pagevalues": "skinStyles/extensions/Cargo/ext.cargo.pagevalues.less",
@@ -431,7 +564,6 @@
 			"+ext.Lingo": "skinStyles/extensions/Lingo/ext.Lingo.less",
 			"+ext.managewiki.oouiform.styles": "skinStyles/extensions/ManageWiki/ext.managewiki.oouiform.styles.less",
 			"+ext.maps.leaflet.library": "skinStyles/lib/leaflet/leaflet.less",
-			"+ext.math.styles": "skinStyles/extensions/Math/ext.math.styles.less",
 			"+mediasearch.styles": "skinStyles/extensions/MediaSearch/mediasearch.styles.less",
 			"+mmv": "skinStyles/extensions/MultimediaViewer/mmv.less",
 			"+ext.MsUpload": "skinStyles/extensions/MsUpload/ext.MsUpload.less",
@@ -561,7 +693,6 @@
 			"+wikibase.view.ControllerViewFactory": "skinStyles/extensions/Wikibase/wikibase.view.ControllerViewFactory.less",
 			"+ext.wikiEditor": "skinStyles/extensions/WikiEditor/ext.wikiEditor.less",
 			"+ext.wikiEditor.realtimepreview": "skinStyles/extensions/WikiEditor/ext.wikiEditor.realtimepreview.less",
-			"+ext.wikihiero": "skinStyles/extensions/WikiHiero/ext.wikihiero.less",
 			"+ext.WSSearchFront.module": "skinStyles/extensions/WSSearchFront/ext.WSSearchFront.module.less",
 			"mobile.init.styles": "skinStyles/extensions/MobileFrontend/mobile.init.styles.less",
 			"+mediawiki.action.edit.styles": "skinStyles/mediawiki/action/mediawiki.action.edit.styles.less",
@@ -742,6 +873,12 @@
 		"TableOfContentsCollapseAtCount": {
 			"value": 28,
 			"description": "@var The minimum number of headings required to collapse all headings in the sticky table of contents by default."
+		},
+		"EnableCommandPalette": {
+			"value": true,
+			"description": "Enables or disable the command palette. Disable to use the old search module.",
+			"descriptionmsg": "citizen-config-enablecommandpalette",
+			"public": true
 		}
 	},
 	"manifest_version": 2

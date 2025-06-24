@@ -18,9 +18,6 @@
 		flex-wrap: wrap;
 		gap: var( --space-xs );
 		margin: var( --space-xs ) 0 0 0;
-		/* Reset font */
-		font-size: var( --font-size-x-small );
-		letter-spacing: 0; // hidden-catlink title does not have a selector
 	}
 
 	li {
@@ -59,18 +56,11 @@
 	}
 }
 
-// HACK: Hide colon
-.mw-normal-catlinks {
-	font-size: 0;
-}
-
 // Category label
 .mw-normal-catlinks > a,
 .mw-hidden-catlinks {
-	display: block;
-	font-size: var( --font-size-x-small );
 	color: var( --color-subtle );
-	letter-spacing: 0.05em;
+	.mixin-citizen-font-styles( 'overline' );
 }
 
 .mw-hidden-cats-hidden,
