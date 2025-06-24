@@ -111,23 +111,22 @@ class SkinHooks implements
 		$name = empty( $globalToolsId ) ? 'navigation' : preg_replace( '/^p-/', '', $globalToolsId );
 		$bar[$name]['specialpages'] = [
 			'text'  => $skin->msg( 'specialpages' ),
-			'href'  => Skin::makeSpecialUrl( 'Specialpages' ),
+			// TODO: Replace with SkinComponentUtils on 1.43
+			'href'  => SpecialPage::getTitleFor( 'Specialpages' )->getLocalURL(),
 			'title' => $skin->msg( 'tooltip-t-specialpages' ),
 			'icon'  => 'specialPages',
 			'id'    => 't-specialpages',
 		];
 
 		if ( $this->getConfigValue( 'EnableUploads', $out ) === true ) {
-			if ( ExtensionRegistry::getInstance()->isLoaded( 'Upload Wizard' ) ) {
-				// Link to Upload Wizard if present
-				$uploadHref = SpecialPage::getTitleFor( 'UploadWizard' )->getLocalURL();
-			} else {
-				// Link to old upload form
-				$uploadHref = Skin::makeSpecialUrl( 'Upload' );
-			}
+			$isUploadWizardEnabled = ExtensionRegistry::getInstance()->isLoaded( 'Upload Wizard' );
 			$bar[$name]['upload'] = [
 				'text'  => $skin->msg( 'upload' ),
-				'href'  => $uploadHref,
+				// TODO: Replace with SkinComponentUtils on 1.43
+				'href'  => SpecialPage::getTitleFor( $isUploadWizardEnabled ?
+					'UploadWizard' :
+					'Upload'
+				)->getLocalURL(),
 				'title' => $skin->msg( 'tooltip-t-upload' ),
 				'icon'  => 'upload',
 				'id'    => 't-upload',
@@ -161,25 +160,16 @@ class SkinHooks implements
 		if ( isset( $result['veeditsection'] ) ) {
 			self::appendClassToItem(
 				$result['veeditsection']['attribs']['class'],
-				[
-					'citizen-editsection-icon',
-					'mw-ui-icon-wikimedia-edit'
-				]
+				'citizen-editsection-icon mw-ui-icon-wikimedia-edit'
 			);
 			self::appendClassToItem(
 				$result['editsection']['attribs']['class'],
-				[
-					'citizen-editsection-icon',
-					'mw-ui-icon-wikimedia-wikiText'
-				]
+				'citizen-editsection-icon mw-ui-icon-wikimedia-wikiText'
 			);
 		} elseif ( isset( $result['editsection'] ) ) {
 			self::appendClassToItem(
 				$result['editsection']['attribs']['class'],
-				[
-					'citizen-editsection-icon',
-					'mw-ui-icon-wikimedia-edit'
-				]
+				'citizen-editsection-icon mw-ui-icon-wikimedia-edit'
 			);
 		}
 	}
@@ -280,15 +270,21 @@ class SkinHooks implements
 		$iconMap = [
 			'main' => 'article',
 			'file' => 'image',
+			'talk' => 'speechBubbles',
 			'user' => 'userAvatar'
 		];
 
 		// Special handling for talk pages
 		// Since talk keys have namespace as prefix
 		foreach ( $links['associated-pages'] as $key => $item ) {
-			// I wish I can use str_ends_with but need to wait for PHP 7.X to be dropped
-			if ( substr( $key, -4 ) === 'talk' ) {
+			$keyStr = (string)$key;
+			// TODO: use str_ends_with when we drop PHP 7.X
+			if ( substr( $keyStr, -5 ) === '_talk' ) {
+				// Extract the namespace key from the talk key (e.g. Project from Project_talk)
+				// TODO: use str_starts_with when we drop PHP 7.X
+				$namespace = substr( $keyStr, 0, -5 );
 				$links['associated-pages'][$key]['icon'] = 'speechBubbles';
+				$links['associated-pages'][$namespace]['icon'] = 'arrowPrevious';
 			}
 		}
 
@@ -359,8 +355,9 @@ class SkinHooks implements
 				$linkClass = $item['link-class'] ?? [];
 				$newLinkClass = [
 					// Allows Echo to react to clicks
-					'mw-echo-notification-badge-nojs',
-					'citizen-header__button'
+					'citizen-echo-notification-badge',
+					'citizen-header__button',
+					'mw-echo-notification-badge-nojs'
 				];
 				if ( in_array( 'mw-echo-unseen-notifications', $linkClass ) ) {
 					$newLinkClass[] = 'mw-echo-unseen-notifications';
@@ -483,7 +480,7 @@ class SkinHooks implements
 	 * Adds class to a property
 	 * Based on Vector
 	 *
-	 * @param array &$item to update
+	 * @param array|string &$item to update
 	 * @param array|string $classes to add to the item
 	 */
 	private static function appendClassToItem( &$item, $classes ) {

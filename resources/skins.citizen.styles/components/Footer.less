@@ -17,15 +17,14 @@
 	margin-bottom: var( --header-size );
 	clear: both;
 	font-size: var( --font-size-small );
-	color: var( --color-base--subtle );
-	background-color: #1D1D1D;
-	border-top: 1px solid var(--border-color-base);
+	color: var( --color-subtle );
+	background-color: var( --color-surface-2 );
 	direction: ltr;
+	contain: content;
 
 	&__container {
 		max-width: var( --width-layout--extended );
-		margin-right: auto;
-		margin-left: auto;
+		margin-inline: auto;
 	}
 
 	&__content,
@@ -39,9 +38,8 @@
 
 	&__bottom {
 		align-items: center;
-		margin-right: auto;
-		margin-left: auto;
-		border-top: 1px solid var( --border-color-base );
+		margin-inline: auto;
+		border-top: var( --border-width-base ) solid var( --border-color-base );
 	}
 
 	&__siteinfo {
@@ -58,7 +56,7 @@
 
 	a {
 		font-weight: var( --font-weight-medium );
-		color: var( --color-base--emphasized );
+		color: var( --color-emphasized );
 	}
 
 	ul {
@@ -73,16 +71,6 @@
 }
 
 #footer {
-	&-sitetitle {
-		font-size: 1.25rem;
-		color: var( --color-base--emphasized );
-
-		img.mw-logo-wordmark {
-			filter: none !important;
-			max-height: 130px;
-		}
-	}
-
 	&-places {
 		ul {
 			flex-direction: column;
@@ -91,14 +79,14 @@
 		a {
 			display: block;
 			padding: var( --space-xs ) var( --space-md );
-			border-radius: var( --border-radius--small );
+			border-radius: var( --border-radius-base );
 
 			&:hover {
-				background-color: var( --background-color-quiet--hover );
+				background-color: var( --background-color-button-quiet--hover );
 			}
 
 			&:active {
-				background-color: var( --background-color-quiet--active );
+				background-color: var( --background-color-button-quiet--active );
 			}
 
 			&:hover,
