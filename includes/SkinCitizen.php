@@ -30,9 +30,11 @@ use MediaWiki\Skins\Citizen\Partials\Header;
 use MediaWiki\Skins\Citizen\Partials\Metadata;
 use MediaWiki\Skins\Citizen\Partials\PageTitle;
 use MediaWiki\Skins\Citizen\Partials\PageTools;
+use MediaWiki\Skins\Citizen\Partials\Sidebar;
 use MediaWiki\Skins\Citizen\Partials\Tagline;
 use MediaWiki\Skins\Citizen\Partials\Theme;
 use SkinMustache;
+use SkinTemplate;
 
 /**
  * Skin subclass for Citizen
@@ -59,6 +61,14 @@ class SkinCitizen extends SkinMustache {
 	/**
 	 * @inheritDoc
 	 */
+	protected function runOnSkinTemplateNavigationHooks( SkinTemplate $skin, &$content_navigation ) {
+		parent::runOnSkinTemplateNavigationHooks( $skin, $content_navigation );
+		Hooks\SkinHooks::onSkinTemplateNavigation( $skin, $content_navigation );
+	}
+
+	/**
+	 * @inheritDoc
+	 */
 	public function getTemplateData(): array {
 		$data = [];
 		$parentData = parent::getTemplateData();
@@ -68,6 +78,7 @@ class SkinCitizen extends SkinMustache {
 		$pageTitle = new PageTitle( $this );
 		$tagline = new Tagline( $this );
 		$bodycontent = new BodyContent( $this );
+		$sidebar = new Sidebar( $this );
 		$footer = new Footer( $this );
 		$tools = new PageTools( $this );
 
@@ -105,10 +116,11 @@ class SkinCitizen extends SkinMustache {
 			'msg-citizen-footer-tagline' => $this->msg( "citizen-footer-tagline" )->inContentLanguage()->parse(),
 			// Decorate data provided by core
 			'data-search-box' => $header->decorateSearchBoxData( $parentData['data-search-box'] ),
-			'data-portlets-sidebar' => $drawer->decorateSidebarData( $parentData['data-portlets-sidebar'] ),
+			'data-main-menu' => $drawer->decorateMainMenuData( $parentData['data-portlets-sidebar'] ),
 			'data-footer' => $footer->decorateFooterData( $parentData['data-footer'] ),
 		];
 
+		$data += $sidebar->getSidebarData( $parentData );
 		$data += $tools->getPageToolsData( $parentData );
 
 		return array_merge( $parentData, $data );
@@ -134,6 +146,17 @@ class SkinCitizen extends SkinMustache {
 	}
 
 	/**
+	 * Add client preferences features
+	 * Did not add the citizen-feature- prefix because there might be features from core MW or extensions
+	 *
+	 * @param string $feature
+	 * @param string $value
+	 */
+	private function addClientPrefFeature( string $feature, string $value = 'standard' ) {
+		$this->getOutput()->addHtmlClasses( $feature . '-clientpref-' . $value );
+	}
+
+	/**
 	 * Set up optional skin features
 	 *
 	 * @param array &$options
@@ -152,6 +175,11 @@ class SkinCitizen extends SkinMustache {
 
 		// Disable default ToC since it is handled by Citizen
 		$options['toc'] = false;
+
+		// Clientprefs feature handling
+		$this->addClientPrefFeature( 'citizen-feature-pure-black', '0' );
+		$this->addClientPrefFeature( 'citizen-feature-custom-font-size' );
+		$this->addClientPrefFeature( 'citizen-feature-custom-width' );
 
 		// Collapsible sections
 		// Load in content pages

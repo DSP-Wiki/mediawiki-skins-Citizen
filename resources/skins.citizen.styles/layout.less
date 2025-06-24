@@ -10,7 +10,7 @@
 
 .mw-body,
 .parsoid-body {
-    min-height: 80vh;
+	min-height: 100vh; // avoid footer being in the middle of the page
 }
 
 .citizen-body-container {
@@ -57,14 +57,23 @@
         margin-left: var( --header-size );
     }
 
-    .citizen-toc-enabled .citizen-body-container {
-        display: grid;
-        grid-template-areas:
-            'header header'
-            'content toc'
-            'footer footer';
-        grid-template-columns: minmax( 0, var( --width-layout ) ) var( --width-toc );
-    }
+	.citizen-toc-enabled {
+		.citizen-body-container {
+			display: grid;
+			grid-template-areas:
+ 'header header'
+				'content sidebar'
+				'footer footer';
+			grid-template-columns: minmax( 0, var( --width-layout ) ) var( --width-toc );
+		}
+	}
+
+	.citizen-animations-ready {
+		.citizen-body-container {
+			transition: var( --transition-menu );
+			transition-property: grid;
+		}
+	}
 }
 
 @media ( min-width: @min-width-breakpoint-desktop-wide ) {
