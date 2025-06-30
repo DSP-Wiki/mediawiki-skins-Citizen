@@ -1,8 +1,11 @@
 .citizen-drawer {
 	&__card {
-		.citizen-header-card( left );
-		opacity: 1 !important;
-        background-color: #1D1D1D;
+		.citizen-header-card( start );
+		transform-origin: var( --transform-origin-offset-start ) var( --transform-origin-offset-end );
+
+		@media ( min-width: @min-width-breakpoint-desktop ) {
+			transform-origin: var( --transform-origin-offset-start ) var( --transform-origin-offset-start );
+		}
 	}
 
 	&__header {
@@ -45,13 +48,6 @@
 		.mw-list-item a {
 			border-radius: var( --border-radius--small );
 		}
-	}
-}
-
-// Checkbox hack
-#citizen-drawer__checkbox:checked {
-	~ .citizen-drawer__card {
-		.citizen-card-show;
 	}
 }
 
