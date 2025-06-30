@@ -272,6 +272,7 @@ class SkinHooks implements
 		// Most icons are not mapped yet in the associated pages menu
 		$iconMap = [
 			'main' => 'article',
+			'file' => 'image',
 			'user' => 'userAvatar'
 		];
 
@@ -316,7 +317,10 @@ class SkinHooks implements
 			// Extension:SemanticMediaWiki
 			'smwbrowselink' => 'database',
 			// Extension:UrlShortener
-			'urlshortener' => 'link'
+			'urlshortener' => 'link',
+			'urlshortener-qrcode' => 'qrCode',
+			// Extension:Wikibase
+			'wikibase' => 'logoWikidata'
 		];
 
 		self::mapIconsToMenuItems( $links, 'TOOLBOX', $iconMap );
