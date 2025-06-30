@@ -3,8 +3,9 @@
  * Based on Vector
  */
 const
-	DROPDOWN_DETAILS_SELECTOR = '.citizen-menu__dropdown',
-	DROPDOWN_SUMMARY_SELECTOR = '.citizen-menu__dropdownButton',
+	DROPDOWN_CONTAINER_SELECTOR = '.citizen-dropdown',
+	DROPDOWN_DETAILS_SELECTOR = '.citizen-dropdown-details',
+	DROPDOWN_SUMMARY_SELECTOR = '.citizen-dropdown-summary',
 	DROPDOWN_TARGET_SELECTOR = '.citizen-menu__card';
 
 /**
@@ -21,7 +22,6 @@ class Dropdown {
 		this.details = details;
 		this.summary = summary;
 		this.target = target;
-		this.dismissOnClickOutside = this.dismissOnClickOutside.bind( this );
 		this.dismissOnEscape = this.dismissOnEscape.bind( this );
 		this.dismissOnFocusLoss = this.dismissOnFocusLoss.bind( this );
 		this.dismissOnLinkClick = this.dismissOnLinkClick.bind( this );
@@ -31,17 +31,6 @@ class Dropdown {
 	dismiss() {
 		if ( this.details && this.details.open ) {
 			this.details.open = false;
-		}
-	}
-
-	/**
-	 * Dismiss the target when clicking elsewhere.
-	 *
-	 * @param {Event} event
-	 */
-	dismissOnClickOutside( event ) {
-		if ( !this.target.contains( event.target ) && !this.summary.contains( event.target ) ) {
-			this.dismiss();
 		}
 	}
 
@@ -62,7 +51,7 @@ class Dropdown {
 	 * @param {Event} event
 	 */
 	dismissOnFocusLoss( event ) {
-		if ( !this.details.contains( event.target ) ) {
+		if ( !this.target.contains( event.target ) && !this.summary.contains( event.target ) ) {
 			this.dismiss();
 		}
 	}
@@ -84,7 +73,7 @@ class Dropdown {
 	 */
 	unbind() {
 		this.target.removeEventListener( 'click', this.dismissOnLinkClick );
-		window.removeEventListener( 'click', this.dismissOnClickOutside );
+		window.removeEventListener( 'click', this.dismissOnFocusLoss );
 		window.removeEventListener( 'focusin', this.dismissOnFocusLoss );
 		window.removeEventListener( 'keyup', this.dismissOnEscape );
 	}
@@ -94,7 +83,7 @@ class Dropdown {
 	 */
 	bind() {
 		this.target.addEventListener( 'click', this.dismissOnLinkClick );
-		window.addEventListener( 'click', this.dismissOnClickOutside );
+		window.addEventListener( 'click', this.dismissOnFocusLoss );
 		window.addEventListener( 'focusin', this.dismissOnFocusLoss );
 		window.addEventListener( 'keyup', this.dismissOnEscape );
 	}
@@ -116,12 +105,13 @@ class Dropdown {
 }
 
 function init() {
-	const dropdowns = document.querySelectorAll( DROPDOWN_DETAILS_SELECTOR );
+	const dropdowns = document.querySelectorAll( DROPDOWN_CONTAINER_SELECTOR );
 
-	dropdowns.forEach( ( details ) => {
+	dropdowns.forEach( ( dropdown ) => {
 		const
-			summary = details.querySelector( DROPDOWN_SUMMARY_SELECTOR ),
-			target = details.querySelector( DROPDOWN_TARGET_SELECTOR );
+			details = dropdown.querySelector( DROPDOWN_DETAILS_SELECTOR ),
+			summary = dropdown.querySelector( DROPDOWN_SUMMARY_SELECTOR ),
+			target = dropdown.querySelector( DROPDOWN_TARGET_SELECTOR );
 
 		if ( !( details && summary && target ) ) {
 			return;
