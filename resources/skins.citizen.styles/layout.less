@@ -84,9 +84,13 @@
 }
 
 @media ( min-width: @min-width-breakpoint-desktop-wide ) {
-    .ns--1,
-    .ns-6,
-    .ns-14 {
-        --width-layout: var( --width-layout--extended );
-    }
+	// 1 - Special, 6 - File, 14 - Category
+	.ns {
+		&--1,
+		&-6,
+		&-14 {
+			--width-layout: var( --width-layout--extended );
+			--width-page: calc( var( --width-layout--extended ) + var( --width-toc ) + var( --space-lg ) );
+		}
+	}
 }
