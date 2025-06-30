@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.33.0](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/compare/v2.32.0...v2.33.0) (2024-10-15)
+
+
+### Features
+
+* **core:** ✨ make border color more visible in pure black mode ([ec68a30](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/commit/ec68a305792563c137e4a392905f5164c180d09f))
+* **core:** ✨ make dark mode surface colors a bit darker ([3601fbd](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/commit/3601fbd3ee2431d0425a36b0450afebc6d9e77b0))
+* **core:** ✨ update to new Codex external link icon ([10f5d11](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/commit/10f5d118f67d8a41e26aa81bf72ed960a9bd613a))
+* **pagetools:** ✨ add border to floating buttons ([0858378](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/commit/085837807f15dbbcdf4c89bd559f02b44f73bced))
+* **Popups:** ✨ make popup cards more compact ([5a3a94a](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/commit/5a3a94a6e0400464e7499b7ac5178aacc493f55a))
+
+
+### Bug Fixes
+
+* **menu:** 🐛 hide keyhint in main menu items ([249ce64](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/commit/249ce640e90a67c48e313db53c38e8012e1115ff))
+* **pagetools:** 🐛 do not bound the width of page action card to page tools ([96004fd](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/commit/96004fd30dd41d754d6a5ae99a6c5107eb27fa5b))
+* **search:** 🐛 correct Elasticsearch spelling ([#958](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/issues/958)) ([575acaf](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/commit/575acaf8e6b95da0b9146030ad102f79852c14ff))
+* **search:** 🐛 fix invisible progress bar ([01365d9](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/commit/01365d90ec78fdb22cd7d7001566437aadd3bcc8))
+* **usermenu:** 🐛 hide keyhint for create account button ([5f328c0](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/commit/5f328c074375e313206ee097669734b00a77416d))
+
 ## [2.32.0](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/compare/v2.31.0...v2.32.0) (2024-10-03)
 
 
@@ -10,7 +30,7 @@ All notable changes to this project will be documented in this file. See [standa
 * **core:** ✨ enable heading HTML change for 1.43 ([c64b2ff](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/commit/c64b2ff5e6a15ad57798b2943468e58b2db4addb))
 * **menu:** ✨ add accesskey hint to menu items ([10a28ac](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/commit/10a28ac476ac168ef3fa93b3e61867d1c040a370))
 * **search:** ✨ change search text label to advanced search if AdvancedSearch is enabled ([dea1628](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/commit/dea1628ce37b502e73adaa3d39546911e08cac97))
-* **search:** ✨ show ElasticSearch at search footer if it is enabled ([3e63a3f](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/commit/3e63a3f6cce49b1b2d21b827162ecbcb642babdf))
+* **search:** ✨ show Elasticsearch at search footer if it is enabled ([3e63a3f](https://github.com/StarCitizenTools/mediawiki-skins-Citizen/commit/3e63a3f6cce49b1b2d21b827162ecbcb642babdf))
 
 
 ### Bug Fixes
