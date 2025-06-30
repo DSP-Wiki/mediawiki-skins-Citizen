@@ -17,8 +17,9 @@
 
 .citizen-body-container {
 	display: grid;
+	// stylelint-disable-next-line @stylistic/declaration-colon-space-after
 	grid-template-areas:
-        'content'
+		'content'
 		'footer';
 	// Using auto as min value will cause overflow
 	grid-template-columns: minmax( 0, var( --width-layout ) );
@@ -45,9 +46,12 @@
     }
 
 	.citizen-toc-enabled {
+		--width-page: calc( var( --width-layout ) + var( --width-toc ) + var( --space-lg ) );
+
 		.citizen-body-container {
+			// stylelint-disable-next-line @stylistic/declaration-colon-space-after
 			grid-template-areas:
- 'content sidebar'
+				'content sidebar'
 				'footer footer';
 			grid-template-columns: minmax( 0, var( --width-layout ) ) var( --width-toc );
 		}
