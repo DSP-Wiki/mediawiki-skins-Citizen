@@ -8,7 +8,7 @@
 .citizen-card(@border-radius: true) {
 	background-color: var( --color-surface-1 );
 	border: var( --border-width-base ) solid var( --border-color-base );
-	box-shadow: var( --box-shadow-dialog );
+	box-shadow: var( --box-shadow-drop-xx-large );
 
 	& when (@border-radius ) {
 		border-radius: var( --border-radius-medium );
@@ -99,9 +99,11 @@
 	position: -webkit-sticky;
 	position: sticky;
 	top: var( --height-sticky-header );
+	transition: var( --transition-menu );
+	transition-property: top;
 
 	& when (@bottomBorder ) {
-		box-shadow: 0 0 0 1px var( --border-color-base );
+		box-shadow: 0 1px 0 0 var( --border-color-base );
 	}
 
 	& when (@zIndex ) {
@@ -173,7 +175,7 @@
 }
 
 // Button Styles
-.button-blue() {
+.button-progressive() {
 	color: var( --color-inverted-primary ) !important;
 	background-color: var( --color-progressive );
 
@@ -183,15 +185,15 @@
 	}
 }
 
-.button-blue-hover() {
+.button-progressive-hover() {
 	background-color: var( --color-progressive--hover );
 }
 
-.button-blue-active() {
+.button-progressive-active() {
 	background-color: var( --color-progressive--active );
 }
 
-.button-red() {
+.button-destructive() {
 	color: var( --color-inverted-fixed ) !important;
 	background-color: var( --color-destructive );
 
@@ -201,11 +203,11 @@
 	}
 }
 
-.button-red-hover() {
+.button-destructive-hover() {
 	background-color: var( --color-destructive--hover );
 }
 
-.button-red-active() {
+.button-destructive-active() {
 	background-color: var( --color-destructive--active );
 }
 
