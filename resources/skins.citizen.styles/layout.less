@@ -26,20 +26,21 @@
     margin: var( --space-xl ) 0;
 }
 
-.mw-body-header {
-    position: -webkit-sticky;
-    position: sticky;
-    z-index: @z-index-page-header + 1;
-    display: flex;
-    flex-wrap: wrap;
-    grid-area: header;
-    gap: var( --space-md );
-    align-items: center;
-    padding-top: var( --space-md );
+.citizen-page-header {
+	position: -webkit-sticky;
+	position: sticky;
+	// So that the modal are above custom sticky headers
+	z-index: @z-index-page-header + 1;
+	display: flex;
+	flex-wrap: wrap;
+	grid-area: header;
+	gap: var( --space-md );
+	align-items: center;
+	padding-top: var( --space-md );
 }
 
-.page-heading {
-    flex-grow: 1;
+.citizen-page-heading {
+	flex-grow: 1;
 }
 
 .firstHeading-container {
