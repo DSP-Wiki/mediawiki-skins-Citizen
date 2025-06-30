@@ -1,13 +1,6 @@
 .citizen-toc {
-	--size-icon: 1rem;
 	font-size: var( --font-size-small );
 	line-height: var( --line-height-xs );
-
-	&__card {
-		display: flex;
-		flex-direction: column;
-		gap: var( --space-xs );
-	}
 
 	&__top {
 		.citizen-ui-icon {
@@ -15,19 +8,9 @@
 		}
 	}
 
-	&__header {
-		font-size: var( --font-size-x-small );
-		color: var( --color-base--subtle );
-		letter-spacing: 0.05em;
-	}
-
-	&__contents {
-		margin-left: 1px;
-	}
-
 	&__contents,
 	&__list {
-		margin: 0;
+		margin: 0 0 0 var( --space-xs );
 		list-style: none;
 		border-left: 1px solid var( --border-color-base );
 
@@ -37,15 +20,11 @@
 		}
 	}
 
-	&__list {
-		margin-left: var( --space-xs );
-	}
-
 	&__link {
+		position: relative;
 		display: flex;
 		gap: var( --space-xs );
-		padding-top: var( --space-xs );
-		padding-bottom: var( --space-xs );
+		padding: var( --space-xs );
 		font-weight: var( --font-weight-medium );
 		color: var( --color-base );
 		border-radius: var( --border-radius--small );
@@ -74,8 +53,14 @@
 	}
 
 	&__indicator {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
 		flex-shrink: 0;
 		width: 3px;
+		margin-top: var( --space-xs );
+		margin-bottom: var( --space-xs );
 		margin-left: -2px;
 		border-radius: var( --border-radius--pill );
 	}
@@ -206,27 +191,16 @@
 
 @media ( min-width: @min-width-breakpoint-desktop ) {
 	.citizen-toc {
-		grid-area: toc;
+		--toc-margin-top: var( --space-xs );
+		position: -webkit-sticky;
+		position: sticky;
+		top: var( --toc-margin-top );
+		max-height: ~'calc( 100vh - var( --toc-margin-top ) - var( --space-md ) )';
+		overflow-y: auto;
+		overscroll-behavior: contain;
 
-		&__card {
-			--toc-margin-top: var( --space-xs );
-			position: -webkit-sticky;
-			position: sticky;
-			top: var( --toc-margin-top );
-			max-height: ~'calc( 100vh - var( --toc-margin-top ) - var( --space-md ) )';
-			overflow-y: auto;
-			overscroll-behavior: contain;
-		}
-	}
-
-	// Hide button in desktop viewport
-	#citizen-toc__buttonCheckbox {
-		display: none;
-	}
-
-	// Sticky header styles
-	.citizen-body-header--sticky {
-		.citizen-toc__card {
+		// Sticky header styles
+		.citizen-body-header--sticky & {
 			--toc-margin-top: ~'calc( var( --header-size ) + var(  --space-xxl  ) )';
 
 			// Sticky header is shorter without buttons
@@ -234,5 +208,10 @@
 				--toc-margin-top: ~'calc( var( --header-size ) + var( --space-md ) )';
 			}
 		}
+	}
+
+	// Hide button in desktop viewport
+	#citizen-toc__buttonCheckbox {
+		display: none;
 	}
 }
