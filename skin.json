@@ -1,6 +1,6 @@
 {
 	"name": "Citizen",
-	"version": "3.0.0",
+	"version": "3.1.0",
 	"author": [
 		"[https://www.mediawiki.org/wiki/User:Alistair3149 Alistair3149]",
 		"[https://www.mediawiki.org/wiki/User:Octfx Octfx]",
@@ -102,6 +102,7 @@
 	},
 	"Hooks": {
 		"BeforePageDisplay": "SkinHooks",
+		"OutputPageAfterGetHeadLinksArray": "SkinHooks",
 		"SidebarBeforeOutput": "SkinHooks",
 		"SkinBuildSidebar": "SkinHooks",
 		"SkinEditSectionLinks": "SkinHooks",
@@ -292,6 +293,105 @@
 		"skins.citizen.serviceWorker": {
 			"scripts": [
 				"resources/skins.citizen.serviceWorker/sw.js"
+			]
+		},
+		"skins.citizen.commandPalette": {
+			"class": "MediaWiki\\ResourceLoader\\CodexModule",
+			"dependencies": [
+				"mediawiki.page.ready",
+				"mediawiki.storage",
+				"mediawiki.util",
+				"skins.citizen.commandPalette.codex",
+				"vue",
+				"pinia"
+			],
+			"packageFiles": [
+				"resources/skins.citizen.commandPalette/init.js",
+				"resources/skins.citizen.commandPalette/types.js",
+				"resources/skins.citizen.commandPalette/composables/useListNavigation.js",
+				"resources/skins.citizen.commandPalette/composables/useActionNavigation.js",
+				"resources/skins.citizen.commandPalette/utils/fetch.js",
+				"resources/skins.citizen.commandPalette/utils/urlGenerator.js",
+				"resources/skins.citizen.commandPalette/stores/searchStore.js",
+				"resources/skins.citizen.commandPalette/services/recentItems.js",
+				"resources/skins.citizen.commandPalette/searchClients/SearchClientFactory.js",
+				"resources/skins.citizen.commandPalette/searchClients/MwRestSearchClient.js",
+				"resources/skins.citizen.commandPalette/providers/RecentItemsProvider.js",
+				"resources/skins.citizen.commandPalette/providers/RelatedArticlesProvider.js",
+				"resources/skins.citizen.commandPalette/providers/SearchProvider.js",
+				"resources/skins.citizen.commandPalette/providers/CommandProvider.js",
+				"resources/skins.citizen.commandPalette/commands/namespace.js",
+				"resources/skins.citizen.commandPalette/commands/action.js",
+				"resources/skins.citizen.commandPalette/components/App.vue",
+				"resources/skins.citizen.commandPalette/components/CommandPaletteEmptyState.vue",
+				"resources/skins.citizen.commandPalette/components/CommandPaletteFooter.vue",
+				"resources/skins.citizen.commandPalette/components/CommandPaletteHeader.vue",
+				"resources/skins.citizen.commandPalette/components/CommandPaletteKeyboardHints.vue",
+				"resources/skins.citizen.commandPalette/components/CommandPaletteList.vue",
+				"resources/skins.citizen.commandPalette/components/CommandPaletteListItem.vue",
+				"resources/skins.citizen.commandPalette/components/CommandPaletteListItemActions.vue",
+				"resources/skins.citizen.commandPalette/components/CommandPaletteListItemContent.vue",
+				"resources/skins.citizen.commandPalette/components/CommandPalettePresults.vue",
+				{
+					"name": "resources/skins.citizen.commandPalette/icons.json",
+					"callback": "MediaWiki\\ResourceLoader\\CodexModule::getIcons",
+					"callbackParam": [
+						"cdxIconArticle",
+						"cdxIconArticles",
+						"cdxIconArticleNotFound",
+						"cdxIconArticleRedirect",
+						"cdxIconArticleSearch",
+						"cdxIconArticlesSearch",
+						"cdxIconCode",
+						"cdxIconEdit",
+						"cdxIconSearch",
+						"cdxIconTrash",
+						"cdxIconSpecialPages",
+						"cdxIconPlay"
+					]
+				},
+				{
+					"name": "resources/skins.citizen.commandPalette/config.json",
+					"callback": "MediaWiki\\Skins\\Citizen\\Hooks\\ResourceLoaderHooks::getCitizenCommandPaletteResourceLoaderConfig"
+				}
+			],
+			"messages": [
+				"citizen-search-empty-desc",
+				"citizen-search-noresults-title",
+				"citizen-search-noresults-desc",
+				"action-edit",
+				"search-nonefound",
+				"searchsuggest-search",
+				"citizen-command-palette-heading-recent",
+				"citizen-command-palette-heading-related",
+				"citizen-command-palette-keyhint-actions",
+				"citizen-command-palette-keyhint-enter-select",
+				"citizen-command-palette-keyhint-enter-open",
+				"citizen-command-palette-keyhint-enter-search",
+				"citizen-command-palette-keyhint-navigate",
+				"citizen-command-palette-keyhint-exit",
+				"citizen-command-palette-keyhint-return",
+				"citizen-command-palette-type-page",
+				"citizen-command-palette-type-fulltext-search",
+				"citizen-command-palette-type-namespace",
+				"citizen-command-palette-type-command",
+				"citizen-command-palette-type-fulltext-search-description",
+				"citizen-command-palette-command-ns-label",
+				"citizen-command-palette-command-ns-description",
+				"citizen-command-palette-type-special-page",
+				"citizen-command-palette-command-action-label",
+				"citizen-command-palette-command-action-description",
+				"citizen-command-palette-type-menu-item"
+			]
+		},
+		"skins.citizen.commandPalette.codex": {
+			"class": "MediaWiki\\ResourceLoader\\CodexModule",
+			"codexComponents": [
+				"CdxButton",
+				"CdxIcon",
+				"CdxSearchResultTitle",
+				"CdxTextInput",
+				"CdxThumbnail"
 			]
 		},
 		"skins.citizen.icons": {
@@ -742,6 +842,12 @@
 		"TableOfContentsCollapseAtCount": {
 			"value": 28,
 			"description": "@var The minimum number of headings required to collapse all headings in the sticky table of contents by default."
+		},
+		"EnableCommandPalette": {
+			"value": false,
+			"description": "[EXPERIMENTAL] Enables or disable the command palette. Command palette is in active development and may not work as expected.",
+			"descriptionmsg": "citizen-config-enablecommandpalette",
+			"public": true
 		}
 	},
 	"manifest_version": 2
