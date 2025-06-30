@@ -68,8 +68,7 @@ class SkinHooks implements
 		if ( $this->getConfigValue( 'CitizenEnablePreferences', $out ) === true ) {
 			$script = file_get_contents( MW_INSTALL_PATH . '/skins/Citizen/resources/skins.citizen.scripts/inline.js' );
 			$script = Html::inlineScript( $script );
-			// TODO: Consider turning on cache after this is more stable
-			$script = RL\ResourceLoader::filter( 'minify-js', $script, [ 'cache' => false ] );
+			$script = RL\ResourceLoader::filter( 'minify-js', $script );
 			$out->addHeadItem( 'skin.citizen.inline', $script );
 		}
 	}
@@ -259,7 +258,11 @@ class SkinHooks implements
 			'unprotect' => 'unLock',
 			// Extension:Purge
 			// Extension:SemanticMediaWiki
-			'purge' => 'reload'
+			'purge' => 'reload',
+			// Extension:Cargo
+			'cargo-purge'  => 'reload',
+			// Extension:DiscussionTools
+			'dt-page-subscribe' => 'bell'
 		];
 
 		self::mapIconsToMenuItems( $links, 'actions', $iconMap );
@@ -315,7 +318,7 @@ class SkinHooks implements
 			// Extension:Cargo
 			'cargo-pagevalues' => 'database',
 			// Extension:CiteThisPage
-			'citethispage' => 'reference',
+			'citethispage' => 'quotes',
 			// Extension:CreateRedirect
 			'createredirect' => 'articleRedirect',
 			// Extension:SemanticMediaWiki
@@ -338,6 +341,14 @@ class SkinHooks implements
 	 * @param array &$links
 	 */
 	private static function updateNotificationsMenu( &$links ) {
+		$iconMap = [
+			'notifications-alert' => 'bell',
+			'notifications-notice' => 'tray'
+		];
+
+		self::mapIconsToMenuItems( $links, 'notifications', $iconMap );
+		self::addIconsToMenuItems( $links, 'notifications' );
+
 		/**
 		 * Echo has styles that control icons rendering in places we don't want them.
 		 * Based on fixEcho() from Vector, see T343838
@@ -348,7 +359,8 @@ class SkinHooks implements
 				$linkClass = $item['link-class'] ?? [];
 				$newLinkClass = [
 					// Allows Echo to react to clicks
-					'mw-echo-notification-badge-nojs'
+					'mw-echo-notification-badge-nojs',
+					'citizen-header__button'
 				];
 				if ( in_array( 'mw-echo-unseen-notifications', $linkClass ) ) {
 					$newLinkClass[] = 'mw-echo-unseen-notifications';
@@ -413,10 +425,7 @@ class SkinHooks implements
 			'edit' => 'edit',
 			'view-foreign' => 'linkExternal',
 			// Extension:VisualEditor
-			// For some reason the icon span element keeps getting removed
-			// So we are adding this the legacy way
-			// Bug: T323188
-			// 've-edit' => 'edit',
+			've-edit' => 'edit',
 			// Extension:DiscussionTools
 			'addsection' => 'speechBubbleAdd'
 		];

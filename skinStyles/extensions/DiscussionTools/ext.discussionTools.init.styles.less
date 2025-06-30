@@ -104,7 +104,14 @@
 
 .ext-discussiontools-visualenhancements-enabled {
 	.ext-discussiontools-init-section {
+		font-family: var( --font-family-base ) !important;
+		font-weight: var( --font-weight-semibold );
 		border-top-color: var( --border-color-base );
+
+		&-bar {
+			margin-top: var( --space-xxs );
+			font-size: var( --font-size-x-small );
+		}
 
 		&-metaitem {
 			color: var( --color-base--subtle );
