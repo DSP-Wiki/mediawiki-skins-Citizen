@@ -11,6 +11,8 @@ const searchHistory = require( './searchHistory.js' )( config );
 const searchResults = require( './searchResults.js' )();
 const searchQuery = require( './searchQuery.js' )();
 
+const templateTypeaheadElement = require( './templates/TypeaheadElement.mustache' );
+
 const typeahead = {
 	/** @type {HTMLElement | undefined} */
 	element: undefined,
@@ -22,7 +24,6 @@ const typeahead = {
 			const typeaheadFormElement = formEl;
 			this.element = typeaheadFormElement;
 			typeaheadFormElement.setAttribute( 'aria-owns', typeahead.element.id );
-			typeaheadFormElement.appendChild( typeahead.element );
 		},
 		setLoadingState: function ( state ) {
 			this.element.classList.toggle( SEARCH_LOADING_CLASS, state );
@@ -311,12 +312,15 @@ const typeahead = {
 			} );
 	},
 	init: function ( formEl, inputEl ) {
-		const template = mw.template.get( 'skins.citizen.search', 'resources/skins.citizen.search/templates/typeahead.mustache' );
+		this.mustacheCompiler = mw.template.getCompiler( 'mustache' );
+		const compiledTemplateTypeaheadElement = this.mustacheCompiler.compile( templateTypeaheadElement );
 		const data = {
 			'msg-searchsuggest-search': mw.message( 'searchsuggest-search' ).text(),
 			'msg-citizen-search-empty-desc': mw.message( 'citizen-search-empty-desc' ).text()
 		};
-		this.element = template.render( data ).get()[ 1 ];
+		this.element = compiledTemplateTypeaheadElement.render( data ).get()[ 1 ];
+		formEl.after( this.element );
+
 		this.form.init( formEl );
 		this.input.init( inputEl );
 

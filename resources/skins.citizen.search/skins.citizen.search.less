@@ -2,25 +2,33 @@
 @import '../mixins.less';
 
 .citizen-typeahead {
-	--size-icon: 1.25rem; // reset
-	position: absolute;
-	top: 100%;
-	left: -1px; // IDK why is it off by 1px
-	box-sizing: content-box; // Magic to align with search input
-	width: 100%;
-	max-height: ~'calc( var( --header-card-maxheight ) - var( --height-search-bar ) )';
-	margin: 0; // Reset <ol> styles
-	overflow: auto;
-	overscroll-behavior: contain;
-	border-top-color: transparent;
+	display: flex;
+	flex-direction: column;
+	gap: var( --space-xs );
 	border-bottom-right-radius: var( --border-radius-medium );
 	border-bottom-left-radius: var( --border-radius-medium );
-	.citizen-card( false );
 
 	a {
 		&:hover,
 		&:focus {
 			text-decoration: none;
+		}
+	}
+
+	/* Reset styles */
+	ol,
+	li {
+		margin: 0;
+		list-style: none;
+	}
+
+	> .citizen-typeahead-item-group {
+		&:first-of-type {
+			margin-top: var( --space-xxs );
+		}
+
+		&:last-of-type {
+			margin-bottom: var( --space-xxs );
 		}
 	}
 
@@ -41,14 +49,8 @@
 			display: flex;
 			align-items: center;
 			overflow: hidden;
-			font-size: var( --font-size-small );
 			white-space: nowrap;
 			pointer-events: none;
-
-			// HACK: Target mobile Safari only to prevent auto zooming the input field
-			@supports (-webkit-touch-callout: none) {
-				font-size: 1rem;
-			}
 
 			&-query {
 				color: var( --color-emphasized );
@@ -58,19 +60,12 @@
 
 	&-item {
 		&-group {
-			&-list {
-				margin: 0;
-				list-style: none;
-			}
-
 			// FIXME: Use a generic attribute
 			&[ data-mw-citizen-typeahead-group='action' ] .citizen-typeahead-item-group-list {
 				display: flex;
 				gap: var( --space-xxs );
 				padding-right: var( --space-sm );
 				padding-left: var( --space-sm );
-				margin-top: var( --space-xs );
-				margin-bottom: var( --space-xs );
 				overflow-x: auto;
 			}
 		}
@@ -91,7 +86,9 @@
 
 			.citizen-typeahead {
 				&__content {
-					padding: var( --space-xs ) var( --space-sm );
+					gap: var( --space-xs );
+					padding-right: var( --space-sm );
+					padding-left: var( --space-sm );
 					margin: 0;
 					border: var( --border-width-base ) solid var( --border-color-base );
 					border-radius: var( --border-radius-medium );
@@ -109,7 +106,8 @@
 
 			.citizen-typeahead {
 				&__content {
-					padding: var( --space-sm ) 0;
+					padding-top: var( --space-sm );
+					padding-bottom: var( --space-sm );
 				}
 
 				&__thumbnail {
@@ -148,7 +146,8 @@
 			.citizen-typeahead {
 				&__content {
 					flex-direction: column;
-					padding: var( --space-xl ) 0;
+					padding-top: var( --space-xl );
+					padding-bottom: var( --space-xl );
 					text-align: center;
 				}
 
@@ -175,6 +174,7 @@
 		&-lg {
 			.citizen-typeahead {
 				&__title {
+					font-size: var( --font-size-medium );
 					font-weight: var( --font-weight-semibold );
 				}
 
@@ -188,8 +188,7 @@
 	&__content {
 		display: flex;
 		align-items: center;
-		padding: var( --space-xs ) 0;
-		margin: 0 var( --space-sm );
+		padding: var( --space-xs ) var( --space-md );
 		color: var( --color-base );
 	}
 
@@ -232,24 +231,20 @@
 	}
 
 	&__label {
-		--size-icon: 0.8125rem;
 		display: flex;
 		gap: var( --space-xxs );
-		margin-left: var( --space-xs );
-		font-size: var( --font-size-x-small );
+		font-size: var( --font-size-small );
 		color: var( --color-base );
-
-		.citizen-ui-icon {
-			margin-right: var( --space-xxs );
-		}
 	}
 
 	&__labelItem {
 		display: flex;
+		gap: var( --space-xxs );
 		align-items: center;
 	}
 
-	&__description {
+	&__description,
+	&__labelItem {
 		font-size: var( --font-size-x-small );
 		color: var( --color-subtle );
 	}
@@ -270,16 +265,6 @@
 		padding: 0 8px;
 		background-color: var( --color-surface-1 );
 		border-radius: var( --border-radius-base );
-	}
-}
-
-.citizen-search__card:has( .citizen-typeahead ) {
-	border-bottom-color: transparent;
-	border-bottom-right-radius: 0;
-	border-bottom-left-radius: 0;
-
-	.citizen-typeahead {
-		border-top-color: transparent;
 	}
 }
 
