@@ -119,8 +119,13 @@
 }
 
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-buttonElement-active > .oo-ui-buttonElement-button {
+	color: var( --color-inverted-primary );
 	background-color: var( --color-progressive--active );
 	border-color: var( --color-progressive--active );
+
+	> .oo-ui-iconElement-icon {
+		filter: var( --filter-invert-primary );
+	}
 }
 
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-buttonElement-active > .oo-ui-buttonElement-button:focus {
@@ -749,7 +754,6 @@ TODO: Need to refactor the current shadow for filter drop-shadow, see variables.
 	filter: var( --filter-invert );
 }
 
-.oo-ui-iconElement-icon.oo-ui-image-progressive,
-.oo-ui-iconElement-icon.oo-ui-checkboxInputWidget-checkIcon {
+.oo-ui-iconElement-icon.oo-ui-image-progressive {
 	filter: var( --filter-invert-primary );
 }
