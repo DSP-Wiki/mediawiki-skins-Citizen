@@ -51,11 +51,15 @@
 				> * {
 					opacity: 1;
 					transition: var( --transition-menu );
+					transition-delay: var( --transition-delay-menu );
 					transition-property: opacity;
 				}
 			}
 
 			> .citizen-dropdown-summary {
+				/* Make button visible above backdrop */
+				position: relative;
+				z-index: 1;
 				background-color: var( --background-color-button-quiet--active );
 
 				&:hover {
@@ -72,6 +76,7 @@
 				z-index: -1;
 				content: '';
 				background: var( --background-color-backdrop-light );
+				-webkit-backdrop-filter: blur( 2px );
 				backdrop-filter: blur( 2px );
 				opacity: 0;
 			}

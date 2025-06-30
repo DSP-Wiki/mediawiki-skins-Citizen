@@ -34,6 +34,11 @@ body {
 	outline-offset: 1px;
 }
 
+::selection {
+	color: var( --color-inverted-primary );
+	background-color: var( --color-progressive );
+}
+
 input,
 select,
 textarea {
@@ -75,6 +80,7 @@ sub {
 
 th {
 	font-weight: var( --font-weight-semibold );
+	color: var( --color-emphasized );
 }
 
 td {

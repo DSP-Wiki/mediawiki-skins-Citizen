@@ -39,15 +39,40 @@ function init() {
 		return;
 	}
 
-	const toggleStickyClass = ( state ) => () => {
+	const placeholder = document.createElement( 'div' );
+	placeholder.id = 'citizen-page-header-sticky-placeholder';
+	header.insertAdjacentElement( 'afterend', placeholder );
+
+	let staticHeaderHeight = header.getBoundingClientRect().height;
+
+	const toggleStickyHeader = ( isSticky ) => {
 		window.requestAnimationFrame( () => {
-			document.body.classList.toggle( STICKY_CLASS, state );
+			document.body.classList.toggle( STICKY_CLASS, isSticky );
+			placeholder.style.height = `${ staticHeaderHeight - header.getBoundingClientRect().height }px`;
 		} );
 	};
 
+	const onResize = () => {
+		toggleStickyHeader( false );
+	};
+
+	const onResizeEnd = mw.util.debounce( () => {
+		// Refresh static header height after resize
+		staticHeaderHeight = header.getBoundingClientRect().height;
+		toggleStickyHeader( true );
+	}, 250 );
+
 	const observer = initIntersectionObserver(
-		toggleStickyClass( true ),
-		toggleStickyClass( false )
+		() => {
+			toggleStickyHeader( true );
+			window.addEventListener( 'resize', onResize );
+			window.addEventListener( 'resize', onResizeEnd );
+		},
+		() => {
+			toggleStickyHeader( false );
+			window.removeEventListener( 'resize', onResize );
+			window.removeEventListener( 'resize', onResizeEnd );
+		}
 	);
 	observer.observe( sentinel );
 }
