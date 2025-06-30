@@ -1,6 +1,6 @@
 {
 	"name": "Citizen",
-	"version": "2.15.1",
+	"version": "2.16.0",
 	"author": [
 		"[https://www.mediawiki.org/wiki/User:Alistair3149 Alistair3149]",
 		"[https://www.mediawiki.org/wiki/User:Octfx Octfx]",
@@ -158,6 +158,7 @@
 					"callback": "MediaWiki\\Skins\\Citizen\\Hooks\\ResourceLoaderHooks::getCitizenResourceLoaderConfig"
 				},
 				"resources/skins.citizen.scripts/checkbox.js",
+				"resources/skins.citizen.scripts/dropdown.js",
 				"resources/skins.citizen.scripts/lastModified.js",
 				"resources/skins.citizen.scripts/overflowElements.js",
 				"resources/skins.citizen.scripts/scrollObserver.js",
@@ -698,16 +699,7 @@
 		},
 		"OverflowNowrapClasses": {
 			"value": [
-				"citizen-table-nowrap",
-				"diff",
-				"mw-changeslist-line",
-				"mw-recentchanges-table",
-				"infobox",
-				"cargoDynamicTable",
-				"dataTable",
-				"srf-datatable",
-				"smw-datatable",
-				"mw-capiunto-infobox"
+				"citizen-table-nowrap"
 			],
 			"description": "Defines css classes ignored by overflow wrapper",
 			"descriptionmsg": "citizen-config-overflownowrapclasses",
