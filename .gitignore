@@ -20,10 +20,12 @@ sftp-config.json
 
 # Building & testing
 /composer.lock
+/coverage
 /docs
 /vendor
 /node_modules
 .eslintcache
+package-lock.json
 
 # Operating systems
 ## Mac OS X
