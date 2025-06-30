@@ -1,6 +1,6 @@
 {
 	"name": "Citizen",
-	"version": "2.14.1",
+	"version": "2.15.0",
 	"author": [
 		"[https://www.mediawiki.org/wiki/User:Alistair3149 Alistair3149]",
 		"[https://www.mediawiki.org/wiki/User:Octfx Octfx]",
@@ -159,12 +159,12 @@
 				},
 				"resources/skins.citizen.scripts/checkbox.js",
 				"resources/skins.citizen.scripts/lastModified.js",
+				"resources/skins.citizen.scripts/overflowElements.js",
 				"resources/skins.citizen.scripts/scrollObserver.js",
 				"resources/skins.citizen.scripts/sectionObserver.js",
 				"resources/skins.citizen.scripts/search.js",
 				"resources/skins.citizen.scripts/sections.js",
-				"resources/skins.citizen.scripts/tableOfContents.js",
-				"resources/skins.citizen.scripts/tables.js"
+				"resources/skins.citizen.scripts/tableOfContents.js"
 			],
 			"dependencies": [
 				"mediawiki.util",
@@ -502,6 +502,7 @@
 			"+ext.PortableInfobox.styles": "skinStyles/extensions/PortableInfobox/ext.PortableInfobox.styles.less",
 			"+ext.Tabber": "skinStyles/extensions/Tabber/ext.Tabber.less",
 			"+ext.tabberNeue": "skinStyles/extensions/TabberNeue/ext.tabberNeue.less",
+			"+ext.tabberNeue.init.styles": "skinStyles/extensions/TabberNeue/ext.tabberNeue.init.styles.less",
 			"+ext.templateDataGenerator.editTemplatePage": "skinStyles/extensions/TemplateData/ext.templateDataGenerator.editTemplatePage.less",
 			"+ext.uploadWizard": "skinStyles/extensions/UploadWizard/ext.uploadWizard.less",
 			"+ext.uploadWizard.page.styles": "skinStyles/extensions/UploadWizard/uploadWizard.noWizard.less",
@@ -686,7 +687,16 @@
 			"descriptionmsg": "citizen-config-enablepreferences",
 			"public": true
 		},
-		"TableNowrapClasses": {
+		"OverflowInheritedClasses": {
+			"value": [
+				"floatleft",
+				"floatright"
+			],
+			"description": "Defines css classes inherited by overflow wrapper",
+			"descriptionmsg": "citizen-config-overflowinheritedclasses",
+			"public": true
+		},
+		"OverflowNowrapClasses": {
 			"value": [
 				"citizen-table-nowrap",
 				"diff",
@@ -699,8 +709,8 @@
 				"smw-datatable",
 				"mw-capiunto-infobox"
 			],
-			"description": "Defines table css classes ignored by citizen table wrapper",
-			"descriptionmsg": "citizen-config-tablenowrapclasses",
+			"description": "Defines css classes ignored by overflow wrapper",
+			"descriptionmsg": "citizen-config-overflownowrapclasses",
 			"public": true
 		}
 	},

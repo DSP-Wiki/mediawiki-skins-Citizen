@@ -1,0 +1,42 @@
+@overflow-affordnance-size: 2rem;
+
+.mask-gradient(@direction, @color1, @color2, @color3: null , @color4: null) {
+	-webkit-mask-image: linear-gradient( @direction, @color1, @color2 );
+	mask-image: linear-gradient( @direction, @color1, @color2 );
+
+	& when not(@color3 = null), not(@color4 = null) {
+		-webkit-mask-image: linear-gradient( @direction, @color1, @color2, @color3, @color4 );
+		mask-image: linear-gradient( @direction, @color1, @color2, @color3, @color4 );
+	}
+}
+
+// TODO: Revisit on MW 1.43 since Minerva table styles are merged upstream
+table {
+	display: block;
+	max-width: max-content; // Needed for the border
+	overflow-x: auto;
+}
+
+// Elements enhanced by overflowElements.js
+.citizen-overflow {
+	&-wrapper {
+		overflow-x: auto;
+
+		table {
+			display: table;
+			overflow: initial;
+		}
+	}
+
+	&--left {
+		.mask-gradient(90deg, transparent, #000 @overflow-affordnance-size);
+	}
+
+	&--right {
+		.mask-gradient(270deg, transparent, #000 @overflow-affordnance-size);
+	}
+
+	&--left&--right {
+		.mask-gradient(90deg, transparent, #000 @overflow-affordnance-size, #000 ~'calc( 100% - @{overflow-affordnance-size} )', transparent);
+	}
+}
