@@ -1,7 +1,7 @@
 .citizen-toc {
-	--citizen-toc-toggle-size: ~'calc( var( --font-size-small ) * var( --line-height-xs ) + var( --space-xs ) * 2 )';
+	--citizen-toc-toggle-size: ~'calc( var( --font-size-small ) * var( --line-height-sm ) + var( --space-xs ) * 2 )';
 	font-size: var( --font-size-small );
-	line-height: var( --line-height-xs );
+	line-height: var( --line-height-sm );
 
 	&-top {
 		.citizen-ui-icon {
@@ -28,6 +28,7 @@
 		padding: var( --space-xs );
 		font-weight: var( --font-weight-medium );
 		color: var( --color-emphasized );
+		border-radius: var( --border-radius-base );
 
 		&.citizen-toc-top {
 			height: 0;
@@ -89,6 +90,11 @@
 		color: var( --color-subtle );
 	}
 
+	&-summary {
+		font-size: var( --font-size-x-small );
+		color: var( --color-subtle );
+	}
+
 	&-list-item {
 		position: relative;
 
@@ -119,7 +125,7 @@
 		display: grid;
 		place-content: center;
 		cursor: pointer;
-		border-radius: var( --border-radius--small );
+		border-radius: var( --border-radius-base );
 
 		.citizen-ui-icon {
 			&::before {
@@ -163,7 +169,9 @@
 
 		&-card {
 			position: absolute;
-			bottom: 100%;
+			// Get consistent margin
+			bottom: ~'calc( 100% - var( --space-xs ) )';
+			width: max-content;
 			// This is not bulletproof since it will get covered by page header
 			// in extremely short height. but it should be good for now
 			max-height: ~'calc( var( --header-card-maxheight ) - 8rem )';
@@ -221,6 +229,7 @@
 			margin: 0;
 			background: transparent;
 			border: 0;
+			border-radius: 0;
 			box-shadow: none;
 			transform: none;
 
