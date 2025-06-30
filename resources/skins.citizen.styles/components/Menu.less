@@ -56,6 +56,11 @@
 					}
 				}
 			}
+
+			// Remove Safari summary marker
+			&::-webkit-details-marker {
+				display: none;
+			}
 		}
 
 		&[ open ] {
@@ -94,6 +99,7 @@
 			&[ open ]::before {
 				position: fixed;
 				inset: 0;
+				z-index: 0; // Needed for menu to work in Safari
 				opacity: 1;
 				transition: var( --transition-menu );
 				transition-property: opacity;
