@@ -2,11 +2,8 @@
  * @return {void}
  */
 function deferredTasks() {
-	const
-		setupObservers = require( './setupObservers.js' ),
-		speculationRules = require( './speculationRules.js' );
+	const speculationRules = require( './speculationRules.js' );
 
-	setupObservers.main();
 	speculationRules.init();
 	registerServiceWorker();
 
@@ -19,6 +16,8 @@ function deferredTasks() {
 	window.addEventListener( 'pagehide', () => {
 		document.documentElement.classList.remove( 'citizen-loading' );
 	} );
+
+	document.documentElement.classList.add( 'citizen-animations-ready' );
 }
 
 /**
@@ -55,12 +54,15 @@ function registerServiceWorker() {
 function initBodyContent( bodyContent ) {
 	const
 		sections = require( './sections.js' ),
-		overflowElements = require( './overflowElements.js' );
+		overflowElements = require( './overflowElements.js' ),
+		contentEnhancements = require( './contentEnhancements.js' );
 
 	// Collapsable sections
 	sections.init( bodyContent );
 	// Overflow element enhancements
 	overflowElements.init( bodyContent );
+	// Content enhancements
+	contentEnhancements.init();
 }
 
 /**
@@ -74,11 +76,13 @@ function main( window ) {
 		search = require( './search.js' ),
 		dropdown = require( './dropdown.js' ),
 		lastModified = require( './lastModified.js' ),
-		share = require( './share.js' );
+		share = require( './share.js' ),
+		setupObservers = require( './setupObservers.js' );
 
-	dropdown.init();
 	search.init( window );
 	echo();
+	setupObservers.main();
+	dropdown.init();
 	lastModified.init();
 	share.init();
 

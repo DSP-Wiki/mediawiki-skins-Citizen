@@ -25,10 +25,23 @@
 	}
 }
 
-// Fix page actions from going under the page
 .ve-init-mw-desktopArticleTarget {
+	// Fix page actions from going under the page
 	.citizen-page-header {
 		z-index: @z-index-toolbar;
+	}
+
+	// Make categories interactable
+	.citizen-page-footer.ve-init-mw-desktopArticleTarget-uneditableContent {
+		opacity: 1;
+
+		.catlinks {
+			pointer-events: auto;
+		}
+
+		.page-info {
+			opacity: 0.5;
+		}
 	}
 }
 
@@ -39,7 +52,6 @@
 	}
 }
 
-// Reset .oo-ui-widget 14px font size hack
-.ve-ui-surface.oo-ui-widget {
-	font-size: 1rem;
+.ve-activated .ve-init-mw-desktopArticleTarget-originalContent #catlinks:hover {
+	background-color: var( --background-color-button-quiet--hover );
 }

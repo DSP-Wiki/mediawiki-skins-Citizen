@@ -43,10 +43,12 @@
 	"citizen-feature-custom-font-size-small-label": "Kleng",
 	"citizen-feature-custom-font-size-standard-label": "Standard",
 	"citizen-feature-custom-font-size-large-label": "Grouss",
+	"citizen-feature-custom-font-size-xlarge-label": "Ganz grouss",
 	"citizen-feature-custom-width-name": "Breet",
 	"citizen-feature-custom-width-standard-label": "Standard",
 	"citizen-feature-custom-width-wide-label": "Breet",
 	"citizen-user-info-text-anon": "Är IP-Adress ass ëffentlech siichtbar, wann Dir Ännerunge maacht.",
+	"citizen-user-info-edits-label": "Ännerungen",
 	"citizen-command-palette-heading-recent": "Rezent",
 	"citizen-command-palette-keyhint-enter-open": "Opmaachen",
 	"citizen-command-palette-keyhint-enter-search": "Sichen",
@@ -60,5 +62,10 @@
 	"citizen-command-palette-type-user": "Benotzer",
 	"citizen-command-palette-command-user-description": "No engem Benotzer sichen",
 	"citizen-command-palette-queryaction-media-search-description": "No Mediefichiere sichen",
-	"citizen-command-palette-queryaction-page-edit-description": "Säit uleeën oder änneren"
+	"citizen-command-palette-queryaction-page-edit-description": "Säit uleeën oder änneren",
+	"citizen-command-palette-tip-commands": "Tippt <code>/</code> fir all Befeeler",
+	"citizen-command-palette-tip-users": "Tippt <code>@</code> fir no Benotzer ze sichen",
+	"citizen-command-palette-tip-namespace": "Tippt <code>:</code> fir no Nummraim ze sichen",
+	"citizen-command-palette-tip-templates": "Tippt <code>{{</code> fir no Schablounen ze sichen",
+	"citizen-command-palette-tip-actions": "Tippt <code>></code> fir eng Lëscht vun Aktiounen"
 }
