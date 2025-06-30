@@ -33,6 +33,7 @@ use MediaWiki\Skins\Citizen\Partials\PageTools;
 use MediaWiki\Skins\Citizen\Partials\Tagline;
 use MediaWiki\Skins\Citizen\Partials\Theme;
 use SkinMustache;
+use SkinTemplate;
 
 /**
  * Skin subclass for Citizen
@@ -54,6 +55,14 @@ class SkinCitizen extends SkinMustache {
 		// Add skin-specific features
 		$this->buildSkinFeatures( $options );
 		parent::__construct( $options );
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	protected function runOnSkinTemplateNavigationHooks( SkinTemplate $skin, &$content_navigation ) {
+		parent::runOnSkinTemplateNavigationHooks( $skin, $content_navigation );
+		Hooks\SkinHooks::onSkinTemplateNavigation( $skin, $content_navigation );
 	}
 
 	/**
@@ -134,6 +143,17 @@ class SkinCitizen extends SkinMustache {
 	}
 
 	/**
+	 * Add client preferences features
+	 * Did not add the citizen-feature- prefix because there might be features from core MW or extensions
+	 *
+	 * @param string $feature
+	 * @param string $value
+	 */
+	private function addClientPrefFeature( string $feature, string $value = 'standard' ) {
+		$this->getOutput()->addHtmlClasses( $feature . '-clientpref-' . $value );
+	}
+
+	/**
 	 * Set up optional skin features
 	 *
 	 * @param array &$options
@@ -152,6 +172,11 @@ class SkinCitizen extends SkinMustache {
 
 		// Disable default ToC since it is handled by Citizen
 		$options['toc'] = false;
+
+		// Clientprefs feature handling
+		$this->addClientPrefFeature( 'citizen-feature-pure-black', '0' );
+		$this->addClientPrefFeature( 'citizen-feature-custom-font-size' );
+		$this->addClientPrefFeature( 'citizen-feature-custom-width' );
 
 		// Collapsible sections
 		// Load in content pages
