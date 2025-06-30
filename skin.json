@@ -1,6 +1,6 @@
 {
 	"name": "Citizen",
-	"version": "2.19.0",
+	"version": "2.20.0",
 	"author": [
 		"[https://www.mediawiki.org/wiki/User:Alistair3149 Alistair3149]",
 		"[https://www.mediawiki.org/wiki/User:Octfx Octfx]",
@@ -165,7 +165,11 @@
 				"resources/skins.citizen.scripts/sectionObserver.js",
 				"resources/skins.citizen.scripts/search.js",
 				"resources/skins.citizen.scripts/sections.js",
+				"resources/skins.citizen.scripts/share.js",
 				"resources/skins.citizen.scripts/tableOfContents.js"
+			],
+			"messages": [
+				"citizen-share"
 			],
 			"dependencies": [
 				"mediawiki.util",
@@ -326,6 +330,7 @@
 				"sandbox",
 				"search",
 				"settings",
+				"share",
 				"specialPages",
 				"speechBubbleAdd",
 				"speechBubbles",
