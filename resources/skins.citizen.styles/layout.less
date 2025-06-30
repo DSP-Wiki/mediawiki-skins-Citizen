@@ -14,21 +14,20 @@
 }
 
 .citizen-body-container {
-    display: grid;
-    grid-template-areas:
+	display: grid;
+	grid-template-areas:
         'header'
-        'content'
-        'footer';
-    grid-template-columns: minmax( 0, var( --width-layout ) );
-    gap: var( --space-md ) var( --space-xl );
-    justify-content: center;
-    padding: 0 var( --padding-page );
-    margin: var( --space-xl ) 0;
+		'content'
+		'footer';
+	// Using auto as min value will cause overflow
+	grid-template-columns: minmax( 0, var( --width-layout ) );
+	gap: 0 var( --space-xl );
+	justify-content: center;
+	padding: 0 var( --padding-page );
+	margin: var( --space-xl ) 0; // don't collide with other components (e.g. notice)
 }
 
 .citizen-page-header {
-	position: -webkit-sticky;
-	position: sticky;
 	// So that the modal are above custom sticky headers
 	z-index: @z-index-page-header + 1;
 	display: flex;
@@ -37,6 +36,7 @@
 	gap: var( --space-md );
 	align-items: center;
 	padding-top: var( --space-md );
+	padding-bottom: var( --space-md );
 }
 
 .citizen-page-heading {
@@ -60,7 +60,6 @@
 
 	.citizen-toc-enabled {
 		.citizen-body-container {
-			display: grid;
 			grid-template-areas:
  'header header'
 				'content sidebar'

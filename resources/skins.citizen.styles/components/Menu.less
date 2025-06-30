@@ -30,7 +30,7 @@
 			}
 
 			&:hover {
-				background-color: var( --background-color-quiet--hover );
+				background-color: var( --background-color-button-quiet--hover );
 
 				> .citizen-ui-icon::before {
 					opacity: var( --opacity-icon-base--hover );
@@ -38,10 +38,10 @@
 			}
 
 			&:active {
-				background-color: var( --background-color-quiet--active );
+				background-color: var( --background-color-button-quiet--active );
 
 				> .citizen-ui-icon::before {
-					opacity: var( --opacity-icon-base--active );
+					opacity: var( --opacity-icon-base--selected );
 				}
 			}
 
@@ -77,10 +77,10 @@
 			}
 
 			> .citizen-menu__dropdownButton {
-				background-color: var( --background-color-quiet--active );
+				background-color: var( --background-color-button-quiet--active );
 
 				&:hover {
-					background-color: var( --background-color-quiet--hover );
+					background-color: var( --background-color-button-quiet--hover );
 				}
 			}
 		}
@@ -90,7 +90,8 @@
 			&::before {
 				z-index: -1;
 				content: '';
-				background: var( --background-color-overlay );
+				background: var( --background-color-backdrop-light );
+				backdrop-filter: blur( 2px );
 				opacity: 0;
 			}
 
@@ -111,7 +112,7 @@
 		margin: 0;
 		font-size: var( --font-size-x-small );
 		font-weight: var( --font-weight-normal );
-		color: #EDF4F5;
+		color: var( --color-subtle );
 		letter-spacing: 0.05em;
 	}
 
@@ -129,13 +130,12 @@
 			align-items: center;
 			padding: var( --space-xs ) var( --space-md );
 			font-weight: var( --font-weight-medium );
-			color: #ffa500;
+			color: var( --color-emphasized );
 			transition: var( --transition-hover );
 			transition-property: opacity;
 
 			&:hover {
-				color: var( --color-base--emphasized );
-				background-color: var( --background-color-quiet--hover );
+				background-color: var( --background-color-button-quiet--hover );
 
 				.citizen-ui-icon::before {
 					opacity: var( --opacity-icon-base--hover );
@@ -143,11 +143,10 @@
 			}
 
 			&:active {
-				color: var( --color-base--subtle );
-				background-color: var( --background-color-quiet--active );
+				background-color: var( --background-color-button-quiet--active );
 
 				.citizen-ui-icon::before {
-					opacity: var( --opacity-icon-base--active );
+					opacity: var( --opacity-icon-base--selected );
 				}
 			}
 
@@ -199,7 +198,7 @@
 		&:focus {
 			& + .citizen-header__button,
 			& + .citizen-menu-checkbox-button {
-				outline: 2px solid var( --color-primary );
+				outline: 2px solid var( --color-progressive );
 				outline-offset: 1px;
 			}
 		}

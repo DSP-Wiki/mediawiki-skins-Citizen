@@ -30,13 +30,13 @@
 		opacity: var( --opacity-icon-base );
 
 		&:hover {
-			background-color: var( --background-color-quiet--hover );
+			background-color: var( --background-color-button-quiet--hover );
 			opacity: var( --opacity-icon-base--hover );
 		}
 
 		&:active {
-			background-color: var( --background-color-quiet--active );
-			opacity: var( --opacity-icon-base--active );
+			background-color: var( --background-color-button-quiet--active );
+			opacity: var( --opacity-icon-base--selected );
 		}
 	}
 
@@ -187,20 +187,20 @@
 		}
 
 		&:active {
-			opacity: var( --opacity-icon-base--active );
+			opacity: var( --opacity-icon-base--selected );
 		}
 	}
 
 	main#mwe-popups-settings-form {
 		p {
-			color: var( --color-base--subtle );
+			color: var( --color-subtle );
 		}
 
 		form {
 			label {
 				> span {
 					font-weight: var( --font-weight-semibold );
-					color: var( --color-base--emphasized );
+					color: var( --color-emphasized );
 				}
 			}
 		}
@@ -209,7 +209,7 @@
 
 /* settingsDialogRenderer.less */
 .mwe-popups-overlay {
-	background-color: var( --background-color-overlay );
+	background-color: var( --background-color-backdrop-light );
 }
 
 // Responsive support

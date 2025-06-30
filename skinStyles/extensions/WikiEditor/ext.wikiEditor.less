@@ -43,7 +43,7 @@
 		border-bottom-color: var( --border-color-base );
 
 		a {
-			color: var( --color-primary );
+			color: var( --color-progressive );
 		}
 
 		&.current {
@@ -96,7 +96,7 @@
 			a {
 				height: @wikieditor-button-size; /* Align with VE */
 				font-weight: var( --font-weight-medium );
-				color: var( --color-base--emphasized );
+				color: var( --color-emphasized );
 
 				&::before {
 					height: 100%; /* Align with VE */
@@ -105,22 +105,22 @@
 				}
 
 				&:hover {
-					color: var( --color-primary--hover );
+					color: var( --color-progressive--hover );
 				}
 
 				&:active {
-					color: var( --color-primary--active );
+					color: var( --color-progressive--active );
 				}
 			}
 
 			a:visited {
-				color: var( --color-base--emphasized );
+				color: var( --color-emphasized );
 			}
 
 			a.current,
 			a.current:visited {
-				color: var( --color-primary );
-				border-bottom: 2px solid var( --color-primary );
+				color: var( --color-progressive );
+				border-bottom: 2px solid var( --color-progressive );
 			}
 		}
 	}
@@ -133,7 +133,7 @@
 			margin-left: 16px;
 			font-size: var( --font-size-small );
 			line-height: 38px;
-			color: var( --color-base--subtle );
+			color: var( --color-subtle );
 			letter-spacing: 0.05em;
 		}
 
@@ -147,16 +147,16 @@
 				font-size: inherit;
 				font-weight: var( --font-weight-medium );
 				line-height: @wikieditor-button-size; /* Align with VE */
-				color: var( --color-base--emphasized );
+				color: var( --color-emphasized );
 				letter-spacing: inherit;
 
 				&:hover {
-					background-color: var( --background-color-quiet--hover );
+					background-color: var( --background-color-button-quiet--hover );
 				}
 			}
 
 			.menu .options .option:hover {
-				background-color: var( --background-color-quiet--hover );
+				background-color: var( --background-color-button-quiet--hover );
 			}
 
 			.options {
@@ -164,10 +164,10 @@
 				border-color: var( --border-color-base );
 
 				.option {
-					color: var( --color-base--emphasized );
+					color: var( --color-emphasized );
 
 					&:hover {
-						background-color: var( --background-color-primary--hover );
+						background-color: var( --background-color-progressive-subtle );
 					}
 
 					&[ rel='heading-2' ] {
@@ -202,17 +202,17 @@
 	.booklet {
 		> .index {
 			.wikiEditor-character-highlighted {
-				color: var( --color-base--emphasized );
-				background-color: var( --background-color-quiet--hover );
+				color: var( --color-emphasized );
+				background-color: var( --background-color-button-quiet--hover );
 			}
 
 			> :hover {
-				background-color: var( --background-color-quiet--hover );
+				background-color: var( --background-color-button-quiet--hover );
 			}
 
 			> .current {
-				color: var( --color-primary );
-				background-color: var( --background-color-primary--hover );
+				color: var( --color-progressive );
+				background-color: var( --background-color-progressive-subtle );
 			}
 		}
 	}
@@ -220,11 +220,11 @@
 	/* Help Pages */
 	.page-table {
 		th {
-			color: var( --color-base--subtle );
+			color: var( --color-subtle );
 		}
 
 		td {
-			color: var( --color-base--emphasized );
+			color: var( --color-emphasized );
 			border-top-color: var( --border-color-base );
 		}
 	}
@@ -237,19 +237,19 @@
 				border-color: var( --border-color-base );
 
 				&:hover {
-					background-color: var( --background-color-quiet--hover );
+					background-color: var( --background-color-button-quiet--hover );
 					border-color: var( --border-color-base );
 				}
 
 				// Added active state
 				&:active {
-					background-color: var( --background-color-quiet--active );
+					background-color: var( --background-color-button-quiet--active );
 				}
 			}
 
 			.wikiEditor-character-highlighted {
-				color: var( --color-primary );
-				background-color: var( --background-color-primary--hover );
+				color: var( --color-progressive );
+				background-color: var( --background-color-progressive-subtle );
 			}
 		}
 	}
@@ -275,7 +275,7 @@
 	}
 
 	&:hover {
-		background-color: var( --background-color-quiet--hover );
+		background-color: var( --background-color-button-quiet--hover );
 
 		> .oo-ui-iconElement-icon {
 			opacity: var( --opacity-icon-base--hover );
@@ -284,15 +284,15 @@
 
 	// Added active state
 	&:active {
-		background-color: var( --background-color-quiet--active );
+		background-color: var( --background-color-button-quiet--active );
 
 		> .oo-ui-iconElement-icon {
-			opacity: var( --opacity-icon-base--active );
+			opacity: var( --opacity-icon-base--selected );
 		}
 	}
 
 	&.tool-active {
-		background-color: var( --background-color-primary--hover );
+		background-color: var( --background-color-progressive-subtle );
 	}
 }
 
@@ -321,7 +321,7 @@
 		/* Input field label */
 		> label {
 			font-size: var( --font-size-x-small );
-			color: var( --color-base--subtle );
+			color: var( --color-subtle );
 			letter-spacing: 0.05em;
 
 			~ input,

@@ -20,14 +20,19 @@
 	--color-surface-4__s: 15%;
 	--color-surface-4__l: 23%;
 
-	--delta-hover-state: 4%;
-
-	--color-base--emphasized: ~'hsl( var( --color-primary__h ), 80%, 95% )';
+	--color-emphasized: ~'hsl( var( --color-primary__h ), 80%, 95% )';
 	--color-base: ~'hsl( var( --color-primary__h ), 25%, 80% )';
-	--color-base--subtle: ~'hsl( var( --color-primary__h ), 25%, 65% )';
+	--color-subtle: ~'hsl( var( --color-primary__h ), 25%, 65% )';
 
-	--background-color-primary--hover: ~'hsl( var( --color-primary__h ), var( --color-primary__s ), 15% )';
-	--background-color-primary--active: ~'hsl( var( --color-primary__h ), var( --color-primary__s ), 20% )';
+	--background-color-progressive-subtle: ~'hsl( var( --color-primary__h ), var( --color-primary__s ), 10% )';
+	--background-color-destructive-subtle: #360003;
+	--background-color-warning-subtle: #251400;
+	--background-color-success-subtle: #001f12;
+	--background-color-button-quiet--hover: rgba( 255, 255, 255, 0.04 );
+	--background-color-button-quiet--active: rgba( 255, 255, 255, 0.08 );
+	--background-color-icon: ~'rgba( 255, 255, 255, var( --opacity-icon-base ) )';
+	--background-color-icon--hover: ~'rgba( 255, 255, 255, var( --opacity-icon-base--hover ) )';
+	--background-color-icon--active: ~'rgba( 255, 255, 255, var( --opacity-icon-base--active ) )';
 
 	--border-color-base: rgba( 255, 255, 255, 0.05 );
 	--border-color-subtle: rgba( 255, 255, 255, 0.02 );
@@ -61,9 +66,7 @@
 
 	--color-surface-4__l: 14%;
 
-	--delta-hover-state: 6%;
-
-	--shadow-strength: 0.04;
+	--shadow-strength: 0.06;
 }
 
 .skin-theme-clientpref-night {

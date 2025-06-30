@@ -1,6 +1,4 @@
 #citizen-page-header-sticky-sentinel {
-	right: 0;
-	left: 0;
 	grid-area: content; // align right above content
 	height: 1px;
 	visibility: hidden;
@@ -18,7 +16,6 @@
 .citizen-page-header--sticky {
 	.citizen-page-header {
 		flex-wrap: nowrap;
-		padding-bottom: var( --space-md );
 		white-space: nowrap;
 		.citizen-sticky-header;
 
@@ -45,11 +42,11 @@
 		border-radius: var( --border-radius--small );
 
 		&:hover {
-			background-color: var( --background-color-quiet--hover );
+			background-color: var( --background-color-button-quiet--hover );
 		}
 
 		&:active {
-			background-color: var( --background-color-quiet--active );
+			background-color: var( --background-color-button-quiet--active );
 		}
 	}
 }

@@ -13,8 +13,8 @@ body {
 	padding: 0;
 	margin: 0;
 	color: var( --color-base );
-	accent-color: var( --color-primary );
-	background: #1D1D1D;
+	accent-color: var( --color-progressive );
+	background: var( --color-surface-0 );
 }
 
 // Apply border-box universally unless overwritten
@@ -25,19 +25,19 @@ body {
 }
 
 :focus {
-	outline-color: var( --color-primary );
+	outline-color: var( --color-progressive );
 }
 
 // For some reason just overriding the outline-color is not enough
 :focus-visible {
-	outline: 2px solid var( --color-primary );
+	outline: 2px solid var( --color-progressive );
 	outline-offset: 1px;
 }
 
 input,
 select,
 textarea {
-	color: var( --color-base--emphasized );
+	color: var( --color-emphasized );
 	background-color: transparent;
 	border: 1px solid var( --border-color-interactive );
 }
@@ -52,7 +52,7 @@ textarea {
 
 blockquote {
 	margin: var( --space-md );
-	color: var( --color-base--subtle );
+	color: var( --color-subtle );
 
 	cite {
 		display: block;
@@ -155,7 +155,6 @@ video {
 	button,
 	label {
 		// Remove the 300ms delay in click event (T118509)
-		/* stylelint-disable-next-line plugin/no-unsupported-browser-features */
 		touch-action: manipulation;
 	}
 }
@@ -165,14 +164,5 @@ video {
 	.parsoid-body {
 		overflow-x: hidden; // fallback if clip is not supported
 		overflow-x: clip; // avoid breaking layout in smaller screen sizes
-	}
-}
-
-@media ( min-width: @min-width-breakpoint-tablet ) {
-	// Delay scroll animation won't happen on load
-	// Use it only for larger viewport as it is very costly
-	// on mobile devices
-	html.citizen-animations-ready {
-		scroll-behavior: smooth;
 	}
 }
