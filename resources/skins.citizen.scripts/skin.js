@@ -11,6 +11,9 @@ function enableCssAnimations( document ) {
 	// Disable all CSS transition during resize
 	const onResize = () => {
 		document.documentElement.classList.remove( 'citizen-animations-ready' );
+		mw.util.debounce( () => {
+			document.documentElement.classList.add( 'citizen-animations-ready' );
+		}, 250 );
 	};
 	const onResizeEnd = mw.util.debounce( () => {
 		document.documentElement.classList.add( 'citizen-animations-ready' );
@@ -70,16 +73,15 @@ function main( window ) {
 		echo = require( './echo.js' ),
 		search = require( './search.js' ),
 		dropdown = require( './dropdown.js' ),
-		setupIntersectionObservers = require( './setupIntersectionObservers.js' ),
+		setupObservers = require( './setupObservers.js' ),
 		stickyHeader = require( './stickyHeader.js' ),
 		lastModified = require( './lastModified.js' ),
 		share = require( './share.js' );
 
-	enableCssAnimations( window.document );
-	echo();
-	search.init( window );
+	setupObservers.main();
 	dropdown.init();
-	setupIntersectionObservers.main();
+	search.init( window );
+	echo();
 	stickyHeader.init();
 	lastModified.init();
 	share.init();
@@ -95,17 +97,22 @@ function main( window ) {
 		mw.loader.load( 'skins.citizen.preferences' );
 	}
 
-	registerServiceWorker();
+	// Defer non-essential tasks
+	setTimeout( () => {
+		registerServiceWorker();
 
-	window.addEventListener( 'beforeunload', () => {
-		// Set up loading indicator
-		document.documentElement.classList.add( 'citizen-loading' );
-	}, false );
+		window.addEventListener( 'beforeunload', () => {
+			// Set up loading indicator
+			document.documentElement.classList.add( 'citizen-loading' );
+		}, false );
 
-	// Remove loading indicator once the page is unloaded/hidden
-	window.addEventListener( 'pagehide', () => {
-		document.documentElement.classList.remove( 'citizen-loading' );
-	} );
+		// Remove loading indicator once the page is unloaded/hidden
+		window.addEventListener( 'pagehide', () => {
+			document.documentElement.classList.remove( 'citizen-loading' );
+		} );
+
+		enableCssAnimations( window.document );
+	}, 0 );
 }
 
 if ( document.readyState === 'interactive' || document.readyState === 'complete' ) {
