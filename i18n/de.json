@@ -2,11 +2,13 @@
 	"@metadata": {
 		"authors": [
 			"Alistair3149",
+			"Brettchenweber",
 			"CayceP",
 			"CyberOne25",
 			"FF-11",
 			"Gebu",
 			"Justman10000",
+			"Nortix",
 			"Ratte1313",
 			"SpaceEnergy",
 			"TMg",
@@ -66,10 +68,12 @@
 	"citizen-feature-custom-font-size-small-label": "Klein",
 	"citizen-feature-custom-font-size-standard-label": "Mittel",
 	"citizen-feature-custom-font-size-large-label": "Groß",
+	"citizen-feature-custom-font-size-xlarge-label": "Extragroß",
 	"citizen-feature-custom-width-name": "Breite",
 	"citizen-feature-custom-width-standard-label": "Standard",
 	"citizen-feature-custom-width-wide-label": "Breit",
 	"citizen-feature-custom-width-full-label": "Gesamt",
 	"citizen-user-info-text-anon": "Ihre IP-Adresse wird öffentlich sichtbar sein, wenn Sie Änderungen vornehmen.",
-	"citizen-user-info-text-temp": "Dieses temporäre Konto wurde erstellt, nachdem eine Bearbeitung ohne Konto in diesem Browser und auf diesem Gerät vorgenommen wurde."
+	"citizen-user-info-text-temp": "Dieses temporäre Konto wurde erstellt, nachdem eine Bearbeitung ohne Konto in diesem Browser und auf diesem Gerät vorgenommen wurde.",
+	"citizen-command-palette-tip-templates": "Tippen Sie <code><nowiki>{{</nowiki></code>, um nach Templates zu suchen"
 }
