@@ -36,7 +36,7 @@ function copyButtonAttributes( from, to ) {
 	copyAttribute( from, to, 'title' );
 	// Copy button labels
 	if ( to.lastElementChild && from.lastElementChild ) {
-		to.lastElementChild.innerHTML = from.lastElementChild.textContent || '';
+		to.lastElementChild.textContent = from.lastElementChild.textContent || '';
 	}
 }
 
@@ -53,6 +53,8 @@ function prepareMenuDropdown( menuDropdown ) {
 		menuDropdownButton = menuDropdownClone.querySelector( '.citizen-dropdown-summary' );
 
 	menuDropdownStickyElementsWithIds.forEach( ( stickyElement ) => {
+		// Set up the click target to keep JS click handlers working (#1100)
+		stickyElement.setAttribute( 'data-mw-citizen-click-target', `#${ stickyElement.id } > a` );
 		// Remove the id attribute to prevent duplicate ids
 		stickyElement.removeAttribute( 'id' );
 	} );
@@ -104,10 +106,12 @@ function getClickTarget( fakeButton ) {
  * @return {void}
  */
 function handleClick( event ) {
-	const fakeButton = event.target.closest( '.citizen-sticky-header-fake-button' );
+	const fakeButton = event.target.closest( '[data-mw-citizen-click-target]' );
 	if ( fakeButton ) {
 		const target = getClickTarget( fakeButton );
 		if ( target !== null ) {
+			event.preventDefault();
+			event.stopPropagation();
 			target.click();
 		}
 	}
@@ -162,12 +166,12 @@ function hide( stickyHeader ) {
 }
 
 /**
- * Initialize sticky header.
+ * Initialize fake buttons in sticky header.
  *
  * @param {HTMLElement} stickyHeader
  * @return {void}
  */
-function init( stickyHeader ) {
+function initFakeButtons( stickyHeader ) {
 	const fakeButtons = stickyHeader.querySelectorAll( '.cdx-button[data-mw-citizen-click-target]' );
 
 	fakeButtons.forEach( ( fakeButton ) => {
@@ -181,7 +185,34 @@ function init( stickyHeader ) {
 		copyButtonAttributes( target, fakeButton );
 		fakeButton.classList.add( 'citizen-sticky-header-fake-button' );
 	} );
+}
 
+/**
+ * Update edit icon if visual editor is not present.
+ *
+ * @return {void}
+ */
+function updateEditIcon() {
+	// If the visual editor is not present, the source editor becomes the primary
+	// edit button and should use the 'edit' icon instead of the 'wikiText' icon.
+	const sourceEditButton = document.getElementById( 'ca-edit-sticky-header' );
+	const visualEditButton = document.getElementById( 'ca-ve-edit-sticky-header' );
+
+	if ( sourceEditButton && !visualEditButton ) {
+		const icon = sourceEditButton.querySelector( '.citizen-ui-icon' );
+		if ( icon ) {
+			icon.classList.remove( 'mw-ui-icon-wikimedia-wikiText' );
+			icon.classList.add( 'mw-ui-icon-wikimedia-edit' );
+		}
+	}
+}
+
+/**
+ * Initialize dropdown menus in sticky header.
+ *
+ * @return {void}
+ */
+function initDropdowns() {
 	const
 		moreMenuDropdown = document.getElementById( 'citizen-page-more-dropdown' ),
 		moreMenuDropdownContainer = document.getElementById( 'citizen-sticky-header-more' ),
@@ -190,6 +221,18 @@ function init( stickyHeader ) {
 
 	appendDropdown( moreMenuDropdown, moreMenuDropdownContainer );
 	appendDropdown( languagesDropdown, languagesDropdownContainer );
+}
+
+/**
+ * Initialize sticky header.
+ *
+ * @param {HTMLElement} stickyHeader
+ * @return {void}
+ */
+function init( stickyHeader ) {
+	initFakeButtons( stickyHeader );
+	updateEditIcon();
+	initDropdowns();
 }
 
 module.exports = {

@@ -126,14 +126,13 @@ function bindOpenOnSlash( window, details ) {
 	const onExpandOnSlash = ( /** @type {KeyboardEvent} */ event ) => {
 		const isKeyPressed = () => {
 			// "/" key is standard on many sites
-			if ( event.key === '/' ) {
+			if ( event.code === 'Slash' ) {
 				return true;
 			// "Ctrl" + "K" (or "Command" + "K" on Mac)
-			} else if ( ( event.ctrlKey || event.metaKey ) && event.key.toLowerCase() === 'k' ) {
+			} else if ( ( event.ctrlKey || event.metaKey ) && event.code === 'KeyK' ) {
 				return true;
 			// "Alt" + "Shift" + "F" is the MW standard key
-			// Shift key might makes F key goes capital, so we need to make it lowercase
-			} else if ( event.altKey && event.shiftKey && event.key.toLowerCase() === 'f' ) {
+			} else if ( event.altKey && event.shiftKey && event.code === 'KeyF' ) {
 				return true;
 			} else {
 				return false;
@@ -197,7 +196,24 @@ function renderSearchClearButton( input ) {
  */
 function bindSearchTrigger( details ) {
 	document.querySelectorAll( '.citizen-search-trigger' ).forEach( ( trigger ) => {
-		trigger.addEventListener( 'click', () => openSearch( details ) );
+		trigger.addEventListener( 'click', ( event ) => {
+			openSearch( details );
+			if ( event.target.dataset.citizenSearchPrefill ) {
+				// Add a delay to ensure the search UI is open
+				setTimeout( () => {
+					const input = config.wgCitizenEnableCommandPalette ?
+						document.querySelector( '.citizen-command-palette__input > .cdx-text-input__input' ) :
+						document.getElementById( 'searchInput' );
+
+					if ( input === null ) {
+						return;
+					}
+
+					// Escape just to be safe
+					input.value = mw.html.escape( event.target.dataset.citizenSearchPrefill );
+				}, 0 );
+			}
+		} );
 	} );
 }
 

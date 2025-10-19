@@ -5,12 +5,12 @@
 		--transform-origin-offset-start: var( --space-xs );
 		--transform-origin-offset-end: ~'calc( 100% - var( --space-xs ) )';
 		margin: var( --space-xs );
+		contain: content;
 		border: var( --border-width-base ) solid var( --border-color-base );
 		border-radius: var( --border-radius-medium );
-		box-shadow: var( --box-shadow-drop-xx-large );
+		box-shadow: var( --box-shadow-large );
 		transform: scale( 0 );
-		contain: content;
-		.mixin-citizen-frosted-glass( citizen-menu__card-backdrop );
+		.mixin-citizen-frosted-glass;
 
 		@supports ( user-select: none ) {
 			user-select: none;
@@ -75,10 +75,11 @@
 	height: var( --size-icon );
 	min-height: var( --size-icon );
 	contain: strict;
-
-	@supports ( content-visibility: auto ) {
-		content-visibility: auto;
-	}
+	content-visibility: auto;
+	transition-timing-function: var( --transition-timing-function-ease );
+	transition-duration: var( --transition-duration-base );
+	transition-property: content-visibility;
+	transition-behavior: allow-discrete;
 
 	&::before {
 		display: block;
@@ -87,12 +88,14 @@
 		content: '';
 
 		// Fallback for browsers that do not support mask-image
+		// stylelint-disable-next-line plugin/use-baseline
 		@supports not ( ( -webkit-mask-image: none ) or ( mask-image: none ) ) {
 			background-repeat: no-repeat;
 			background-position: center;
 			background-size: contain;
 		}
 
+		// stylelint-disable-next-line plugin/use-baseline
 		@supports ( -webkit-mask-image: none ) or ( mask-image: none ) {
 			background-color: currentcolor;
 			background-image: none !important; // In case if there are other OOUI icon modules
@@ -109,12 +112,6 @@
 @supports ( user-select: none ) {
 	.citizen-menu__card {
 		user-select: none;
-	}
-}
-
-@supports ( content-visibility: auto ) {
-	.citizen-ui-icon {
-		content-visibility: auto;
 	}
 }
 

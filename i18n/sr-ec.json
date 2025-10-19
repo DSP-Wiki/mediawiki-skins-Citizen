@@ -36,6 +36,8 @@
 	"citizen-theme-os-label": "Аутоматски",
 	"citizen-feature-autohide-navigation-0-label": "Искљ.",
 	"citizen-feature-autohide-navigation-1-label": "Укљ.",
+	"citizen-feature-performance-mode-0-label": "Искљ.",
+	"citizen-feature-performance-mode-1-label": "Укљ.",
 	"citizen-feature-pure-black-0-label": "Искљ.",
 	"citizen-feature-pure-black-1-label": "Укљ.",
 	"citizen-feature-custom-font-size-name": "Текст",
@@ -60,6 +62,6 @@
 	"citizen-command-palette-tip-commands": "Откуцајте <code>/</code> за све команде",
 	"citizen-command-palette-tip-users": "Откуцајте <code>@</code> за претрагу корисника",
 	"citizen-command-palette-tip-namespace": "Откуцајте <code>:</code> за претрагу именских простора",
-	"citizen-command-palette-tip-templates": "Откуцајте <code>{{</code> за претрагу шаблона",
+	"citizen-command-palette-tip-templates": "Откуцајте <code><nowiki>{{</nowiki></code> за претрагу шаблона",
 	"citizen-command-palette-tip-actions": "Откуцајте <code>></code> за списак радњи"
 }

@@ -49,13 +49,13 @@ class MwRestSearchClient {
 	 */
 	processQuery( query ) {
 		// Template syntax: {{Template}} -> Template:Template
-		const templateMatch = query.match( /^{{(.*?)(}})?$/ );
+		const templateMatch = /^{{(.*?)(}})?$/.exec( query );
 		if ( templateMatch ) {
 			return `Template:${ templateMatch[ 1 ] }`;
 		}
 
 		// Wikilink syntax: [[Article]] -> Article
-		const wikilinkMatch = query.match( /^\[\[(.*?)(]]?)?$/ );
+		const wikilinkMatch = /^\[\[(.*?)(]]?)?$/.exec( query );
 		if ( wikilinkMatch ) {
 			return wikilinkMatch[ 1 ];
 		}
@@ -78,7 +78,7 @@ class MwRestSearchClient {
 			results: response.pages.map( ( page ) => {
 				const thumbnail = page.thumbnail;
 				return {
-					id: `citizen-command-palette-item-page-${ page.id }`,
+					id: `citizen-command-palette-item-page-${ page.key }`,
 					type: 'page',
 					label: page.title,
 					description: showDescription ? page.description : undefined,

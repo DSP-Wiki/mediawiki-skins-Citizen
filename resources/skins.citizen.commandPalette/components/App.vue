@@ -196,13 +196,11 @@ module.exports = exports = defineComponent( {
 			switch ( selectionAction.action ) {
 				case 'navigate':
 					if ( selectionAction.payload ) {
-						window.location.href = selectionAction.payload;
+						// <a> tags are handled by the browser on mouse click, so we don't need to navigate.
+						if ( !result.isMouseClick ) {
+							window.location.href = selectionAction.payload;
+						}
 						close();
-					}
-					break;
-				case 'navigate-new-tab':
-					if ( selectionAction.payload ) {
-						window.open( selectionAction.payload, '_blank' );
 					}
 					break;
 				case 'updateQuery':
@@ -456,10 +454,10 @@ module.exports = exports = defineComponent( {
 	max-width: @size-5600;
 	margin-inline: auto;
 	overflow: hidden;
-	background-color: var( --color-surface-1 );
 	border: var( --border-base );
 	border-radius: var( --border-radius-medium );
 	box-shadow: var( --box-shadow-drop-xx-large );
+	.mixin-citizen-frosted-glass;
 	.mixin-citizen-font-styles( 'small' );
 
 	@media ( min-width: @max-width-breakpoint-tablet ) {

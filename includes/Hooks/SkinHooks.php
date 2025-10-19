@@ -110,10 +110,12 @@ class SkinHooks implements
 	 */
 	public function onSidebarBeforeOutput( $skin, &$sidebar ): void {
 		// Be extra safe because it might be active on other skins with caching
-		if ( $skin->getSkinName() === 'citizen' && $sidebar ) {
-			if ( isset( $sidebar['TOOLBOX'] ) ) {
-				self::updateToolboxMenu( $sidebar );
-			}
+		if ( $skin->getSkinName() !== 'citizen' ) {
+			return;
+		}
+
+		if ( isset( $sidebar['TOOLBOX'] ) ) {
+			self::updateToolboxMenu( $sidebar );
 		}
 	}
 
@@ -127,38 +129,64 @@ class SkinHooks implements
 	 */
 	public function onSkinBuildSidebar( $skin, &$bar ): void {
 		// Be extra safe because it might be active on other skins with caching
-		if ( $skin->getSkinName() !== 'citizen' || !$bar ) {
+		if ( $skin->getSkinName() !== 'citizen' ) {
 			return;
 		}
 
-		$out = $skin->getOutput();
-		$globalToolsId = $this->getConfigValue( 'CitizenGlobalToolsPortlet', $out );
-		// remove initial p- for backward compatibility
-		$name = empty( $globalToolsId ) ? 'navigation' : preg_replace( '/^p-/', '', $globalToolsId );
-		$bar[$name]['specialpages'] = [
-			'text'  => $skin->msg( 'specialpages' ),
-			'href'  => SkinComponentUtils::makeSpecialUrl( 'Specialpages' ),
-			'title' => $skin->msg( 'tooltip-t-specialpages' ),
-			'icon'  => 'specialPages',
-			'id'    => 't-specialpages',
+		$this->addSiteTools( $skin, $bar );
+
+		$iconMap = [
+			'n-specialpages' => 'specialPages', // TODO: Remove when we drop MW 1.43 support AND T405413 is resolved
+			't-specialpages' => 'specialPages', // TODO: Remove when we drop MW 1.43 support
+			't-upload' => 'upload',
 		];
 
-		if ( $this->getConfigValue( 'EnableUploads', $out ) === true ) {
+		foreach ( $bar as &$menu ) {
+			// Sidebar links do not have a string as key, so we need to loop through each item
+			foreach ( $menu as &$item ) {
+				if ( isset( $item['id'] ) && array_key_exists( $item['id'], $iconMap ) ) {
+					$item['icon'] = $iconMap[$item['id']];
+				}
+
+				if ( !empty( $item['icon'] ) ) {
+					$item['link-html'] = self::getIconHtml( $item['icon'] );
+				}
+			}
+		}
+		unset( $menu, $item );
+	}
+
+	private function addSiteTools( Skin $skin, array &$bar ): void {
+		$out = $skin->getOutput();
+		$customSiteToolsMenuId = $this->getConfigValue( 'CitizenGlobalToolsPortlet', $out );
+
+		$siteToolsMenuId = empty( $customSiteToolsMenuId )
+			? array_key_first( $bar )
+			// remove initial p- for backward compatibility
+			: preg_replace( '/^p-/', '', $customSiteToolsMenuId );
+
+		// Do not override specialpages if it already exists (#1116)
+		// TODO: Revisit in next LTS release (T333211)
+		if ( version_compare( MW_VERSION, '1.44', '<' ) ) {
+			$bar[$siteToolsMenuId][] = [
+				'text'  => $skin->msg( 'specialpages' ),
+				'href'  => SkinComponentUtils::makeSpecialUrl( 'Specialpages' ),
+				'title' => $skin->msg( 'tooltip-t-specialpages' ),
+				'id'    => 't-specialpages',
+			];
+		}
+
+		if ( !isset( $bar[$siteToolsMenuId]['upload'] ) && $this->getConfigValue( 'EnableUploads', $out ) === true ) {
 			$isUploadWizardEnabled = ExtensionRegistry::getInstance()->isLoaded( 'Upload Wizard' );
-			$bar[$name]['upload'] = [
+			$bar[$siteToolsMenuId][] = [
 				'text'  => $skin->msg( 'upload' ),
 				'href'  => SkinComponentUtils::makeSpecialUrl( $isUploadWizardEnabled ?
 					'UploadWizard' :
 					'Upload'
 				),
 				'title' => $skin->msg( 'tooltip-t-upload' ),
-				'icon'  => 'upload',
 				'id'    => 't-upload',
 			];
-		}
-
-		foreach ( $bar as $key => $item ) {
-			self::addIconsToMenuItems( $bar, $key );
 		}
 	}
 
@@ -213,7 +241,7 @@ class SkinHooks implements
 		}
 
 		if ( isset( $links['user-interface-preferences'] ) ) {
-			self::updateUserInterfacePreferencesMenu( $sktemplate, $links );
+			self::updateUserInterfacePreferencesMenu( $links );
 		}
 
 		if ( isset( $links['views'] ) ) {
@@ -225,9 +253,8 @@ class SkinHooks implements
 	 * Update actions menu items
 	 *
 	 * @internal used inside Hooks\SkinHooks::onSkinTemplateNavigation
-	 * @param array &$links
 	 */
-	private static function updateActionsMenu( &$links ) {
+	private static function updateActionsMenu( array &$links ): void {
 		// Most icons are not mapped yet in the actions menu
 		$iconMap = [
 			'delete' => 'trash',
@@ -251,9 +278,8 @@ class SkinHooks implements
 	 * Update associated pages menu items
 	 *
 	 * @internal used inside Hooks\SkinHooks::onSkinTemplateNavigation
-	 * @param array &$links
 	 */
-	private static function updateAssociatedPagesMenu( &$links ) {
+	private static function updateAssociatedPagesMenu( array &$links ): void {
 		// Most icons are not mapped yet in the associated pages menu
 		$iconMap = [
 			'main' => 'article',
@@ -266,11 +292,9 @@ class SkinHooks implements
 		// Since talk keys have namespace as prefix
 		foreach ( $links['associated-pages'] as $key => $item ) {
 			$keyStr = (string)$key;
-			// TODO: use str_ends_with when we drop PHP 7.X
-			if ( substr( $keyStr, -5 ) === '_talk' ) {
+			if ( str_ends_with( $keyStr, '_talk' ) ) {
 				// Extract the namespace key from the talk key (e.g. Project from Project_talk)
-				// TODO: use str_starts_with when we drop PHP 7.X
-				$namespace = substr( $keyStr, 0, -5 );
+				$namespace = substr( $keyStr, 0, -strlen( '_talk' ) );
 				$links['associated-pages'][$key]['icon'] = 'speechBubbles';
 				$links['associated-pages'][$namespace]['icon'] = 'arrowPrevious';
 			}
@@ -284,9 +308,8 @@ class SkinHooks implements
 	 * Update toolbox menu items
 	 *
 	 * @internal used inside Hooks\SkinHooks::onSkinTemplateNavigation
-	 * @param array &$links
 	 */
-	private static function updateToolboxMenu( &$links ) {
+	private static function updateToolboxMenu( array &$links ): void {
 		// Most icons are not mapped yet in the toolbox menu
 		$iconMap = [
 			'recentchangeslinked' => 'recentChanges',
@@ -308,6 +331,17 @@ class SkinHooks implements
 			'wikibase' => 'logoWikidata'
 		];
 
+		// Remove upload and specialpages from toolbox as we moved them to drawer
+		// TODO: Check again in the next LTS release, in case it's handled there
+		$siteTools = [
+			'upload',
+			'specialpages'
+		];
+
+		foreach ( $siteTools as $siteTool ) {
+			unset( $links['TOOLBOX'][$siteTool] );
+		}
+
 		self::mapIconsToMenuItems( $links, 'TOOLBOX', $iconMap );
 		self::addIconsToMenuItems( $links, 'TOOLBOX' );
 	}
@@ -316,9 +350,8 @@ class SkinHooks implements
 	 * Update notifications menu
 	 *
 	 * @internal used inside Hooks\SkinHooks::onSkinTemplateNavigation
-	 * @param array &$links
 	 */
-	private static function updateNotificationsMenu( &$links ) {
+	private static function updateNotificationsMenu( array &$links ): void {
 		$iconMap = [
 			'notifications-alert' => 'bell',
 			'notifications-notice' => 'tray'
@@ -353,10 +386,8 @@ class SkinHooks implements
 	 * Update user menu
 	 *
 	 * @internal used inside Hooks\SkinHooks::onSkinTemplateNavigation
-	 * @param SkinTemplate $sktemplate
-	 * @param array &$links
 	 */
-	private static function updateUserMenu( $sktemplate, &$links ) {
+	private static function updateUserMenu( SkinTemplate $sktemplate, array &$links ): void {
 		$user = $sktemplate->getUser();
 		$isRegistered = $user->isRegistered();
 		$isTemp = $user->isTemp();
@@ -381,10 +412,8 @@ class SkinHooks implements
 	 * Update user interface preferences menu
 	 *
 	 * @internal used inside Hooks\SkinHooks::onSkinTemplateNavigation
-	 * @param SkinTemplate $sktemplate
-	 * @param array &$links
 	 */
-	private static function updateUserInterfacePreferencesMenu( $sktemplate, &$links ) {
+	private static function updateUserInterfacePreferencesMenu( array &$links ): void {
 		self::addIconsToMenuItems( $links, 'user-interface-preferences' );
 	}
 
@@ -392,9 +421,8 @@ class SkinHooks implements
 	 * Update views menu items
 	 *
 	 * @internal used inside Hooks\SkinHooks::onSkinTemplateNavigation
-	 * @param array &$links
 	 */
-	private static function updateViewsMenu( &$links ) {
+	private static function updateViewsMenu( array &$links ): void {
 		// Most icons are not mapped yet in the views menu
 		$iconMap = [
 			'view' => 'article',
@@ -424,12 +452,8 @@ class SkinHooks implements
 
 	/**
 	 * Set the icon parameter of the menu item based on the mapping
-	 *
-	 * @param array &$links
-	 * @param string $menu identifier
-	 * @param array $map icon mapping
 	 */
-	private static function mapIconsToMenuItems( &$links, $menu, $map ) {
+	private static function mapIconsToMenuItems( array &$links, string $menu, array $map ): void {
 		foreach ( $map as $key => $icon ) {
 			if ( isset( $links[$menu][$key] ) ) {
 				$links[$menu][$key]['icon'] ??= $icon;
@@ -439,23 +463,27 @@ class SkinHooks implements
 
 	/**
 	 * Add the HTML needed for icons to menu items
-	 *
-	 * @param array &$links
-	 * @param string $menu identifier
 	 */
-	private static function addIconsToMenuItems( &$links, $menu ) {
+	private static function addIconsToMenuItems( array &$links, string $menu ): void {
 		// Loop through each menu to check/append its link classes.
 		foreach ( $links[$menu] as $key => $item ) {
 			$icon = $item['icon'] ?? '';
 
 			if ( $icon ) {
-				// Html::makeLink will pass this through rawElement
-				// Avoid using mw-ui-icon in case its styles get loaded
-				// Sometimes extension includes the "wikimedia-" part in the icon key (e.g. ULS),
-				// so we apply both classes just to be safe
-				$links[$menu][$key]['link-html'] = '<span class="citizen-ui-icon mw-ui-icon-' . $icon . ' mw-ui-icon-wikimedia-' . $icon . '"></span>';
+				$links[$menu][$key]['link-html'] = self::getIconHtml( $icon );
 			}
 		}
+	}
+
+	/**
+	 * Get the HTML for an icon
+	 */
+	private static function getIconHtml( string $icon ): string {
+		// Html::makeLink will pass this through rawElement
+		// Avoid using mw-ui-icon in case its styles get loaded
+		// Sometimes extension includes the "wikimedia-" part in the icon key (e.g. ULS),
+		// so we apply both classes just to be safe
+		return '<span class="citizen-ui-icon mw-ui-icon-' . $icon . ' mw-ui-icon-wikimedia-' . $icon . '"></span>';
 	}
 
 	/**
@@ -465,7 +493,7 @@ class SkinHooks implements
 	 * @param array|string &$item to update
 	 * @param array|string $classes to add to the item
 	 */
-	private static function appendClassToItem( &$item, $classes ) {
+	private static function appendClassToItem( mixed &$item, mixed $classes ): void {
 		$existingClasses = $item;
 
 		if ( is_array( $existingClasses ) ) {

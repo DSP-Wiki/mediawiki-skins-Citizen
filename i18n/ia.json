@@ -56,6 +56,9 @@
 	"citizen-feature-autohide-navigation-name": "Celar automaticamente le navigation",
 	"citizen-feature-autohide-navigation-0-label": "No",
 	"citizen-feature-autohide-navigation-1-label": "Si",
+	"citizen-feature-performance-mode-name": "Modo de prestationes",
+	"citizen-feature-performance-mode-0-label": "Non active",
+	"citizen-feature-performance-mode-1-label": "Active",
 	"citizen-feature-pure-black-name": "Modo nigre pur",
 	"citizen-feature-pure-black-0-label": "No",
 	"citizen-feature-pure-black-1-label": "Si",
@@ -97,6 +100,6 @@
 	"citizen-command-palette-tip-commands": "Digita <code>/</code> pro vider tote le commandos",
 	"citizen-command-palette-tip-users": "Digita <code>@</code> pro cercar usatores",
 	"citizen-command-palette-tip-namespace": "Digita <code>:</code> pro cercar un spatio de nomines",
-	"citizen-command-palette-tip-templates": "Digita <code>{{</code> pro cercar patronos",
+	"citizen-command-palette-tip-templates": "Digita <code><nowiki>{{</nowiki></code> pro cercar patronos",
 	"citizen-command-palette-tip-actions": "Digita <code>></code> pro un lista de actiones"
 }
