@@ -50,7 +50,7 @@ class SkinCitizen extends SkinMustache {
 		'citizen-feature-image-dimming' => '0',
 		'citizen-feature-pure-black' => '0',
 		'citizen-feature-custom-font-size' => 'standard',
-		'citizen-feature-custom-width' => 'standard',
+		'citizen-feature-custom-width' => 'full',
 		'citizen-feature-performance-mode' => '1',
 	];
 
