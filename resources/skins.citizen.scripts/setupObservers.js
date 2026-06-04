@@ -254,9 +254,9 @@ const init = ( { document, window, mw, IntersectionObserver } ) => {
 		stickyHeaderElement = document.getElementById( STICKY_HEADER_ID ),
 		stickyIntersection = document.getElementById( 'citizen-page-header-sticky-sentinel' );
 
-	const shouldStickyHeader = window.getComputedStyle( stickyIntersection )?.getPropertyValue( 'display' ) !== 'none';
+	const shouldStickyHeader = !!stickyIntersection &&
+		window.getComputedStyle( stickyIntersection )?.getPropertyValue( 'display' ) !== 'none';
 	const isStickyHeaderAllowed = !!stickyHeaderElement &&
-		!!stickyIntersection &&
 		shouldStickyHeader;
 
 	const stickyHeaderInstance = isStickyHeaderAllowed ?
@@ -316,7 +316,9 @@ const init = ( { document, window, mw, IntersectionObserver } ) => {
 		}
 	);
 
-	pageHeaderObserver.observe( stickyIntersection );
+	if ( stickyIntersection ) {
+		pageHeaderObserver.observe( stickyIntersection );
+	}
 
 	mw.hook( 've.activationStart' ).add( () => {
 		pauseStickyHeader();
