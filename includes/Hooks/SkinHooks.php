@@ -1,61 +1,36 @@
 <?php
-/**
- * Citizen - A responsive skin developed for the Star Citizen Wiki
- *
- * This file is part of Citizen.
- *
- * Citizen is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Citizen is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Citizen.  If not, see <https://www.gnu.org/licenses/>.
- *
- * @file
- * @ingroup Skins
- */
-
 declare( strict_types=1 );
 
 namespace MediaWiki\Skins\Citizen\Hooks;
 
-use ExtensionRegistry;
-use Language;
-use MediaWiki\Hook\BeforePageDisplayHook;
 use MediaWiki\Hook\SidebarBeforeOutputHook;
 use MediaWiki\Hook\SkinBuildSidebarHook;
-use MediaWiki\Hook\SkinEditSectionLinksHook;
-use MediaWiki\Hook\SkinTemplateNavigation__UniversalHook;
+use MediaWiki\Html\Html;
+use MediaWiki\Output\Hook\BeforePageDisplayHook;
+use MediaWiki\Output\Hook\OutputPageAfterGetHeadLinksArrayHook;
+use MediaWiki\Output\OutputPage;
+use MediaWiki\Registration\ExtensionRegistry;
 use MediaWiki\ResourceLoader as RL;
-use MediaWiki\Skins\Citizen\GetConfigTrait;
+use MediaWiki\Skin\SkinComponentUtils;
 use MediaWiki\Skins\Hook\SkinPageReadyConfigHook;
-use MediaWiki\Title\Title;
-use OutputPage;
 use Skin;
 use SkinTemplate;
-use SpecialPage;
 
 /**
  * Hooks to run relating the skin
  */
 class SkinHooks implements
 	BeforePageDisplayHook,
+	OutputPageAfterGetHeadLinksArrayHook,
 	SidebarBeforeOutputHook,
 	SkinBuildSidebarHook,
-	SkinEditSectionLinksHook,
-	SkinPageReadyConfigHook,
-	SkinTemplateNavigation__UniversalHook
+	SkinPageReadyConfigHook
 {
-	use GetConfigTrait;
+	private static ?string $inlineScript = null;
 
 	/**
-	 * Adds the inline theme switcher script to the page
+	 * Adds the inline theme switcher script and resolves the active
+	 * color-token pipeline for the current request.
 	 *
 	 * @param OutputPage $out
 	 * @param Skin $skin
@@ -66,18 +41,81 @@ class SkinHooks implements
 			return;
 		}
 
-		$nonce = $out->getCSP()->getNonce();
+		if ( $out->getConfig()->get( 'CitizenEnablePreferences' ) === true ) {
+			self::$inlineScript ??= Html::inlineScript(
+				RL\ResourceLoader::filter(
+					'minify-js',
+					file_get_contents( __DIR__ . '/../../resources/skins.citizen.scripts/inline.js' )
+				)
+			);
+			$out->addHeadItem( 'skin.citizen.inline', self::$inlineScript );
+		}
 
-		// Script content at 'skins.citizen.scripts.theme/inline.js
-		// phpcs:disable Generic.Files.LineLength.TooLong
-		$script = sprintf(
-			'<script%s>%s</script>',
-			$nonce !== false ? sprintf( ' nonce="%s"', $nonce ) : '',
-			'window.applyPref=()=>{const a="skin-citizen-",b="skin-citizen-theme",c=a=>window.localStorage.getItem(a),d=c("skin-citizen-theme"),e=()=>{const d={fontsize:"font-size",pagewidth:"--width-layout",lineheight:"--line-height"},e=()=>["auto","dark","light"].map(b=>a+b),f=a=>{let b=document.getElementById("citizen-style");null===b&&(b=document.createElement("style"),b.setAttribute("id","citizen-style"),document.head.appendChild(b)),b.textContent=`:root{${a}}`};try{const g=c(b);let h="";if(null!==g){const b=document.documentElement;b.classList.remove(...e(a)),b.classList.add(a+g)}for(const[b,e]of Object.entries(d)){const d=c(a+b);null!==d&&(h+=`${e}:${d};`)}h&&f(h)}catch(a){}};if("auto"===d){const a=window.matchMedia("(prefers-color-scheme: dark)"),c=a.matches?"dark":"light",d=(a,b)=>window.localStorage.setItem(a,b);d(b,c),e(),a.addListener(()=>{e()}),d(b,"auto")}else e()},(()=>{window.applyPref()})();'
-		);
-		// phpcs:enable Generic.Files.LineLength.TooLong
+		self::resolveColorMode( $out );
+	}
 
-		$out->addHeadItem( 'skin.citizen.inline', $script );
+	/**
+	 * Pick the color-token module for this request and add it.
+	 *
+	 * Priority: ?citizenusenewtoken=0|1 URL param > citizenusenewtoken
+	 * cookie > $wgCitizenUseNewToken config. The URL param also writes
+	 * a 24-hour cookie. Mode flip takes effect on the next request —
+	 * exactly one token module ships per request.
+	 */
+	private static function resolveColorMode( OutputPage $out ): void {
+		$request = $out->getRequest();
+		$urlVal = $request->getRawVal( 'citizenusenewtoken' );
+
+		if ( $urlVal === '0' || $urlVal === '1' ) {
+			$useNew = $urlVal === '1';
+			$request->response()->setCookie(
+				'citizenusenewtoken',
+				$urlVal,
+				time() + 86400
+			);
+		} else {
+			$cookieVal = $request->getCookie( 'citizenusenewtoken', null, '' );
+			if ( $cookieVal === '0' || $cookieVal === '1' ) {
+				$useNew = $cookieVal === '1';
+			} else {
+				$useNew = (bool)$out->getConfig()->get( 'CitizenUseNewToken' );
+			}
+		}
+
+		if ( $useNew ) {
+			$out->addModuleStyles( [ 'skins.citizen.tokens.new' ] );
+			$out->addHtmlClasses( 'citizen-token-new' );
+		} else {
+			$out->addModuleStyles( [ 'skins.citizen.tokens' ] );
+		}
+	}
+
+	/**
+	 * Replace the viewport meta tag with a more sane one
+	 *
+	 * @param array &$tags
+	 * @param OutputPage $out
+	 */
+	public function onOutputPageAfterGetHeadLinksArray( &$tags, $out ): void {
+		if ( $out->getSkin()->getSkinName() !== 'citizen' ) {
+			return;
+		}
+
+		if ( !isset( $tags['meta-viewport'] ) ) {
+			return;
+		}
+
+		/**
+		 * The MW default tag was created from T258290, our changes include:
+		 * Added: viewport-fit=cover - #1036
+		 * Removed: user-scalable=yes - This is the default value
+		 * Removed: minimum-scale=0.25 - Seems like an old workaround for iOS that is no longer needed
+		 * Removed: maximum-scale=5.0 - Seems like an old workaround for iOS that is no longer needed
+		 */
+		$tags['meta-viewport'] = Html::element( 'meta', [
+			'name' => 'viewport',
+			'content' => 'width=device-width,initial-scale=1,viewport-fit=cover',
+		] );
 	}
 
 	/**
@@ -91,10 +129,12 @@ class SkinHooks implements
 	 */
 	public function onSidebarBeforeOutput( $skin, &$sidebar ): void {
 		// Be extra safe because it might be active on other skins with caching
-		if ( $skin->getSkinName() === 'citizen' && $sidebar ) {
-			if ( isset( $sidebar['TOOLBOX'] ) ) {
-				self::updateToolboxMenu( $sidebar );
-			}
+		if ( $skin->getSkinName() !== 'citizen' ) {
+			return;
+		}
+
+		if ( isset( $sidebar['TOOLBOX'] ) ) {
+			self::updateToolboxMenu( $sidebar );
 		}
 	}
 
@@ -108,86 +148,66 @@ class SkinHooks implements
 	 */
 	public function onSkinBuildSidebar( $skin, &$bar ): void {
 		// Be extra safe because it might be active on other skins with caching
-		if ( $skin->getSkinName() !== 'citizen' || !$bar ) {
+		if ( $skin->getSkinName() !== 'citizen' ) {
 			return;
 		}
 
-		$out = $skin->getOutput();
-		$globalToolsId = $this->getConfigValue( 'CitizenGlobalToolsPortlet', $out );
-		// remove initial p- for backward compatibility
-		$name = empty( $globalToolsId ) ? 'navigation' : preg_replace( '/^p-/', '', $globalToolsId );
-		$bar[$name]['specialpages'] = [
-			'text'  => $skin->msg( 'specialpages' ),
-			'href'  => Skin::makeSpecialUrl( 'Specialpages' ),
-			'title' => $skin->msg( 'tooltip-t-specialpages' ),
-			'icon'  => 'specialPages',
-			'id'    => 't-specialpages',
+		$this->addSiteTools( $skin, $bar );
+
+		$iconMap = [
+			// TODO: Remove when we drop MW 1.43 support AND T405413 is resolved
+			'n-specialpages' => 'specialPages',
+			// TODO: Remove when we drop MW 1.43 support
+			't-specialpages' => 'specialPages',
+			't-upload' => 'upload',
 		];
 
-		if ( $this->getConfigValue( 'EnableUploads', $out ) === true ) {
-			if ( ExtensionRegistry::getInstance()->isLoaded( 'Upload Wizard' ) ) {
-				// Link to Upload Wizard if present
-				$uploadHref = SpecialPage::getTitleFor( 'UploadWizard' )->getLocalURL();
-			} else {
-				// Link to old upload form
-				$uploadHref = Skin::makeSpecialUrl( 'Upload' );
+		foreach ( $bar as &$menu ) {
+			// Sidebar links do not have a string as key, so we need to loop through each item
+			foreach ( $menu as &$item ) {
+				if ( isset( $item['id'] ) && array_key_exists( $item['id'], $iconMap ) ) {
+					$item['icon'] = $iconMap[$item['id']];
+				}
+
+				if ( !empty( $item['icon'] ) ) {
+					$item['link-html'] = self::getIconHtml( $item['icon'] );
+				}
 			}
-			$bar[$name]['upload'] = [
-				'text'  => $skin->msg( 'upload' ),
-				'href'  => $uploadHref,
-				'title' => $skin->msg( 'tooltip-t-upload' ),
-				'icon'  => 'upload',
-				'id'    => 't-upload',
+		}
+		unset( $menu, $item );
+	}
+
+	private function addSiteTools( Skin $skin, array &$bar ): void {
+		$out = $skin->getOutput();
+		$customSiteToolsMenuId = $out->getConfig()->get( 'CitizenGlobalToolsPortlet' );
+
+		$siteToolsMenuId = $customSiteToolsMenuId === ''
+			? array_key_first( $bar )
+			// remove initial p- for backward compatibility
+			: preg_replace( '/^p-/', '', $customSiteToolsMenuId );
+
+		// Do not override specialpages if it already exists (#1116)
+		// TODO: Revisit in next LTS release (T333211)
+		if ( version_compare( MW_VERSION, '1.44', '<' ) ) {
+			$bar[$siteToolsMenuId][] = [
+				'text'  => $skin->msg( 'specialpages' ),
+				'href'  => SkinComponentUtils::makeSpecialUrl( 'Specialpages' ),
+				'title' => $skin->msg( 'tooltip-t-specialpages' ),
+				'id'    => 't-specialpages',
 			];
 		}
 
-		foreach ( $bar as $key => $item ) {
-			self::addIconsToMenuItems( $bar, $key );
-		}
-	}
-
-	/**
-	 * Modify editsection links
-	 *
-	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SkinEditSectionLinks
-	 * @param Skin $skin
-	 * @param Title $title
-	 * @param string $section
-	 * @param string $sectionTitle
-	 * @param array &$result
-	 * @param Language $lang
-	 */
-	public function onSkinEditSectionLinks( $skin, $title, $section, $sectionTitle, &$result, $lang ) {
-		// Be extra safe because it might be active on other skins with caching
-		if ( $skin->getSkinName() !== 'citizen' || !$result ) {
-			return;
-		}
-
-		// Add icon to edit section link
-		// If VE button is present, use wikiText icon
-		if ( isset( $result['veeditsection'] ) ) {
-			self::appendClassToItem(
-				$result['veeditsection']['attribs']['class'],
-				[
-					'citizen-editsection-icon',
-					'mw-ui-icon-wikimedia-edit'
-				]
-			);
-			self::appendClassToItem(
-				$result['editsection']['attribs']['class'],
-				[
-					'citizen-editsection-icon',
-					'mw-ui-icon-wikimedia-wikiText'
-				]
-			);
-		} elseif ( isset( $result['editsection'] ) ) {
-			self::appendClassToItem(
-				$result['editsection']['attribs']['class'],
-				[
-					'citizen-editsection-icon',
-					'mw-ui-icon-wikimedia-edit'
-				]
-			);
+		if ( !isset( $bar[$siteToolsMenuId]['upload'] ) && $out->getConfig()->get( 'EnableUploads' ) === true ) {
+			$isUploadWizardEnabled = ExtensionRegistry::getInstance()->isLoaded( 'Upload Wizard' );
+			$bar[$siteToolsMenuId][] = [
+				'text'  => $skin->msg( 'upload' ),
+				'href'  => SkinComponentUtils::makeSpecialUrl( $isUploadWizardEnabled ?
+					'UploadWizard' :
+					'Upload'
+				),
+				'title' => $skin->msg( 'tooltip-t-upload' ),
+				'id'    => 't-upload',
+			];
 		}
 	}
 
@@ -214,11 +234,12 @@ class SkinHooks implements
 	/**
 	 * Modify navigation links
 	 *
+	 * TODO: Update to a proper hook when T287622 is resolved
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SkinTemplateNavigation::Universal
 	 * @param SkinTemplate $sktemplate
 	 * @param array &$links
 	 */
-	public function onSkinTemplateNavigation__Universal( $sktemplate, &$links ): void {
+	public static function onSkinTemplateNavigation( $sktemplate, &$links ): void {
 		// Be extra safe because it might be active on other skins with caching
 		if ( $sktemplate->getSkinName() !== 'citizen' ) {
 			return;
@@ -232,12 +253,16 @@ class SkinHooks implements
 			self::updateAssociatedPagesMenu( $links );
 		}
 
+		if ( isset( $links['notifications'] ) ) {
+			self::updateNotificationsMenu( $links );
+		}
+
 		if ( isset( $links['user-menu'] ) ) {
 			self::updateUserMenu( $sktemplate, $links );
 		}
 
 		if ( isset( $links['user-interface-preferences'] ) ) {
-			self::updateUserInterfacePreferencesMenu( $sktemplate, $links );
+			self::updateUserInterfacePreferencesMenu( $links );
 		}
 
 		if ( isset( $links['views'] ) ) {
@@ -248,9 +273,9 @@ class SkinHooks implements
 	/**
 	 * Update actions menu items
 	 *
-	 * @param array &$links
+	 * @internal used inside Hooks\SkinHooks::onSkinTemplateNavigation
 	 */
-	private static function updateActionsMenu( &$links ) {
+	private static function updateActionsMenu( array &$links ): void {
 		// Most icons are not mapped yet in the actions menu
 		$iconMap = [
 			'delete' => 'trash',
@@ -259,7 +284,11 @@ class SkinHooks implements
 			'unprotect' => 'unLock',
 			// Extension:Purge
 			// Extension:SemanticMediaWiki
-			'purge' => 'reload'
+			'purge' => 'reload',
+			// Extension:Cargo
+			'cargo-purge'  => 'reload',
+			// Extension:DiscussionTools
+			'dt-page-subscribe' => 'bell'
 		];
 
 		self::mapIconsToMenuItems( $links, 'actions', $iconMap );
@@ -269,73 +298,123 @@ class SkinHooks implements
 	/**
 	 * Update associated pages menu items
 	 *
-	 * @param array &$links
+	 * @internal used inside Hooks\SkinHooks::onSkinTemplateNavigation
 	 */
-	private static function updateAssociatedPagesMenu( &$links ) {
+	private static function updateAssociatedPagesMenu( array &$links ): void {
 		// Most icons are not mapped yet in the associated pages menu
 		$iconMap = [
 			'main' => 'article',
+			'file' => 'image',
+			'talk' => 'speechBubbles',
 			'user' => 'userAvatar'
 		];
 
 		// Special handling for talk pages
 		// Since talk keys have namespace as prefix
 		foreach ( $links['associated-pages'] as $key => $item ) {
-			// I wish I can use str_ends_with but need to wait for PHP 7.X to be dropped
-			if ( substr( $key, -4 ) === 'talk' ) {
+			$keyStr = (string)$key;
+			if ( str_ends_with( $keyStr, '_talk' ) ) {
+				// Extract the namespace key from the talk key (e.g. Project from Project_talk)
+				$namespace = substr( $keyStr, 0, -strlen( '_talk' ) );
 				$links['associated-pages'][$key]['icon'] = 'speechBubbles';
+				$links['associated-pages'][$namespace]['icon'] = 'arrowPrevious';
 			}
 		}
 
 		self::mapIconsToMenuItems( $links, 'associated-pages', $iconMap );
 		self::addIconsToMenuItems( $links, 'associated-pages' );
+		self::addButtonClassesToMenuItems( $links, 'associated-pages' );
 	}
 
 	/**
 	 * Update toolbox menu items
-	 * This is not guaranteed to run after extensions hook
 	 *
-	 * WORKAROUND: Load the skin after all extensions
-	 * FIXME: Revisit when T287622 is resolved
-	 *
-	 * @param array &$links
+	 * @internal used inside Hooks\SkinHooks::onSkinTemplateNavigation
 	 */
-	private static function updateToolboxMenu( &$links ) {
+	private static function updateToolboxMenu( array &$links ): void {
 		// Most icons are not mapped yet in the toolbox menu
 		$iconMap = [
-			'whatlinkshere' => 'articleRedirect',
 			'recentchangeslinked' => 'recentChanges',
 			'print' => 'printer',
-			'permalink' => 'link',
-			'info' => 'infoFilled',
 			'contributions' => 'userContributions',
-			'log' => 'history',
-			'blockip' => 'block',
 			'emailuser' => 'message',
-			'userrights' => 'userGroup',
 			// Extension:Cargo
-			'cargo-pagevalues' => 'database',
+			'cargo-pagevalues' => 'table',
 			// Extension:CiteThisPage
-			'citethispage' => 'reference',
+			'citethispage' => 'quotes',
 			// Extension:CreateRedirect
 			'createredirect' => 'articleRedirect',
 			// Extension:SemanticMediaWiki
-			'smwbrowselink' => 'database',
+			'smwbrowselink' => 'table',
 			// Extension:UrlShortener
-			'urlshortener' => 'link'
+			'urlshortener' => 'link',
+			'urlshortener-qrcode' => 'qrCode',
+			// Extension:Wikibase
+			'wikibase' => 'logoWikidata'
 		];
+
+		// Remove upload and specialpages from toolbox as we moved them to drawer
+		// TODO: Check again in the next LTS release, in case it's handled there
+		$siteTools = [
+			'upload',
+			'specialpages'
+		];
+
+		foreach ( $siteTools as $siteTool ) {
+			unset( $links['TOOLBOX'][$siteTool] );
+		}
 
 		self::mapIconsToMenuItems( $links, 'TOOLBOX', $iconMap );
 		self::addIconsToMenuItems( $links, 'TOOLBOX' );
 	}
 
 	/**
+	 * Update notifications menu
+	 *
+	 * @internal used inside Hooks\SkinHooks::onSkinTemplateNavigation
+	 */
+	private static function updateNotificationsMenu( array &$links ): void {
+		$iconMap = [
+			'notifications-alert' => 'bell',
+			'notifications-notice' => 'tray'
+		];
+
+		self::mapIconsToMenuItems( $links, 'notifications', $iconMap );
+		self::addIconsToMenuItems( $links, 'notifications' );
+
+		/**
+		 * Echo has styles that control icons rendering in places we don't want them.
+		 * Based on fixEcho() from Vector, see T343838
+		 */
+		foreach ( $links['notifications'] as &$item ) {
+			$icon = $item['icon'] ?? null;
+			if ( $icon ) {
+				$linkClass = $item['link-class'] ?? [];
+				$newLinkClass = [
+					'citizen-echo-notification-badge',
+					'cdx-button',
+					'cdx-button--fake-button',
+					'cdx-button--fake-button--enabled',
+					'cdx-button--icon-only',
+					'cdx-button--weight-quiet',
+					'citizen-cdx-button--size-large',
+					// Allows Echo to react to clicks
+					'mw-echo-notification-badge-nojs'
+				];
+				if ( in_array( 'mw-echo-unseen-notifications', $linkClass ) ) {
+					$newLinkClass[] = 'mw-echo-unseen-notifications';
+				}
+				$item['link-class'] = $newLinkClass;
+			}
+		}
+	}
+
+	/**
 	 * Update user menu
 	 *
-	 * @param SkinTemplate $sktemplate
-	 * @param array &$links
+	 * @internal used inside Hooks\SkinHooks::onSkinTemplateNavigation
 	 */
-	private static function updateUserMenu( $sktemplate, &$links ) {
+	private static function updateUserMenu( SkinTemplate $sktemplate, array &$links ): void {
 		$user = $sktemplate->getUser();
 		$isRegistered = $user->isRegistered();
 		$isTemp = $user->isTemp();
@@ -351,10 +430,6 @@ class SkinHooks implements
 		} else {
 			// Remove anon user page text from user menu and recreate it in user info
 			unset( $links['user-menu']['anonuserpage'] );
-			// Remove links as they are added to the bottom of user menu later
-			// unset( $links['user-menu']['createaccount'] );
-			// unset( $links['user-menu']['login'] );
-			// unset( $links['user-menu']['login-private'] );
 		}
 
 		self::addIconsToMenuItems( $links, 'user-menu' );
@@ -363,34 +438,32 @@ class SkinHooks implements
 	/**
 	 * Update user interface preferences menu
 	 *
-	 * @param SkinTemplate $sktemplate
-	 * @param array &$links
+	 * @internal used inside Hooks\SkinHooks::onSkinTemplateNavigation
 	 */
-	private static function updateUserInterfacePreferencesMenu( $sktemplate, &$links ) {
+	private static function updateUserInterfacePreferencesMenu( array &$links ): void {
 		self::addIconsToMenuItems( $links, 'user-interface-preferences' );
 	}
 
 	/**
 	 * Update views menu items
 	 *
-	 * @param array &$links
+	 * @internal used inside Hooks\SkinHooks::onSkinTemplateNavigation
 	 */
-	private static function updateViewsMenu( &$links ) {
+	private static function updateViewsMenu( array &$links ): void {
 		// Most icons are not mapped yet in the views menu
 		$iconMap = [
-			'view' => 'article',
+			'view' => 'eye',
 			// View source button only appears when the user do not have permission
 			'viewsource' => 'editLock',
 			'history' => 'history',
 			'edit' => 'edit',
 			'view-foreign' => 'linkExternal',
 			// Extension:VisualEditor
-			// For some reason the icon span element keeps getting removed
-			// So we are adding this the legacy way
-			// Bug: T323188
-			// 've-edit' => 'edit',
+			've-edit' => 'edit',
 			// Extension:DiscussionTools
-			'addsection' => 'speechBubbleAdd'
+			'addsection' => 'speechBubbleAdd',
+			// Extension:Page Forms
+			'formedit' => 'tableAddRowBefore'
 		];
 
 		// If both visual edit and source edit buttons are present
@@ -404,16 +477,20 @@ class SkinHooks implements
 
 		self::mapIconsToMenuItems( $links, 'views', $iconMap );
 		self::addIconsToMenuItems( $links, 'views' );
+		self::addButtonClassesToMenuItems( $links, 'views' );
+
+		// Make edit buttons progressive primary instead of quiet
+		foreach ( [ 'edit', 've-edit' ] as $key ) {
+			if ( isset( $links['views'][$key] ) ) {
+				self::setProgressiveAction( $links['views'][$key]['link-class'] );
+			}
+		}
 	}
 
 	/**
 	 * Set the icon parameter of the menu item based on the mapping
-	 *
-	 * @param array &$links
-	 * @param string $menu identifier
-	 * @param array $map icon mapping
 	 */
-	private static function mapIconsToMenuItems( &$links, $menu, $map ) {
+	private static function mapIconsToMenuItems( array &$links, string $menu, array $map ): void {
 		foreach ( $map as $key => $icon ) {
 			if ( isset( $links[$menu][$key] ) ) {
 				$links[$menu][$key]['icon'] ??= $icon;
@@ -422,34 +499,69 @@ class SkinHooks implements
 	}
 
 	/**
-	 * Add the HTML needed for icons to menu items
-	 *
-	 * @param array &$links
-	 * @param string $menu identifier
+	 * Add Codex button classes to menu items
 	 */
-	private static function addIconsToMenuItems( &$links, $menu ) {
-		// Loop through each menu to check/append its link classes.
-		foreach ( $links[$menu] as $key => $item ) {
-			$icon = $item['icon'] ?? '';
+	private static function addButtonClassesToMenuItems( array &$links, string $menu ): void {
+		$buttonClasses = [
+			'citizen-cdx-button--size-large',
+			'cdx-button',
+			'cdx-button--fake-button',
+			'cdx-button--fake-button--enabled',
+			'cdx-button--weight-quiet',
+		];
 
-			if ( $icon ) {
-				// Html::makeLink will pass this through rawElement
-				// Avoid using mw-ui-icon in case its styles get loaded
-				// Sometimes extension includes the "wikimedia-" part in the icon key (e.g. ULS),
-				// so we apply both classes just to be safe
-				$links[$menu][$key]['link-html'] = '<span class="citizen-ui-icon mw-ui-icon-' . $icon . ' mw-ui-icon-wikimedia-' . $icon . '"></span>';
+		foreach ( $links[$menu] as &$item ) {
+			if ( is_array( $item ) ) {
+				self::appendClassToItem( $item['link-class'], $buttonClasses );
 			}
 		}
 	}
 
 	/**
+	 * Add the HTML needed for icons to menu items
+	 */
+	private static function addIconsToMenuItems( array &$links, string $menu ): void {
+		// Loop through each menu to check/append its link classes.
+		foreach ( $links[$menu] as $key => $item ) {
+			$icon = $item['icon'] ?? '';
+
+			if ( $icon ) {
+				$links[$menu][$key]['link-html'] = self::getIconHtml( $icon );
+			}
+		}
+	}
+
+	/**
+	 * Get the HTML for an icon
+	 */
+	private static function getIconHtml( string $icon ): string {
+		// Html::makeLink will pass this through rawElement
+		// Avoid using mw-ui-icon in case its styles get loaded
+		// Sometimes extension includes the "wikimedia-" part in the icon key (e.g. ULS),
+		// so we apply both classes just to be safe
+		return '<span class="citizen-ui-icon mw-ui-icon-' . $icon . ' mw-ui-icon-wikimedia-' . $icon . '"></span>';
+	}
+
+	/**
+	 * Promote a menu item from quiet to progressive primary
+	 */
+	private static function setProgressiveAction( array|string|null &$linkClass ): void {
+		if ( is_array( $linkClass ) ) {
+			$linkClass = array_values( array_diff( $linkClass, [ 'cdx-button--weight-quiet' ] ) );
+		} elseif ( is_string( $linkClass ) ) {
+			$linkClass = trim( str_replace( 'cdx-button--weight-quiet', '', $linkClass ) );
+		}
+		self::appendClassToItem( $linkClass, [
+			'cdx-button--weight-primary',
+			'cdx-button--action-progressive',
+		] );
+	}
+
+	/**
 	 * Adds class to a property
 	 * Based on Vector
-	 *
-	 * @param array &$item to update
-	 * @param array|string $classes to add to the item
 	 */
-	private static function appendClassToItem( &$item, $classes ) {
+	private static function appendClassToItem( array|string|null &$item, array|string $classes ): void {
 		$existingClasses = $item;
 
 		if ( is_array( $existingClasses ) ) {

@@ -12,20 +12,21 @@
 
 {{>Header}}
 <div class="citizen-page-container">
-	<div id="siteNotice">{{{html-site-notice}}}</div>
-	<main class="mw-body {{#toc-enabled}}citizen-toc-enabled{{/toc-enabled}}" id="content">
+	<div class="citizen-sitenotice-container">{{{html-site-notice}}}</div>
+	<main class="mw-body" id="content">
+		{{>PageHeader}}
 		<div class="citizen-body-container">
-		{{>ContentHeader}}
-		<div id="bodyContent" class="citizen-body" aria-labelledby="firstHeading">
-			<div id="contentSub"{{{html-user-language-attributes}}}>{{{html-subtitle}}}</div>
-			{{#html-undelete-link}}<div id="contentSub2">{{{.}}}</div>{{/html-undelete-link}}
-			{{{html-user-message}}}
-			{{{html-body-content--formatted}}}
-		</div>
-		{{#toc-enabled}}{{>TableOfContents}}{{/toc-enabled}}
-		{{>ContentFooter}}
+			<div id="bodyContent" class="citizen-body" aria-labelledby="firstHeading">
+				<div id="contentSub"{{{html-user-language-attributes}}}>{{{html-subtitle}}}</div>
+				{{#html-undelete-link}}<div id="contentSub2">{{{.}}}</div>{{/html-undelete-link}}
+				{{{html-user-message}}}
+				{{#data-body-content}}{{{html-body-content}}}{{/data-body-content}}
+			</div>
+			{{#toc-enabled}}{{>PageSidebar}}{{/toc-enabled}}
+			{{>PageFooter}}
 		</div>
 	</main>
 	{{{html-after-content}}}
 	{{#data-footer}}{{>Footer}}{{/data-footer}}
 </div>
+{{#data-sticky-header}}{{>StickyHeader}}{{/data-sticky-header}}

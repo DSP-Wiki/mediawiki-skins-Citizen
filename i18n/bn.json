@@ -1,7 +1,9 @@
 {
 	"@metadata": {
 		"authors": [
+			"Nokib Sarkar",
 			"R4356th",
+			"San1joy23",
 			"আফতাবুজ্জামান",
 			"খাত্তাব হাসান"
 		]
@@ -27,12 +29,8 @@
 	"citizen-footer-tagline": "[[MediaWiki:Citizen-footer-tagline]]-এ এই লেখা সম্পাদনা করুন",
 	"citizen-action-addsection": "আলোচনা যোগ করুন",
 	"citizen-jumptotop": "উপরে চলুন",
-	"citizen-search-fulltext": "$1 থাকা পাতাগুলিতে অনুসন্ধান করুন",
-	"citizen-search-mediasearch": "মিডিয়ার জন্য অনুসন্ধান",
-	"citizen-search-editpage": "পৃষ্ঠা সম্পাদনা বা তৈরি করুন",
 	"citizen-search-empty-desc": "অনুসন্ধান শুরু করতে কিছু লিখুন",
 	"citizen-search-noresults-title": "আহ! দুঃখিত, এই $1 এর জন্য কোনো ফলাফল নেই",
-	"citizen-search-noresults-desc": "উপরের বিকল্পগুলি চেষ্টা করবেন?",
 	"citizen-tagline-ns-talk": "{{SUBJECTPAGENAME}}-এর আলোচনা পৃষ্ঠা",
 	"citizen-tagline-ns-project": "{{SITENAME}} সম্পর্কে তথ্য",
 	"citizen-tagline-ns-file": "{{SITENAME}}-এ ফাইল",
@@ -40,13 +38,5 @@
 	"citizen-tagline-ns-template": "টেমপ্লেট পাতা",
 	"citizen-tagline-ns-help": "সাহায্য পাতা",
 	"citizen-tagline-ns-category": "বিষয়শ্রেণীর পাতা",
-	"citizen-tagline-user-regdate": "যোগদান করেছেন $1",
-	"prefs-citizen-theme-label": "থিম",
-	"prefs-citizen-theme-option-auto": "স্বয়ংক্রিয়",
-	"prefs-citizen-theme-option-light": "উজ্জ্বল",
-	"prefs-citizen-theme-option-dark": "কালো",
-	"prefs-citizen-fontsize-label": "ফন্টের আকার",
-	"prefs-citizen-pagewidth-label": "পাতার প্রস্থ",
-	"prefs-citizen-lineheight-label": "লাইনের উচ্চতা",
-	"prefs-citizen-resetbutton-label": "পূর্বনির্ধারিত অবস্থায় যান"
+	"citizen-tagline-user-regdate": "যোগদান করেছেন $1"
 }

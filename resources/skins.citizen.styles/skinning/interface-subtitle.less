@@ -2,23 +2,23 @@
  * Citizen
  *
  * Module: mediawiki.skinning.interface-subtitle
- * Version: REL1_39
+ * Version: REL1_43
  *
- * Date: 2023-06-06
+ * Date: 2025-06-25
  */
 
 #siteSub,
 #contentSub,
 #contentSub2 {
-	font-size: var( --font-size-x-small );
-	line-height: var( --line-height-xs );
-	color: var( --color-base--subtle );
+	overflow: hidden;
+	text-overflow: ellipsis;
+	color: var( --color-subtle );
+	.mixin-citizen-font-styles( 'small' );
 }
 
-// #contentSub can be empty
-#contentSub:not( :empty ),
-#contentSub2 {
-	margin-bottom: var( --space-md );
+#siteSub {
+	// Reduced line height for siteSub
+	line-height: var( --line-height-x-small );
 }
 
 // Reduced spacing if both sub1 and 2 exists
@@ -28,9 +28,9 @@
 
 #citizen-tagline-user > span + span::before {
 	margin: 0 var( --space-xxs );
-	content: '·';
 	-webkit-user-select: none;
 	user-select: none;
+	content: '·';
 }
 
 span.subpages {

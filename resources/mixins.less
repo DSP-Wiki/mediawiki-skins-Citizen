@@ -5,91 +5,33 @@
 
 @import 'variables.less';
 
-.citizen-card( @border-radius: true ) {
-	background-color: var( --color-surface-1 );
-	border: 1px solid var( --border-color-base );
-	box-shadow: var( --box-shadow-dialog );
-
-	& when ( @border-radius ) {
-		border-radius: var( --border-radius--medium );
-	}
+.mixin-citizen-opaque-background( @surface: 1 ) {
+	// Use color-mix on the public --color-surface-@{surface} token instead of
+	// reaching into legacy-only OKLCH derivation primitives. Works in both
+	// legacy and new color modes (both define --color-surface-N), and picks up
+	// the active surface value rather than legacy's idea of it.
+	background-color: ~'color-mix( in oklch, var( --color-surface-@{surface} ) calc( var( --opacity-glass ) * 100% ), transparent )';
 }
 
-
-// Collaspe animation setup
-.citizen-card-hide( @position, @axis: '', @fadeChildren: true ) {
-	pointer-events: none;
-	visibility: hidden;
-	opacity: 0;
-	transform: ~'scale@{axis}( 0 )';
-	transform-origin: @position;
-
-	& when ( @fadeChildren ) {
-		> * {
-			opacity: 0;
-		}
-	}
-}
-
-// Expand animiation setup
-// When using fadeChildren, the child elements need to have
-// opacity: 0 set manually
-.citizen-card-show( @fadeChildren: true ) {
-	z-index: @z-index-overlay;
-	pointer-events: auto;
-	visibility: visible;
-	opacity: 1;
-	// HACK: So that visiblity won't wait 250ms to become visible
-	transition-delay: 0ms;
-	transform: none;
-
-	& when ( @fadeChildren ) {
-		> * {
-			.citizen-card-content-show;
-		}
-	}
-}
-
-// Fade content when users open the menu
-// But GTFO instantly when they close the menu
-.citizen-card-content-show() {
-	opacity: 1;
-	transition: var( --transition-menu );
-	transition-property: opacity;
-	will-change: opacity;
-}
-
-// Transition animation
-.citizen-card-transition() {
-	transition: var( --transition-menu );
-	transition-property: transform, opacity;
-	will-change: transform, opacity;
+.mixin-citizen-frosted-glass( @surface: 1 ) {
+	.mixin-citizen-opaque-background( @surface );
+	-webkit-backdrop-filter: var( --backdrop-filter-frosted-glass );
+	backdrop-filter: var( --backdrop-filter-frosted-glass );
 }
 
 // Header card popups
-.citizen-header-card( @position ) {
-	position: absolute;
+.mixin-citizen-header-card( @position ) {
 	right: 0;
 	bottom: 100%;
 	left: 0;
-	min-width: 16rem;
 	max-height: var( --header-card-maxheight );
-	margin: var( --space-xs );
-	overflow: auto;
-	overscroll-behavior: contain;
-	-webkit-user-select: none;
-	user-select: none;
-	contain: content;
-	.citizen-card();
-	.citizen-card-hide( bottom @position );
-	.citizen-card-transition();
 
 	@media ( min-width: @min-width-breakpoint-tablet ) {
-		& when ( @position = left ) {
+		& when (@position =start) {
 			right: unset;
 		}
 
-		& when ( @position = right ) {
+		& when (@position =end) {
 			left: unset;
 		}
 	}
@@ -97,137 +39,228 @@
 	@media ( min-width: @min-width-breakpoint-desktop ) {
 		right: unset;
 		left: 100%;
-		& when ( @position = left ) {
+
+		& when (@position =start) {
 			top: 0;
 			bottom: unset;
-			.citizen-card-hide( top left );
 		}
 
-		& when ( @position = right ) {
+		& when (@position =end) {
 			bottom: 0;
-			.citizen-card-hide( bottom left );
 		}
 	}
 }
 
-.citizen-sticky-header( @topOffset: 0, @bottomBorder: true, @zIndex: true ) {
-	position: -webkit-sticky;
-	position: sticky;
-	top: @topOffset;
+.mixin-citizen-sticky-header-element() {
+	top: var( --header-offset-block-start ) !important;
+	transition-timing-function: var( --transition-timing-function-ease );
+	transition-duration: var( --transition-duration-medium );
+	transition-property: top;
+}
 
-	& when ( @bottomBorder ) {
-		border-bottom: 1px solid var( --border-color-base );
-	}
-
-	& when ( @zIndex ) {
-		z-index: @z-index-page-header;
-	}
-
-	// HACK: Hide overflow
-	// This has an issue if parent has overflow set
+.mixin-citizen-sticky-header-background() {
 	&::before {
 		position: absolute;
-		top: @topOffset;
-		right: ~'calc( var(--padding-page ) * -1 )';
-		left: ~'calc( var(--padding-page ) * -1 )';
-		z-index: -1;
+		top: 0;
+		right: 0;
+		left: 0;
+		z-index: @z-index-bottom;
+		display: block;
 		height: 100%;
 		content: '';
 		background-color: var( --color-surface-0 );
-		filter: opacity( 0.95 );
-		backdrop-filter: saturate( 50% ) blur( 16px );
+		filter: opacity( 0.9 );
+		-webkit-backdrop-filter: var( --backdrop-filter-frosted-glass );
+		backdrop-filter: var( --backdrop-filter-frosted-glass );
+	}
+}
+
+.mixin-citizen-sticky-header(@bottomBorder: true, @zIndex: true) {
+	position: -webkit-sticky;
+	position: sticky;
+	.mixin-citizen-sticky-header-element;
+	.mixin-citizen-sticky-header-background;
+
+	& when (@bottomBorder ) {
+		box-shadow: 0 1px 0 0 var( --border-color-base );
+	}
+
+	& when (@zIndex ) {
+		z-index: @z-index-sticky;
 	}
 }
 
 // To hide objects, but keep them accessible for screen-readers
-// From https://www.a11yproject.com/posts/how-to-hide-content
-.hidden() {
+.mixin-citizen-screen-reader-only() {
 	position: absolute;
 	width: 1px;
 	height: 1px;
 	overflow: hidden;
-	clip: rect( 0 0 0 0 );
-	clip-path: inset( 50% );
 	white-space: nowrap;
-}
-
-// Set content to be at the center
-.content-center() {
-	max-width: var( --width-layout );
-	margin-right: auto;
-	margin-left: auto;
-}
-
-.resource-loader-icon() {
-	position: absolute;
-	width: inherit;
-	height: inherit;
-	content: '';
-	background-repeat: no-repeat;
-	background-position: center;
-}
-
-.resource-loader-menu-icon() {
-	position: absolute;
-	width: @icon-box-size;
-	height: @icon-box-size;
-	content: '';
-	background-repeat: no-repeat;
-	background-position: center;
-}
-
-.resource-loader-list-icon() {
-	position: relative;
-	flex-shrink: 0;
-	align-self: center;
-	width: @icon-size;
-	height: @icon-size;
-	content: '';
-	background-repeat: no-repeat;
-	background-position: center;
-	background-size: contain;
+	clip-path: inset( 50% );
 }
 
 // Button Styles
-.button-blue() {
-	color: #fff !important;
-	background-color: var( --color-primary );
+.mixin-citizen-button-progressive() {
+	color: var( --color-inverted-primary ) !important;
+	background-color: var( --background-color-progressive );
+
+	&:hover {
+		background-color: var( --background-color-progressive--hover );
+	}
+
+	&:active {
+		background-color: var( --background-color-progressive--active );
+	}
 }
 
-.button-blue-hover() {
-	background-color: var( --color-primary--hover );
+.mixin-citizen-button-destructive() {
+	color: var( --color-inverted-fixed ) !important;
+	background-color: var( --background-color-destructive );
+
+	&:hover {
+		background-color: var( --background-color-destructive--hover );
+	}
+
+	&:active {
+		background-color: var( --background-color-destructive--active );
+	}
 }
 
-.button-blue-active() {
-	background-color: var( --color-primary--active );
-}
+// This is used to override MW dark mode styles
+// if they have hardcoded value instead of CSS variable
+.mixin-citizen-css-theme-clientpref-all( @prop, @value ) {
+	@{prop}: @value;
 
-.button-red() {
-	color: #fff !important;
-	background-color: var( --color-destructive );
-}
+	@media screen {
+		html.skin-theme-clientpref-night & {
+			@{prop}: @value;
+		}
+	}
 
-.button-red-hover() {
-	background-color: var( --color-destructive--hover );
-}
-
-.button-red-active() {
-	background-color: var( --color-destructive--active );
+	@media screen and ( prefers-color-scheme: dark ) {
+		html.skin-theme-clientpref-os & {
+			@{prop}: @value;
+		}
+	}
 }
 
 // Transform black into given color
 // From https://stackoverflow.com/a/73390109/10624167
-.recolor( @color ) {
-	@r: red( @color ) / 255;
-	@g: green( @color ) / 255;
-	@b: blue( @color ) / 255;
-	@a: alpha( @color );
+.recolor(@color ) {
+	@r: red(@color ) / 255;
+	@g: green(@color ) / 255;
+	@b: blue(@color ) / 255;
+	@a: alpha(@color );
 
 	// grayscale fallback if SVG from data url is not supported
-	@lightness: lightness( @color );
+	@lightness: lightness(@color );
 	filter: saturate( 0% ) brightness( 0% ) invert( @lightness ) opacity( @a );
 
 	// color filter
-	@svg-filter-id: "recolor";
-	filter: url( 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="@{svg-filter-id}" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 @{r} 0 0 0 0 @{g} 0 0 0 0 @{b} 0 0 0 @{a} 0"/></filter></svg> #@{svg-filter-id}' );
+	@svg-filter-id: 'recolor';
+	filter: url( ';data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="@{svg-filter-id}" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 @{r} 0 0 0 0 @{g} 0 0 0 0 @{b} 0 0 0 @{a} 0"/></filter></svg> #@{svg-filter-id}' );
+}
+
+.citizen-cdx-mixin-link-base-overrides() {
+	// We don't want to use color-progressive for link colors
+	color: var( --color-link );
+
+	&:hover {
+		color: var( --color-link--hover );
+	}
+
+	&:active {
+		color: var( --color-link--active );
+	}
+
+	// FIX: Visited hover color is missing in MW 1.43
+	&:visited:hover {
+		color: var( --color-visited--hover );
+	}
+
+	&:visited:active {
+		color: var( --color-visited--active );
+	}
+}
+
+// Based on Codex 2.0 typography tokens from T363845
+// TODO: Revisit when T333890 is resolved
+.mixin-citizen-font-styles( @type ) {
+	& when ( @type = 'heading-1' ) {
+		font-size: var( --font-size-xxx-large );
+		font-weight: var( --font-weight-semi-bold );
+		line-height: var( --line-height-xxx-large );
+	}
+
+	& when ( @type = 'heading-2' ) {
+		font-size: var( --font-size-xx-large );
+		font-weight: var( --font-weight-semi-bold );
+		line-height: var( --line-height-xx-large );
+	}
+
+	& when ( @type = 'heading-3' ) {
+		font-size: var( --font-size-x-large );
+		font-weight: var( --font-weight-semi-bold );
+		line-height: var( --line-height-x-large );
+	}
+
+	& when ( @type = 'heading-4' ) {
+		font-size: var( --font-size-large );
+		font-weight: var( --font-weight-semi-bold );
+		line-height: var( --line-height-large );
+	}
+
+	& when ( @type = 'body' ) {
+		font-size: var( --font-size-medium );
+		// font-weight: var( --font-weight-normal ); - No need to specify
+		line-height: var( --line-height-medium );
+	}
+
+	& when ( @type = 'small' ) {
+		font-size: var( --font-size-small );
+		// font-weight: var( --font-weight-normal ); - No need to specify
+		line-height: var( --line-height-small );
+	}
+
+	& when ( @type = 'overline' ) {
+		font-family: var( --font-family-overline );
+		font-size: var( --font-size-overline );
+		font-weight: var( --font-weight-overline );
+		line-height: var( --line-height-overline );
+		text-transform: var( --text-transform-overline );
+		letter-spacing: var( --letter-spacing-overline );
+	}
+}
+
+// Used to retrofit input element into Codex styles
+.mixin-citizen-cdx-input() {
+	min-height: @min-size-interactive-pointer;
+	padding: @spacing-25 @spacing-50;
+	font-size: @font-size-medium;
+	line-height: @line-height-small;
+	border-radius: @border-radius-base;
+	box-shadow: @box-shadow-inset-small @box-shadow-color-transparent;
+	transition-duration: @transition-duration-medium;
+	transition-property: @transition-property-base;
+
+	&:focus {
+		outline: @outline-base--focus;
+		border-color: @border-color-progressive--focus;
+		box-shadow: @box-shadow-inset-small @box-shadow-color-progressive--focus;
+	}
+}
+
+.mixin-citizen-mask-gradient(@direction, @color1, @color2, @color3: null, @color4: null) {
+	& when (@color3 =null),
+	(@color4 =null) {
+		-webkit-mask-image: linear-gradient( @direction, @color1, @color2 );
+		mask-image: linear-gradient( @direction, @color1, @color2 );
+	}
+
+	& when not(@color3 =null),
+	not(@color4 =null) {
+		-webkit-mask-image: linear-gradient( @direction, @color1, @color2, @color3, @color4 );
+		mask-image: linear-gradient( @direction, @color1, @color2, @color3, @color4 );
+	}
 }

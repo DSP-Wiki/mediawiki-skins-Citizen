@@ -3,25 +3,23 @@
  *
  * SkinStyles for MediaWiki core
  * Module: mediawiki.debug
- * Version: REL1_39 3baf9e1
+ * Version: REL1_43
  *
- * Date: 2022-11-16
+ * Date: 2025-01-03
 */
 
 @import '../../../resources/variables.less';
 
-/* $wgDebugToolbar = true; */
+// $wgDebugToolbar = true;
+@height-debug-toolbar: 54px;
+
 #jquery-foot-hovzer {
+	z-index: @z-index-sticky;
 	// @see https://caniuse.com/mdn-css_properties_width_stretch
 	width: -webkit-fill-available;
 	width: -moz-available;
-	margin-bottom: var( --header-size );
-
-	@media ( min-width: @min-width-breakpoint-desktop ) {
-		margin-bottom: 0;
-		// So that it is not hidden by header
-		margin-left: ~'calc( var( --header-size ) + 1px )'; // compensate border
-	}
+	margin-block-end: var( --header-size-block-end );
+	margin-inline: var( --header-size-inline-start ) var( --header-size-inline-end );
 }
 
 .mw-debug {
@@ -37,16 +35,11 @@
 			}
 		}
 
-		td,
-		th {
-			// padding: 4px 10px;
-		}
-
 		td {
 			border-bottom-color: var( --border-color-base );
 
 			span.stats {
-				color: var( --color-base--subtle );
+				color: var( --color-subtle );
 			}
 		}
 	}
@@ -72,22 +65,22 @@
 	border-color: transparent !important;
 
 	&:hover {
-		background-color: var( --background-color-quiet--hover );
+		background-color: var( --background-color-button-quiet--hover );
 	}
 
 	&:active {
-		background-color: var( --background-color-quiet--active );
+		background-color: var( --background-color-button-quiet--active );
 	}
 
 	&.current {
 		background-color: transparent;
-		box-shadow: inset 0 -2px 0 0 var( --color-primary );
+		box-shadow: inset 0 -2px 0 0 var( --color-progressive );
 	}
 }
 
 a.mw-debug-panelabel,
 a.mw-debug-panelabel:visited {
-	color: var( --color-base--emphasized );
+	color: var( --color-emphasized );
 }
 
 .mw-debug-pane {
@@ -103,13 +96,13 @@ a.mw-debug-panelabel:visited {
 	}
 
 	th {
-		font-weight: var( --font-weight-semibold );
+		font-weight: var( --font-weight-semi-bold );
 		background-color: transparent;
 	}
 
 	td {
-		color: var( --color-base--emphasized );
-		background-color: var( --background-color-success );
+		color: var( --color-emphasized );
+		background-color: var( --background-color-success-subtle );
 	}
 }
 
@@ -117,8 +110,8 @@ a.mw-debug-panelabel:visited {
 	background-color: var( --color-surface-3 );
 
 	span {
-		font-weight: var( --font-weight-semibold );
-		color: var( --color-base--emphasized );
+		font-weight: var( --font-weight-semi-bold );
+		color: var( --color-emphasized );
 	}
 
 	li {
@@ -127,31 +120,26 @@ a.mw-debug-panelabel:visited {
 }
 
 .mw-debug-console-log {
-	background-color: var( --background-color-primary--hover );
+	background-color: var( --background-color-progressive-subtle );
 }
 
 .mw-debug-console-warn {
-	background-color: var( --background-color-warning );
+	background-color: var( --background-color-warning-subtle );
 }
 
 .mw-debug-console-deprecated {
-	background-color: var( --background-color-destructive );
+	background-color: var( --background-color-destructive-subtle );
 }
 
-/* $wgShowDebug = true; */
+// $wgShowDebug = true;
 #mw-html-debug-log {
 	padding: 0 var( --padding-page );
 
 	// Label text
 	> strong {
 		font-size: var( --font-size-small );
-		color: var( --color-base--subtle );
-		letter-spacing: 0.05em;
-	}
-
-	@media ( min-width: @min-width-breakpoint-desktop ) {
-		// So that it is not hidden by header
-		margin-left: var( --header-size );
+		font-weight: var( --font-weight-medium );
+		color: var( --color-subtle );
 	}
 }
 
@@ -159,4 +147,22 @@ a.mw-debug-panelabel:visited {
 	padding-left: var( --space-lg ); // So that it is not clipped
 	margin-left: 0;
 	overflow-x: auto;
+}
+
+// HACK: Move the bottom elements above the debug toolbar (#1146)
+// TODO: Clean this up when we implement an universal approach to bottom toolbar
+html:has( #mw-debug-toolbar ) {
+	.citizen-toc,
+	.citizen-page-actions {
+		@media ( max-width: @max-width-breakpoint-tablet ) {
+			margin-block-end: @height-debug-toolbar; // Height of the debug toolbar
+		}
+	}
+}
+
+.citizen-header-position-bottom:has( #mw-debug-toolbar ) {
+	.citizen-toc,
+	.citizen-page-actions {
+		margin-block-end: @height-debug-toolbar; // Height of the debug toolbar
+	}
 }

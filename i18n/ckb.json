@@ -19,7 +19,6 @@
 	"citizen-footer-tagline": "دەستکاری ئەم دەقە لەسەر [[MediaWiki:Citizen-footer-tagline]]",
 	"citizen-action-addsection": "بابەت دابنێ",
 	"citizen-jumptotop": "گەڕانەوە بۆ سەرەوە",
-	"citizen-search-fulltext": "گەڕان لە ناوەڕۆکی لاپەڕەکان",
 	"citizen-search-empty-desc": "بنوسە بۆ گەڕان",
 	"citizen-tagline-ns-talk": "لاپەڕەی گفتوگۆی {{SUBJECTPAGENAME}}",
 	"citizen-tagline-ns-project": "زانیاری لەبارەی {{SITENAME}}",
@@ -27,13 +26,5 @@
 	"citizen-tagline-ns-mediawiki": "پەڕەی ڕووکاری میدیاویکی",
 	"citizen-tagline-ns-template": "لاپەڕەی ڕووکار",
 	"citizen-tagline-ns-help": "لاپەڕەی یارمەتی",
-	"citizen-tagline-ns-category": "لاپەڕەی هاوپۆل",
-	"prefs-citizen-theme-label": "ڕووکار",
-	"prefs-citizen-theme-option-auto": "خۆگەڕ",
-	"prefs-citizen-theme-option-light": "ڕووناک",
-	"prefs-citizen-theme-option-dark": "تاریک",
-	"prefs-citizen-fontsize-label": "قەبارەی جۆرەپیت",
-	"prefs-citizen-pagewidth-label": "پانی پەڕە",
-	"prefs-citizen-lineheight-label": "بەرزی هێڵ",
-	"prefs-citizen-resetbutton-label": "ڕێکخستنەوە بۆ بنەڕەت"
+	"citizen-tagline-ns-category": "لاپەڕەی هاوپۆل"
 }

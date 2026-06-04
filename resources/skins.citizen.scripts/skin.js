@@ -1,95 +1,62 @@
 /**
- * Wait for first paint before calling this function.
- * (see T234570#5779890, T246419).
- *
- * @param {Document} document
+ * @param {Object} deps
+ * @param {Document} deps.document
+ * @param {Window} deps.window
+ * @param {Object} deps.mw
+ * @param {Object} deps.navigator
+ * @param {Object} deps.HTMLScriptElement
  * @return {void}
  */
-function enableCssAnimations( document ) {
+function deferredTasks( { document, window, mw, navigator, HTMLScriptElement } ) {
+	const { createSpeculationRules } = require( './speculationRules.js' );
+	const { createServiceWorker } = require( './serviceWorker.js' );
+
+	createSpeculationRules( { document, mw, HTMLScriptElement } ).init();
+	createServiceWorker( { mw, navigator } ).register();
+
+	window.addEventListener( 'beforeunload', () => {
+		// Set up loading indicator
+		document.documentElement.classList.add( 'citizen-loading' );
+	}, false );
+
+	// Remove loading indicator once the page is unloaded/hidden
+	window.addEventListener( 'pagehide', () => {
+		document.documentElement.classList.remove( 'citizen-loading' );
+	} );
+
 	document.documentElement.classList.add( 'citizen-animations-ready' );
-}
-
-/**
- * Add a class to indicate that sticky header is active
- *
- * @param {Document} document
- * @return {void}
- */
-function initStickyHeader( document ) {
-	const scrollObserver = require( './scrollObserver.js' );
-
-	// Detect scroll direction and add the right class
-	scrollObserver.initDirectionObserver(
-		() => {
-			document.body.classList.remove( 'citizen-scroll--up' );
-			document.body.classList.add( 'citizen-scroll--down' );
-		},
-		() => {
-			document.body.classList.remove( 'citizen-scroll--down' );
-			document.body.classList.add( 'citizen-scroll--up' );
-		},
-		10
-	);
-
-	const sentinel = document.getElementById( 'citizen-body-header-sticky-sentinel' );
-
-	// In some pages we use display:none to disable the sticky header
-	// Do not start observer if it is set to display:none
-	if ( sentinel && getComputedStyle( sentinel ).getPropertyValue( 'display' ) !== 'none' ) {
-		const observer = scrollObserver.initIntersectionObserver(
-			() => {
-				document.body.classList.add( 'citizen-body-header--sticky' );
-			},
-			() => {
-				document.body.classList.remove( 'citizen-body-header--sticky' );
-			}
-		);
-		observer.observe( sentinel );
-	}
-}
-
-/**
- * Register service worker
- *
- * @return {void}
- */
-function registerServiceWorker() {
-	const scriptPath = mw.config.get( 'wgScriptPath' );
-
-	// Only allow serviceWorker when the scriptPath is at root because of its scope
-	// I can't figure out how to add the Service-Worker-Allowed HTTP header
-	// to change the default scope
-	if ( scriptPath === '' ) {
-		if ( 'serviceWorker' in navigator ) {
-			const SW_MODULE_NAME = 'skins.citizen.serviceWorker',
-				version = mw.loader.moduleRegistry[ SW_MODULE_NAME ].version,
-				// HACK: Faking a RL link
-				swUrl = scriptPath +
-					'/load.php?modules=' + SW_MODULE_NAME +
-					'&only=scripts&raw=true&skin=citizen&version=' + version;
-			navigator.serviceWorker.register( swUrl, { scope: '/' } );
-		}
-	}
 }
 
 /**
  * Initialize scripts related to wiki page content
  *
  * @param {HTMLElement} bodyContent
+ * @param {Object} deps
+ * @param {Document} deps.document
+ * @param {Window} deps.window
+ * @param {Object} deps.mw
+ * @param {typeof IntersectionObserver} deps.IntersectionObserver
+ * @param {typeof ResizeObserver} deps.ResizeObserver
  * @return {void}
  */
-function initBodyContent( bodyContent ) {
+function initBodyContent(
+	bodyContent, { document, window, mw, IntersectionObserver, ResizeObserver }
+) {
 	const
-		sections = require( './sections.js' ),
-		tables = require( './tables.js' ),
-		toc = require( './tableOfContents.js' );
+		{ createSections } = require( './sections.js' ),
+		overflowElements = require( './overflowElements/index.js' ),
+		{ createContentEnhancements } = require( './contentEnhancements.js' ),
+		config = require( './config.json' );
 
 	// Collapsable sections
-	sections.init( bodyContent );
-	// Table enhancements
-	tables.init( bodyContent );
-	// Table of contents
-	toc.init( bodyContent );
+	createSections( { document, bodyContent } ).init();
+	// Overflow element enhancements
+	overflowElements.init( {
+		document, window, mw, IntersectionObserver, ResizeObserver,
+		bodyContent, config
+	} );
+	// Content enhancements
+	createContentEnhancements( { document, bodyContent } ).init();
 }
 
 /**
@@ -99,47 +66,57 @@ function initBodyContent( bodyContent ) {
 function main( window ) {
 	const
 		config = require( './config.json' ),
+		{ createEchoUpgrade } = require( './echo.js' ),
 		search = require( './search.js' ),
-		checkbox = require( './checkbox.js' );
+		dropdown = require( './dropdown.js' ),
+		{ createLastModified } = require( './lastModified.js' ),
+		{ createShare } = require( './share.js' ),
+		setupObservers = require( './setupObservers.js' ),
+		{ createPerformanceMode } = require( './performance.js' ),
+		{ createPreferences } = require( './preferences.js' ),
+		{ createCommandPalette } = require( './commandPalette.js' );
 
-	enableCssAnimations( window.document );
-	search.init( window );
-	initStickyHeader( window.document );
+	const commandPalette = createCommandPalette( { document, mw } );
+	commandPalette.init();
 
-	// Set up checkbox hacks
-	checkbox.bind();
+	search.init( { window, document, triggerOpen: commandPalette.triggerOpen } );
+	createEchoUpgrade( { document, mw } ).init();
+	setupObservers.init( { document, window, mw, IntersectionObserver } );
+	dropdown.init( { document, window } );
+	createLastModified( { document, Intl } ).init();
+	createShare( {
+		document,
+		window,
+		mw,
+		navigator,
+		mode: config.wgCitizenShareMode
+	} ).init();
+	createPerformanceMode( { document, mw } ).init();
 
-	mw.hook( 'wikipage.content' ).add( function ( content ) {
+	mw.hook( 'wikipage.content' ).add( ( content ) => {
 		// content is a jQuery object
 		// note that this refers to .mw-body-content, not #bodyContent
-		initBodyContent( content[ 0 ] );
+		initBodyContent(
+			content[ 0 ], { document, window, mw, IntersectionObserver, ResizeObserver }
+		);
 	} );
 
-	// Preference module
-	if ( config.wgCitizenEnablePreferences === true && typeof document.createElement( 'div' ).prepend === 'function' ) {
-		mw.loader.load( 'skins.citizen.preferences' );
+	// Preferences module
+	if ( config.wgCitizenEnablePreferences === true ) {
+		createPreferences( { document, mw } ).init();
 	}
 
-	registerServiceWorker();
-
-	window.addEventListener( 'beforeunload', () => {
-		// T295085: Close all dropdown menus when page is unloaded to prevent them
-		// from being open when navigating back to a page.
-		checkbox.uncheckCheckboxHacks();
-		// Set up loading indicator
-		document.documentElement.classList.add( 'citizen-loading' );
-	}, false );
-
-	// Remove loading indicator once the page is unloaded/hidden
-	window.addEventListener( 'pagehide', () => {
-		document.documentElement.classList.remove( 'citizen-loading' );
-	} );
+	// Defer non-essential tasks
+	mw.requestIdleCallback(
+		() => deferredTasks( { document, window, mw, navigator, HTMLScriptElement } ),
+		{ timeout: 3000 }
+	);
 }
 
 if ( document.readyState === 'interactive' || document.readyState === 'complete' ) {
 	main( window );
 } else {
-	document.addEventListener( 'DOMContentLoaded', function () {
+	document.addEventListener( 'DOMContentLoaded', () => {
 		main( window );
 	} );
 }

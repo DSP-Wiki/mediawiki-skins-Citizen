@@ -11,59 +11,79 @@
 	margin-top: 0 !important;
 }
 .citizen-footer {
-	padding: var( --space-xxl ) var( --padding-page );
-	margin-top: var( --space-xxl );
-	// Reserve space for header
-	margin-bottom: var( --header-size );
+	--min-width-footer-link: 10rem;
 	clear: both;
-	font-size: var( --font-size-small );
-	color: var( --color-base--subtle );
+	padding: var( --space-xxl ) var( --padding-page );
+	margin-top: 8rem;
+	contain: content;
+	color: var( --color-subtle );
 	background-color: #1D1D1D;
-	border-top: 1px solid var(--border-color-base);
 	direction: ltr;
+	.mixin-citizen-font-styles( 'small' );
+
+	@media ( max-width: @min-width-breakpoint-desktop ) {
+		.citizen-feature-autohide-navigation-clientpref-0 & {
+			// Reserve space for header, add only if autohide is off to avoid empty space
+			margin-bottom: var( --header-size-block-end );
+		}
+	}
 
 	&__container {
-		max-width: var( --width-layout--extended );
-		margin-right: auto;
-		margin-left: auto;
+		max-width: var( --width-page );
+		margin-inline: auto;
 	}
 
 	&__content,
 	&__bottom {
 		display: flex;
-		flex-wrap: wrap;
-		gap: var( --space-md );
+		gap: var( --space-md ) var( --space-xxl );
+		justify-content: space-between;
 		padding: var( --space-md ) 0;
+		margin-inline: auto;
+
+		@media ( max-width: @min-width-breakpoint-tablet ) {
+			flex-direction: column;
+		}
 	}
 
 	&__bottom {
-		align-items: center;
-		justify-content: space-between;
-		margin-right: auto;
-		margin-left: auto;
-		border-top: 1px solid var( --border-color-base );
+		margin-inline: auto;
+		border-top: var( --border-width-base ) solid var( --border-color-base );
+
+		@media ( min-width: @min-width-breakpoint-tablet ) {
+			align-items: center;
+		}
 	}
 
 	&__siteinfo {
 		display: flex;
+		flex-grow: 1;
 		flex-direction: column;
 		gap: var( --space-xs );
 		max-width: 90ch;
+	}
 
-		p {
-			margin: 0;
-			line-height: var( --line-height );
+	&__sitetitle {
+		display: flex;
+		flex-direction: column;
+		gap: var( --space-sm );
+
+		.mw-logo-wordmark {
+			font-size: var( --font-size-xxx-large );
 		}
+	}
+
+	&__desc {
+		margin: 0;
+		line-height: var( --line-height-small );
 	}
 
 	a {
 		font-weight: var( --font-weight-medium );
-		color: var( --color-base--emphasized );
+		color: var( --color-emphasized );
 	}
 
 	ul {
-		display: flex;
-		flex-wrap: wrap;
 		margin: 0;
 	}
 
@@ -73,32 +93,36 @@
 }
 
 #footer {
-	&-sitetitle {
-		font-size: 1.25rem;
-		color: var( --color-base--emphasized );
-
-		img.mw-logo-wordmark {
-			filter: none !important;
-			max-height: 130px;
-		}
-	}
-
 	&-places {
+		display: flex;
+		flex-grow: 1;
+		align-items: flex-end;
+
+		@media ( max-width: @max-width-breakpoint-tablet ) {
+			margin-inline: calc( -1 * var( --space-md ) );
+		}
+
+		@media ( min-width: @min-width-breakpoint-desktop ) {
+			margin-top: calc( -1 * var( --space-xs ) );
+		}
+
 		ul {
-			flex-direction: column;
+			display: grid;
+			flex-grow: 1;
+			grid-template-columns: repeat( auto-fit, minmax( var( --min-width-footer-link ), 1fr ) );
 		}
 
 		a {
 			display: block;
 			padding: var( --space-xs ) var( --space-md );
-			border-radius: var( --border-radius--small );
+			border-radius: var( --border-radius-base );
 
 			&:hover {
-				background-color: var( --background-color-quiet--hover );
+				background-color: var( --background-color-button-quiet--hover );
 			}
 
 			&:active {
-				background-color: var( --background-color-quiet--active );
+				background-color: var( --background-color-button-quiet--active );
 			}
 
 			&:hover,
@@ -108,14 +132,10 @@
 		}
 	}
 
-	&-tagline {
-		padding: var( --space-xs ) 0;
-	}
-
 	&-icons {
-		display: flex;
-
 		ul {
+			display: flex;
+			flex-wrap: wrap;
 			gap: var( --space-xs );
 		}
 
@@ -127,6 +147,7 @@
 		a {
 			display: flex;
 			align-items: center;
+			background-color: var( --background-color-base-fixed ); // To prevent this being flipped in dark mode
 		}
 	}
 }
@@ -134,9 +155,5 @@
 @media ( min-width: @min-width-breakpoint-desktop ) {
 	.citizen-footer {
 		margin-bottom: 0;
-	}
-
-	#footer-sitetitle {
-		font-size: 2rem;
 	}
 }

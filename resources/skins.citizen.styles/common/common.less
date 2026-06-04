@@ -1,20 +1,20 @@
-/*
- * Framework
-*/
-html {
-	box-sizing: border-box;
-	// Not ideal but it works
-	scroll-padding-top: 6rem;
+:root {
+	interpolate-size: allow-keywords;
 }
 
-html,
+html {
+	box-sizing: border-box;
+	font-size: 100%;
+	scroll-padding-top: ~'calc( var( --header-offset-block-start ) + var( --space-xl ) )';
+	scroll-padding-bottom: ~'calc( var( --header-offset-block-end ) + var( --space-xl ) )';
+}
+
 body {
-	min-height: 100vh;
-	padding: 0;
-	margin: 0;
+	min-height: ~'calc( 100vh - env( safe-area-inset-bottom,0 ) - env( safe-area-inset-top,0 ) )';
+	min-height: 100dvh;
 	color: var( --color-base );
-	accent-color: var( --color-primary );
-	background: #1D1D1D;
+	accent-color: var( --accent-color-base );
+	background: var( --color-surface-0 );
 }
 
 // Apply border-box universally unless overwritten
@@ -22,24 +22,39 @@ body {
 *::before,
 *::after {
 	box-sizing: inherit;
+	border-color: var( --border-color-base );
+	border-style: solid;
+	border-width: 0;
 }
 
 :focus {
-	outline-color: var( --color-primary );
+	outline-color: var( --color-progressive );
 }
 
-// For some reason just overriding the outline-color is not enough
-:focus-visible {
-	outline: 2px solid var( --color-primary );
-	outline-offset: 1px;
+::placeholder {
+	color: var( --color-placeholder );
+}
+
+::selection {
+	color: var( --color-inverted-primary );
+	background-color: var( --color-progressive );
 }
 
 input,
 select,
 textarea {
-	color: var( --color-base--emphasized );
+	color: var( --color-emphasized );
 	background-color: transparent;
-	border: 1px solid var( --border-color-interactive );
+	border: var( --border-width-base ) solid var( --border-color-interactive );
+
+	&[ disabled ] {
+		color: var( --color-disabled );
+		border-color: var( --border-color-disabled );
+
+		~ label {
+			color: var( --color-disabled );
+		}
+	}
 }
 
 select option {
@@ -52,7 +67,7 @@ textarea {
 
 blockquote {
 	margin: var( --space-md );
-	color: var( --color-base--subtle );
+	color: var( --color-subtle );
 
 	cite {
 		display: block;
@@ -66,25 +81,33 @@ blockquote {
 
 button {
 	font-family: var( --font-family-base );
-}
-
-sup,
-sub {
-	line-height: 1;
+	color: var( --color-base );
 }
 
 th {
-	font-weight: var( --font-weight-semibold );
+	font-weight: var( --font-weight-semi-bold );
+	color: var( --color-emphasized );
 }
 
+/* Remove outer margin in table cell */
+th,
 td {
 	> p,
 	> ul,
 	> ol {
 		&:first-child {
-			margin-top: 0; // Remove margin for the first element in td
+			margin-top: 0;
+		}
+
+		&:last-child {
+			margin-bottom: 0;
 		}
 	}
+}
+
+.hidden,
+.sr-only {
+	.mixin-citizen-screen-reader-only;
 }
 
 .nowrap {
@@ -99,49 +122,37 @@ td {
 	border: 0;
 }
 
-/*
- * Content
-*/
+.citizen-sitenotice-container {
+	background-color: var( --color-surface-2 );
+}
+
 .mw-body,
 .parsoid-body {
 	direction: ltr;
 }
 
+#mw-content-text {
+	margin-block-start: var( --space-md );
+}
+
 // TODO: Think of better places to put indicators;
 .mw-indicators {
 	display: flex;
+	column-gap: var( --space-xs );
 	align-items: center;
-	padding-left: 10px;
-	margin-left: 10px;
+	padding-inline-start: var( --space-xs );
+	margin-inline-start: var( --space-xs );
 	font-size: var( --font-size-small );
-	border-left: 1px solid var( --border-color-base );
+	border-inline-start: var( --border-width-base ) solid var( --border-color-base );
 }
 
-.mw-indicator {
-	filter: var( --filter-invert );
+// Hide the text in the help indicator
+#mw-indicator-mw-helplink a {
+	font-size: 0;
 }
 
 video {
 	max-width: 100%; // Prevent overflow
-}
-
-.skin-citizen-dark {
-	color-scheme: dark;
-
-	.mw-indicator {
-		// Have to hardcode the color since the filter breaks the color
-		a {
-			color: @color-primary;
-
-			&:hover {
-				color: @color-primary--hover;
-			}
-
-			&:active {
-				color: @color-primary--active;
-			}
-		}
-	}
 }
 
 @media ( hover: none ) {
@@ -149,7 +160,6 @@ video {
 	button,
 	label {
 		// Remove the 300ms delay in click event (T118509)
-		/* stylelint-disable-next-line plugin/no-unsupported-browser-features */
 		touch-action: manipulation;
 	}
 }
@@ -159,14 +169,5 @@ video {
 	.parsoid-body {
 		overflow-x: hidden; // fallback if clip is not supported
 		overflow-x: clip; // avoid breaking layout in smaller screen sizes
-	}
-}
-
-@media ( min-width: @min-width-breakpoint-tablet ) {
-	// Delay scroll animation won't happen on load
-	// Use it only for larger viewport as it is very costly
-	// on mobile devices
-	html.citizen-animations-ready {
-		scroll-behavior: smooth;
 	}
 }

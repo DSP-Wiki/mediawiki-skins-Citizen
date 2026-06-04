@@ -18,7 +18,6 @@
 	"citizen-footer-tagline": "Cange stu teste sus a [[MediaWiki:Citizen-footer-tagline]]",
 	"citizen-action-addsection": "Aggiunge 'n'argomende",
 	"citizen-jumptotop": "Tuèrne sus",
-	"citizen-search-fulltext": "Cirche le pàggene ca tènene",
 	"citizen-search-empty-desc": "Scrive pe accumenzà 'a recerche",
 	"citizen-tagline-ns-talk": "Pàgene de le 'ngazzaminde de {{SUBJECTPAGENAME}}",
 	"citizen-tagline-ns-project": "'Mbormaizune sus a {{SITENAME}}",
@@ -26,13 +25,5 @@
 	"citizen-tagline-ns-mediawiki": "Pàgene de inderfacce de MediaUicchi",
 	"citizen-tagline-ns-template": "Pàgene d'u template",
 	"citizen-tagline-ns-help": "Pàgene d'ajute",
-	"citizen-tagline-ns-category": "Pàgene d'a categorije",
-	"prefs-citizen-theme-label": "Teme",
-	"prefs-citizen-theme-option-auto": "Auto",
-	"prefs-citizen-theme-option-light": "Chiare",
-	"prefs-citizen-theme-option-dark": "Scure",
-	"prefs-citizen-fontsize-label": "Dimenzione d'u carattere",
-	"prefs-citizen-pagewidth-label": "Larghezze d'a pàgene",
-	"prefs-citizen-lineheight-label": "Iertezze d'a linèe",
-	"prefs-citizen-resetbutton-label": "Azzere a le predefinite"
+	"citizen-tagline-ns-category": "Pàgene d'a categorije"
 }

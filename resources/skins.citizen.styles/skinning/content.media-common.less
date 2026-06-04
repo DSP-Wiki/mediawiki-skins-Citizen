@@ -2,14 +2,12 @@
  * Citizen
  *
  * Module: mediawiki.skinning.content.media-common
- * Version: REL1_39
- *
- * Date: 2023-07-23
+ * Version: REL1_43
  */
 
-/**
- * Block media items
- */
+@import '../../mixins.less';
+
+// Block media items
 figure[ typeof~='mw:File' ],
 figure[ typeof~='mw:File/Frameless' ],
 figure[ typeof~='mw:File/Thumb' ],
@@ -20,16 +18,15 @@ figure[ typeof~='mw:File/Frame' ] {
 	}
 
 	&.mw-halign-center {
-		margin-right: auto;
-		margin-left: auto;
+		margin-inline: auto;
+		text-align: center;
 	}
 }
 
 figure[ typeof~='mw:File' ],
 figure[ typeof~='mw:File/Frameless' ] {
-	/* Hide the caption for frameless and plain floated images */
 	> figcaption {
-		display: none;
+		display: none; // Hide the caption for frameless and plain floated images
 	}
 }
 
@@ -37,18 +34,15 @@ figure[ typeof~='mw:File/Thumb' ],
 figure[ typeof~='mw:File/Frame' ] {
 	display: table;
 	margin: var( --space-xs ) auto var( --space-md ) auto;
-	font-size: var( --font-size-x-small );
 	text-align: center;
+	.mixin-citizen-font-styles( 'small' );
 
 	> a:first-child,
 	> span:first-child {
-		/**
-		 * Broken media get a span instead.
-		 */
+		// Broken media get a span instead
 		span.mw-broken-media {
 			display: inline-block;
-			/* This is hardcoded in Linker::makeThumbLink2 for broken media */
-			width: 180px;
+			width: 180px; // This is hardcoded in Linker::makeThumbLink2 for broken media
 			overflow-wrap: break-word;
 		}
 	}
@@ -56,50 +50,49 @@ figure[ typeof~='mw:File/Frame' ] {
 	> figcaption {
 		display: table-caption;
 		// Sync with rounded corner
-		padding-right: var( --border-radius--small );
-		// Sync with rounded corner
-		padding-left: var( --border-radius--small );
-		margin-top: var( --space-xs );
-		color: var( --color-base--subtle );
-		letter-spacing: 0.025em;
+		padding-inline: var( --border-radius-base );
 		caption-side: bottom;
+
+		&:not( :empty ) {
+			margin-top: var( --space-xs );
+		}
 	}
 }
 
-/**
- * Inline media items
- * img is needed for 1.39 compat, change to .mw-file-element later
- */
-.mw-valign-middle img {
-	vertical-align: middle;
-}
+// Inline media items
+// img is needed for 1.39 compat, change to .mw-file-element later
+.mw-file-element {
+	.mw-valign-middle & {
+		vertical-align: middle;
+	}
 
-.mw-valign-baseline img {
-	vertical-align: baseline;
-}
+	.mw-valign-baseline & {
+		vertical-align: baseline;
+	}
 
-.mw-valign-sub img {
-	vertical-align: sub;
-}
+	.mw-valign-sub & {
+		vertical-align: sub;
+	}
 
-.mw-valign-super img {
-	vertical-align: super;
-}
+	.mw-valign-super & {
+		vertical-align: super;
+	}
 
-.mw-valign-top img {
-	vertical-align: top;
-}
+	.mw-valign-top & {
+		vertical-align: top;
+	}
 
-.mw-valign-text-top img {
-	vertical-align: text-top;
-}
+	.mw-valign-text-top & {
+		vertical-align: text-top;
+	}
 
-.mw-valign-bottom img {
-	vertical-align: bottom;
-}
+	.mw-valign-bottom & {
+		vertical-align: bottom;
+	}
 
-.mw-valign-text-bottom img {
-	vertical-align: text-bottom;
+	.mw-valign-text-bottom & {
+		vertical-align: text-bottom;
+	}
 }
 
 // Do not float content in mobile view
@@ -115,18 +108,18 @@ figure[ typeof~='mw:File/Frame' ] {
 			/* @noflip */
 			float: right;
 			/* @noflip */
-			margin-left: var( --space-lg );
-			/* @noflip */
 			clear: right;
+			/* @noflip */
+			margin-left: var( --space-lg );
 		}
 
 		.mw-content-rtl & {
 			/* @noflip */
 			float: left;
 			/* @noflip */
-			margin-right: var( --space-lg );
-			/* @noflip */
 			clear: left;
+			/* @noflip */
+			margin-right: var( --space-lg );
 		}
 	}
 
@@ -138,25 +131,28 @@ figure[ typeof~='mw:File/Frame' ] {
 			/* @noflip */
 			float: right;
 			/* @noflip */
-			margin-left: var( --space-lg );
-			/* @noflip */
 			clear: right;
+			/* @noflip */
+			margin-right: 0;
+			/* @noflip */
+			margin-left: var( --space-lg );
 		}
 
 		&.mw-halign-left {
 			/* @noflip */
 			float: left;
 			/* @noflip */
+			clear: left;
+			/* @noflip */
 			margin-right: var( --space-lg );
 			/* @noflip */
-			clear: left;
+			margin-left: 0;
 		}
 
 		&.mw-halign-center {
 			float: none;
-			margin-right: auto;
-			margin-left: auto;
 			clear: both;
+			margin-inline: auto;
 			text-align: center;
 		}
 	}
